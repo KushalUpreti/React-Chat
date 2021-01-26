@@ -1,2 +1,2 @@
 # React-Chat
-A Reac/Node chat application
+A React/Node chat application
