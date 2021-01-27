@@ -117,7 +117,6 @@ async function addOrRemoveFriend(req, res, next) {
     let friend;
     try {
         friend = await User.findById(friendId);
-        console.log(friend.username);
     } catch (error) {
         return next(new HttpError("Internal error while finding the friend", 500));
     }
@@ -128,12 +127,12 @@ async function addOrRemoveFriend(req, res, next) {
     try {
 
         if (actionType === true) {
-            await user.friends.push(friendId);
-            // await User.updateOne({ id: userId }, { $push: { friends: friendId } });
+            user.friends.push(friendId);
+            user.save();
             message = "Friend added";
         } else {
-            await user.friends.pull(friendId);
-            // await User.updateOne({ id: userId }, { $pull: { friends: friendId } });
+            user.friends.pull(friendId);
+            user.save();
             message = "Friend deleted";
         }
 
@@ -147,6 +146,7 @@ async function addOrRemoveFriend(req, res, next) {
 
 async function createConversation(req, res, next) {
     const conversation_name = req.body.conversation_name;
+    const admin = mongoose.Types.ObjectId(req.body.admin);
     const users = req.body.users; //id of all users in the conversation.
     const latest_message_date = null;
 
@@ -164,7 +164,8 @@ async function createConversation(req, res, next) {
         conversation_name,
         date_created: new Date(),
         users: newUsers,
-        latest_message_date
+        latest_message_date,
+        admin: admin
     })
     try {
         await newConvo.save();
@@ -191,6 +192,11 @@ async function getAllConversations(req, res, next) {
     res.status(200).json(user);
 }
 
+
+async function deleteConversation(req, res, next) {
+    const request_id = req.body.id;
+
+}
 
 async function addMessageToConversation(req, res, next) {
     if (!validationResult(req).isEmpty()) {
@@ -227,13 +233,23 @@ async function addMessageToConversation(req, res, next) {
 
 
 async function getMessages(req, res, next) {
-    const conversation_id = req.body.conversation_id;
+    const conversation_id = req.params.convId;
     let messages;
     try {
-        messages = await Messaage.find({ conversation_id });
+        messages = await Messaage.find({ conversation_id }).sort({ sent_date: 1 });
     } catch (error) {
         return next(new HttpError("Error while saving message. Try again", 500));
     }
+    if (messages.length === 0) {
+        res.status(200).json({});
+        return;
+    }
+    messages = messages.map((item) => {
+        item.message = cryptoEncrypt.decrypt(item.message);
+        return item;
+    })
+    res.status(200).json(messages);
+
 }
 
 exports.signup = signup;
@@ -242,3 +258,4 @@ exports.addOrRemoveFriend = addOrRemoveFriend;
 exports.createConversation = createConversation;
 exports.getAllConversations = getAllConversations;
 exports.addMessageToConversation = addMessageToConversation;
+exports.getMessages = getMessages;

@@ -16,7 +16,7 @@ router.post("/login", [
     check('password').not().isEmpty(),
     check('password').isLength({ min: 5 })], userController.login);
 
-router.patch("/addFriend", userController.addOrRemoveFriend);
+router.patch("/addOrRemoveFriend", userController.addOrRemoveFriend);
 
 router.post("/createConversation", userController.createConversation);
 
@@ -25,6 +25,7 @@ router.get("/getAllConversations/:id", userController.getAllConversations);
 router.post("/addMessage", [check('message').not().isEmpty(),
 check('message').isLength({ min: 1 })], userController.addMessageToConversation);
 
+router.get("/allMessages/:convId", userController.getMessages);
 
 
 module.exports = router;
