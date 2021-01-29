@@ -96,7 +96,7 @@ async function login(req, res, next) {
     }
 
     const token = jwt.sign({ user_id: userData.id, username: userData.username }, process.env.JWT_SECRET_KEY, { expiresIn: "2 days" });
-    res.status(200).json({ user_id: userData.id, username: userData.username, email: userData.email, token });
+    res.status(200).json({ userId: userData.id, username: userData.username, email: userData.email, token });
 
 }
 

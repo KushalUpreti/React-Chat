@@ -11,18 +11,17 @@ export const useAuth = () => {
 
 
     const login = useCallback((recievedData) => {
-        console.log("Called");
         setToken(recievedData.token);
         setUserDetails({
             username: recievedData.username,
             userId: recievedData.userId
         });
+
         let obj = {
             token: recievedData.token,
             username: recievedData.username,
             userId: recievedData.userId
         }
-        console.log(obj);
         obj = JSON.stringify(obj);
         localStorage.setItem("userData", obj);
     }, []);

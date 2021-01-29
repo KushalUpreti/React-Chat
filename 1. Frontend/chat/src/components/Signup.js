@@ -1,8 +1,8 @@
 import './Signup.css';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useHistory } from 'react-router';
 import { useHttpClient } from '../hooks/http-hook';
-import { useContextObj } from '../contexts/auth-context';
+import AuthContext from '../contexts/auth-context';
 
 function Signup() {
     const [state, setState] = useState({
@@ -14,7 +14,7 @@ function Signup() {
     });
 
     const { isLoading, error, clearError, sendRequest } = useHttpClient();
-    const auth = useContextObj();
+    const auth = useContext(AuthContext);
     const history = useHistory();
 
     const checkPasswordMatch = () => {
@@ -38,7 +38,8 @@ function Signup() {
         }
     }
 
-    const signup = async () => {
+    const signup = async (e) => {
+        e.preventDefault();
         const password = state.password;
         const rePassword = state.rePassword;
         if (password.length === 0 || rePassword.length === 0) { return; }
@@ -57,8 +58,7 @@ function Signup() {
 
         const result = await sendRequest("http://localhost:8080/user/signup", "POST", payload, config);
         if (!result) { return }
-
-        auth.login(result);
+        auth.login(result.data);
     }
 
 
@@ -66,7 +66,7 @@ function Signup() {
         <div className="formContainerSignUp">
             <div className="signOrLogDivSignUp">
                 <h2 className="signUpH3SignUp">Welcome Back</h2>
-                <p className="signUpPLoginSignUp">To keep connected with your friends please log in with your personal info</p>
+                <p className="signUpPLoginSignUp">To stay connected with your friends please log in with your personal info</p>
                 <button className="formButton2SignUp" onClick={() => { history.push("/login") }}>Login</button>
             </div>
 
@@ -74,7 +74,7 @@ function Signup() {
                 <div className="formDivSignUp">
                     <h2 className="signUpH2SignUp">Create Account</h2>
                     <p className="signUpPSignUp">Fill the form to create an account</p>
-                    <form className="signUpFormSignUp">
+                    <form className="signUpFormSignUp" onSubmit={signup}>
                         <input type="text" placeholder="Name" value={state.username} onChange={(event) => {
                             setState({ ...state, username: event.target.value });
                         }} /><br></br>
@@ -87,8 +87,8 @@ function Signup() {
                         <input type="password" placeholder="Re-enter password" value={state.rePassword} onChange={(event) => {
                             setState({ ...state, rePassword: event.target.value });
                         }} /><br></br>
+                        <button className="formButton1SignUp">Sign Up</button>
                     </form>
-                    <button className="formButton1SignUp" onClick={() => { signup(); }}>Sign Up</button>
                 </div>
             </div>
 

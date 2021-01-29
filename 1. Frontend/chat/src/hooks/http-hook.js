@@ -20,16 +20,14 @@ export const useHttpClient = () => {
                         setIsLoading(false);
                     })
             } else if (method === "POST") {
-                axios.post(url, payload, config)
-                    .then(result => {
-                        console.log(result);
-                        return result;
-                    }).catch(err => {
-
-                        setError(err);
-                    }).finally(() => {
-                        setIsLoading(false);
-                    })
+                try {
+                    const result = await axios.post(url, payload, config);
+                    return result;
+                } catch (error) {
+                    setError(error);
+                } finally {
+                    setIsLoading(false);
+                }
             }
         }, [])
 

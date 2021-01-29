@@ -1,6 +1,8 @@
 import './App.css';
+import { useContext } from 'react';
 import SocketProvider from './contexts/socket-context';
-import AuthProvider from './contexts/auth-context';
+import { useAuth } from './hooks/Auth-hook';
+import AuthContext from "./contexts/auth-context";
 import Signup from "./components/Signup";
 import Login from './components/Login';
 import Dashboard from './components/Dashboard';
@@ -8,9 +10,10 @@ import { BrowserRouter, Switch, Redirect, Route } from 'react-router-dom';
 import { useContextObj } from './contexts/auth-context';
 
 function App() {
-  let auth = useContextObj();
+  const { token, userDetails, login, logout } = useAuth();
+  const auth = useContext(AuthContext);
 
-  let loggedOutRoutes = <>
+  let routes = <>
     <Switch>
       <Route path="/signup"><Signup /></Route>
       <Route path="/login"><Login></Login></Route>
@@ -18,26 +21,34 @@ function App() {
     </Switch>
   </>;
 
-  let loggedInRoutes = <>
-    <Switch>
-      <Route path="/" exact>
-        <SocketProvider>
-          <Dashboard />
-        </SocketProvider>
-      </Route>
-      <Redirect to="/"></Redirect>
-    </Switch>
-  </>;
+  if (token) {
+    routes = <>
+      <Switch>
+        <Route path="/" exact>
+          <SocketProvider>
+            <Dashboard />
+          </SocketProvider>
+        </Route>
+        <Redirect to="/"></Redirect>
+      </Switch>
+    </>;
+  }
+
 
   return (
     <BrowserRouter>
-
-      <AuthProvider>
+      <AuthContext.Provider value={{
+        isLoggedIn: !!token,
+        login,
+        logout,
+        token,
+        username: userDetails.username,
+        userId: userDetails.userId
+      }}>
         <div className="App">
-          {auth.isLoggedIn ? loggedInRoutes : loggedOutRoutes}
+          {routes}
         </div>
-      </AuthProvider>
-
+      </AuthContext.Provider>
     </BrowserRouter>
   );
 }

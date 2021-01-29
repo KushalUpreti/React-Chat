@@ -1,5 +1,5 @@
-import { createContext, useContext } from 'react';
-import { useAuth } from '../hooks/Auth-hook';
+import { createContext } from 'react';
+
 
 const AuthContext = createContext({
     isLoggedIn: false,
@@ -10,23 +10,4 @@ const AuthContext = createContext({
     logout: () => { }
 })
 
-export function useContextObj() {
-    return useContext(AuthContext);
-}
-
-const AuthProvider = (props) => {
-    const { login, logout, token, userDetails } = useAuth();
-
-    return <AuthContext.Provider value={{
-        isLoggedIn: !!token,
-        login,
-        logout,
-        token,
-        username: userDetails.username,
-        userId: userDetails.userId
-    }}>
-        {props.children}
-    </AuthContext.Provider>
-}
-
-export default AuthProvider;
+export default AuthContext;
