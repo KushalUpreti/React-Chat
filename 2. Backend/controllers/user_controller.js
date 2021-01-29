@@ -13,6 +13,7 @@ dotenv.config();
 
 // Signup function
 async function signup(req, res, next) {
+
     if (!validationResult(req).isEmpty()) {
         return next(new HttpError('Invalid inputs passed, please check your data.', 422));
     }
@@ -52,7 +53,8 @@ async function signup(req, res, next) {
         );
         return next(error);
     }
-    res.status(200).json({ message: "Signed in" });
+    const token = jwt.sign({ user_id: newUser.id, username: newUser.username }, process.env.JWT_SECRET_KEY, { expiresIn: "2 days" });
+    res.status(200).json({ userId: newUser.id, username: newUser.username, email: newUser.email, token });
 }
 
 
@@ -64,6 +66,7 @@ async function login(req, res, next) {
 
     const email = req.body.email;
     const password = req.body.password;
+
     try {
         userData = await User.findOne({ email: email });
     } catch (err) {
@@ -84,6 +87,7 @@ async function login(req, res, next) {
 
     const match = await bcrypt.compare(password, userData.password);
     if (!match) {
+
         const error = new HttpError(
             'Password did not match. Please try again',
             403

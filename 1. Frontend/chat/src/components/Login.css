@@ -1,0 +1,106 @@
+@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@600&display=swap");
+
+.formContainer {
+  display: flex;
+  flex-direction: row;
+  width: 60%;
+  height: 60vh;
+  margin: 9% auto;
+  border-radius: 10px;
+  box-shadow: 2px 12px 19px -1px rgba(0, 0, 0, 0.54);
+}
+
+.signOrLogDiv {
+  background-color: #ff0028;
+  width: 40%;
+  height: 100%;
+  text-align: center;
+}
+
+.signOrLogForm {
+  width: 60%;
+  height: 100%;
+}
+
+.formDiv {
+  text-align: center;
+  margin-top: 20%;
+}
+
+.signUpH2 {
+  font-family: "Nunito", sans-serif;
+  color: #663f3f;
+  font-size: 2rem;
+}
+
+.signUpH3 {
+  font-family: "Nunito", sans-serif;
+  color: white;
+  margin-top: 40%;
+  font-size: 1.6rem;
+}
+
+.signUpP {
+  font-size: 11px;
+  font-family: Helvetica, sans-serif;
+  color: #252525;
+}
+
+.signUpPLogin {
+  font-size: 10px;
+  font-family: sans-serif;
+  color: white;
+  padding: 0 20px 0 20px;
+}
+
+.signUpForm {
+  margin-top: 30px;
+  text-align: center;
+}
+
+.signUpForm input {
+  margin-bottom: 10px;
+  height: 30px;
+  outline: 0;
+  border: solid;
+  border-width: 0;
+  background-color: #d6fbff;
+}
+
+input:focus {
+  border-width: 0 0 2px;
+  border-color: #31cfe0;
+}
+
+.formButton1 {
+  margin-top: 5px;
+  width: 77px;
+  height: 30px;
+  background-color: #f44336;
+  color: white;
+  border: 2px solid #f44336;
+  transition-duration: 0.4s;
+  cursor: pointer;
+}
+
+.formButton1:hover {
+  background-color: white;
+  color: #f44336;
+}
+
+.formButton2 {
+  margin-top: 5px;
+  width: 77px;
+  height: 30px;
+  border-radius: 3px;
+  background-color: #007ba7;
+  color: white;
+  border: 2px solid #007ba7;
+  transition-duration: 0.4s;
+  cursor: pointer;
+}
+
+.formButton2:hover {
+  background-color: #ff0028;
+  color: white;
+}
