@@ -15,6 +15,7 @@
   width: 40%;
   height: 100%;
   text-align: center;
+  border-radius: 0 10px 10px 0;
 }
 
 .signOrLogForm {

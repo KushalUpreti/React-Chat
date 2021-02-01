@@ -2,7 +2,13 @@ const express = require('express');
 const app = express();
 const http = require('http').Server(app);
 const mongoose = require('mongoose');
-const io = require('socket.io')(http);
+const io = require('socket.io')(http, {
+    cors: {
+        origin: "*",
+    },
+});
+
+
 const dotenv = require('dotenv');
 const userRouter = require('./routes/user_routes');
 const HttpError = require('./models/http-error');
@@ -35,6 +41,12 @@ app.use((err, req, res, next) => {
     res.json({ message: err.message || 'An unknown error occurred!' });
 
 })
+
+io.on("connection", (socket) => {
+    const id = socket.handshake.query.id
+    socket.join(id);
+
+});
 
 
 mongoose.connect(`mongodb+srv://IcyHotShoto:${process.env.MONGO_DB_DATABASE_PASSWORD}@cluster0.dbftm.mongodb.net/chat?retryWrites=true&w=majority`, { useNewUrlParser: true, useUnifiedTopology: true })

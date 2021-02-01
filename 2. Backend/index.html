@@ -3,86 +3,74 @@
   <head>
     <title>Socket.IO chat</title>
     <style>
+      @import url("https://fonts.googleapis.com/css2?family=Nunito:wght@600&display=swap");
+      * {
+        margin: 0;
+      }
+
       body {
-        margin: 0;
-        padding-bottom: 3rem;
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-          Helvetica, Arial, sans-serif;
-      }
-
-      #form {
-        background: rgba(0, 0, 0, 0.15);
-        padding: 0.25rem;
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        display: flex;
-        height: 3rem;
-        box-sizing: border-box;
-        backdrop-filter: blur(10px);
-      }
-      #input {
-        border: none;
-        padding: 0 1rem;
-        flex-grow: 1;
-        border-radius: 2rem;
-        margin: 0.25rem;
-      }
-      #input:focus {
-        outline: none;
-      }
-      #form > button {
-        background: #333;
-        border: none;
-        padding: 0 1rem;
-        margin: 0.25rem;
-        border-radius: 3px;
-        outline: none;
-        color: #fff;
-      }
-
-      #messages {
-        list-style-type: none;
-        margin: 0;
         padding: 0;
+        min-height: 100%;
+        margin: 0;
       }
-      #messages > li {
-        padding: 0.5rem 1rem;
+      header {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        height: 50px;
+        background-color: white;
+        font-family: "Nunito", sans-serif;
+        box-shadow: 2px 6px 10px -5px #000000;
       }
-      #messages > li:nth-child(odd) {
-        background: #efefef;
+
+      .headerh2 {
+        padding: 12px;
+        color: #ff0028;
+      }
+
+      .headerh5 {
+        padding: 16px;
+      }
+
+      .container {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        height: 100%;
+      }
+
+      .leftDiv {
+        width: 180px;
+        height: 100%;
+        margin: 12px 10px 12px 12px;
+        background-color: pink;
+      }
+
+      .midDiv {
+        flex-grow: 1;
+        height: 100%;
+        margin: 12px 5px;
+        background-color: pink;
+      }
+
+      .rightDiv {
+        width: 180px;
+        height: 100%;
+        margin: 12px 12px 12px 5px;
+        background-color: pink;
       }
     </style>
   </head>
   <body>
-    <ul id="messages"></ul>
+    <header>
+      <h3 class="headerh2">React Chat</h3>
+      <h5 class="headerh5">Messages go brrr.</h5>
+    </header>
 
-    <form id="form" action="localhost:8080/">
-      <input id="input" autocomplete="off" />
-      <input id="id" autocomplete="off" />
-      <button>Send</button>
-    </form>
+    <div class="container">
+      <div class="leftDiv">Lol</div>
+      <div class="midDiv">mid</div>
+      <div class="rightDiv">Supp</div>
+    </div>
   </body>
-
-  <script src="/socket.io/socket.io.js"></script>
-  <script>
-    var form = document.getElementById("form");
-    var input = document.getElementById("input");
-    var id = document.getElementById("id");
-
-    form.addEventListener("submit", function (e) {
-      e.preventDefault();
-      if (input.value) {
-        const socket = io({
-          query: {
-            id: id.value,
-          },
-        });
-        socket.emit("chat message", input.value);
-        input.value = "";
-        id.value = "";
-      }
-    });
-  </script>
 </html>
