@@ -1,11 +1,10 @@
+import './Avatar.css'
 
 function Avatar(props) {
     return (
-        <img style={{
-            width: "40px",
-            height: "40px",
-            borderRadius: "50%"
-        }} alt="user avatar" src={props.src}> </img>
+        <div className="avatar">
+            <h2 style={{ padding: "2px", color: "white" }}>{props.initials}</h2>
+        </div>
     )
 }
 

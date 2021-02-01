@@ -193,6 +193,7 @@ async function getAllConversations(req, res, next) {
     if (!user) {
         return next(new HttpError("No conversations found", 404));
     }
+    
     res.status(200).json(user);
 }
 

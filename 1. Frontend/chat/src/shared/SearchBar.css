@@ -1,0 +1,17 @@
+.searchbar {
+  margin: 20px 10px 10px 10px;
+  padding: 5px;
+}
+
+.searchbar input {
+  width: 220px;
+  height: 30px;
+  border-radius: 40px;
+  border: solid 0;
+  text-align: center;
+  box-shadow: 0px 0px 15px -5px #000000;
+}
+
+.searchbar input:focus {
+  outline: none;
+}

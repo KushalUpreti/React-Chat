@@ -12,7 +12,6 @@ function SocketProvider({ children }) {
     const [socket, setSocket] = useState()
     const auth = useContext(AuthContext);
     const id = auth.userId;
-    console.log(id);
     useEffect(() => {
         const newSocket = io(
             'http://localhost:8080',

@@ -11,14 +11,15 @@ export const useHttpClient = () => {
             setIsLoading(true);
 
             if (method === "GET") {
-                axios.get(url, payload, config)
-                    .then(result => {
-                        return result;
-                    }).catch(err => {
-                        setError(err);
-                    }).finally(() => {
-                        setIsLoading(false);
-                    })
+                try {
+                    const result = axios.get(url, payload, config);
+                    return result;
+                } catch (error) {
+                    setError(error);
+                } finally {
+                    setIsLoading(false);
+                }
+
             } else if (method === "POST") {
                 try {
                     const result = await axios.post(url, payload, config);
