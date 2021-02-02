@@ -1,0 +1,35 @@
+.sendMessage {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.sendMessage input {
+  height: 30px;
+  border-radius: 20px;
+  border: solid 0;
+  width: 65%;
+  padding-left: 15px;
+  box-shadow: 0px 0px 15px -5px #000000;
+}
+
+.sendMessage button {
+  margin: 0 10px 0 5px;
+  width: 50px;
+  height: 30px;
+  background-color: #ff0028;
+  color: white;
+  border: 2px solid #ff0028;
+  transition-duration: 0.4s;
+  cursor: pointer;
+}
+
+.sendMessage button:hover {
+  background-color: white;
+  color: #f44336;
+}
+
+.sendMessage input:focus {
+  outline: none;
+}

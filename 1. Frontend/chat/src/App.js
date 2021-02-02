@@ -1,5 +1,4 @@
 import './App.css';
-import { useContext } from 'react';
 import SocketProvider from './contexts/socket-context';
 import { useAuth } from './hooks/Auth-hook';
 import AuthContext from "./contexts/auth-context";
@@ -7,11 +6,9 @@ import Signup from "./components/Signup";
 import Login from './components/Login';
 import Dashboard from './components/Dashboard';
 import { BrowserRouter, Switch, Redirect, Route } from 'react-router-dom';
-import { useContextObj } from './contexts/auth-context';
 
 function App() {
   const { token, userDetails, login, logout } = useAuth();
-  const auth = useContext(AuthContext);
 
   let routes = <>
     <Switch>

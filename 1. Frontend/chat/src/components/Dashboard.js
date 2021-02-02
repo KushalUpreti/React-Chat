@@ -6,6 +6,7 @@ import EdgeContainer from '../shared/EdgeContainer';
 import UserInfo from '../shared/UserInfo';
 import SearchBar from '../shared/SearchBar';
 import ConversationCard from '../shared/ConversationCard';
+import MidDiv from '../shared/MidDiv';
 
 import { useHttpClient } from '../hooks/http-hook';
 import AuthContext from '../contexts/auth-context';
@@ -79,7 +80,9 @@ function Dashboard() {
                         return <ConversationCard key={item.date_created} initials={initials} recipient={conversationName} time={time} recipientId={path} />
                     }) : <p style={{ marginTop: "60%", padding: "15px" }}>No conversation made yet!!</p>}
                 </div>
-
+            </EdgeContainer>
+            <MidDiv />
+            <EdgeContainer margin="10px 12px 12px 5px">
 
             </EdgeContainer>
         </Container>
