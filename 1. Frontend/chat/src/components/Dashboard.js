@@ -1,4 +1,5 @@
 import { useContext, useState, useEffect } from "react";
+import { Route } from 'react-router-dom'
 
 import Header from '../shared/Header';
 import Container from '../shared/Container';
@@ -13,7 +14,6 @@ import AuthContext from '../contexts/auth-context';
 
 function Dashboard() {
     const [conversation, setConversation] = useState([]);
-
 
     const auth = useContext(AuthContext);
     const { sendRequest } = useHttpClient();
@@ -32,6 +32,7 @@ function Dashboard() {
     function prepareData(item) {
         let conversationName = item.conversation_name;
         conversationName = conversationName.replace(username, "");
+        let recipient = conversationName;
         conversationName = conversationName.trim();
 
         let messageDate = new Date(item.latest_message_date);
@@ -59,7 +60,7 @@ function Dashboard() {
 
 
 
-        return { conversationName, time, initials, path };
+        return { conversationName, time, initials, path, recipient };
     }
 
     return <>
@@ -76,12 +77,15 @@ function Dashboard() {
 
                 <div style={{ overflowY: "scroll", height: "70%" }}>
                     {conversation.length > 0 ? conversation.map((item) => {
-                        const { conversationName, initials, time, path } = prepareData(item)
-                        return <ConversationCard key={item.date_created} initials={initials} recipient={conversationName} time={time} recipientId={path} />
+                        const { conversationName, initials, time, path, recipient } = prepareData(item)
+                        return <ConversationCard key={item.date_created} initials={initials} recipient={conversationName} time={time} username={recipient} recipientId={path} />
                     }) : <p style={{ marginTop: "60%", padding: "15px" }}>No conversation made yet!!</p>}
                 </div>
             </EdgeContainer>
-            <MidDiv />
+            <Route path="/messages">
+                <MidDiv />
+            </Route>
+
             <EdgeContainer margin="10px 12px 12px 5px">
 
             </EdgeContainer>

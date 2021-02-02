@@ -5,7 +5,7 @@ function MessageHeader(props) {
     return <>
         <div className="messageHeader">
             <div className="recieverInfo">
-                <Avatar initials={"P"} />
+                <Avatar initials={props.initials} />
                 <div className="userTextInfo">
                     <h4>{props.username}</h4>
                     <h5>Last active 5 min ago</h5>

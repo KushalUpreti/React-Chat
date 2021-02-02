@@ -3,9 +3,13 @@ import { NavLink } from 'react-router-dom';
 import Avatar from './Avatar';
 
 function ConversationCard(props) {
-    let path = `/messages/${props.recipientId}`
+    let path = `/messages`
     return (
-        <NavLink to={path} style={{ textDecoration: 'none', color: "black" }}>
+        <NavLink style={{ textDecoration: 'none', color: "black" }} to={{
+            pathname: path,
+            search: `?recipient=${props.recipientId}`,
+            userData: { name: props.username, initials: props.initials, id: props.recipientId }
+        }} >
             <div className="conversationCard">
                 <Avatar initials={props.initials} />
                 <div className="userTextInfo">

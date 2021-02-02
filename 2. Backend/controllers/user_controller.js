@@ -193,7 +193,7 @@ async function getAllConversations(req, res, next) {
     if (!user) {
         return next(new HttpError("No conversations found", 404));
     }
-    
+
     res.status(200).json(user);
 }
 
@@ -257,6 +257,18 @@ async function getMessages(req, res, next) {
 
 }
 
+async function getUserInfo(req, res, next) {
+    const userId = req.params.id;
+    let info;
+    try {
+        info = await User.findById(userId);
+    } catch (error) {
+        return next(new HttpError("Error while finding user. Try again", 500));
+    }
+    console.log(info.username);
+    res.status(200).json({ username: info.username });
+}
+
 exports.signup = signup;
 exports.login = login;
 exports.addOrRemoveFriend = addOrRemoveFriend;
@@ -264,3 +276,4 @@ exports.createConversation = createConversation;
 exports.getAllConversations = getAllConversations;
 exports.addMessageToConversation = addMessageToConversation;
 exports.getMessages = getMessages;
+exports.getUserInfo = getUserInfo;

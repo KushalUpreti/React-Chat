@@ -14,14 +14,14 @@ function App() {
     <Switch>
       <Route path="/signup"><Signup /></Route>
       <Route path="/login"><Login></Login></Route>
-      <Redirect to="/signup"></Redirect>
+      {/* <Redirect to="/signup"></Redirect> */}
     </Switch>
   </>;
 
   if (token) {
     routes = <>
       <Switch>
-        <Route path="/" exact>
+        <Route path="/">
           <SocketProvider>
             <Dashboard />
           </SocketProvider>

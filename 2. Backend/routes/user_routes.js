@@ -27,5 +27,7 @@ check('message').isLength({ min: 1 })], userController.addMessageToConversation)
 
 router.get("/allMessages/:convId", userController.getMessages);
 
+router.get("/userInfo/:id", userController.getUserInfo);
+
 
 module.exports = router;
