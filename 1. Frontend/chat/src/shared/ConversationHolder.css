@@ -1,5 +1,14 @@
 .conversationHolder {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
   margin-bottom: 10px;
-  background-color: pink;
   height: 100%;
+}
+
+.messageContainer {
+  display: flex;
+  margin: 3px;
+  height: fit-content;
+  background-color: white;
 }

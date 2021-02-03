@@ -187,7 +187,6 @@ async function getAllConversations(req, res, next) {
     try {
         user = await Conversation.find({ users: { $elemMatch: { user_id: id } } }).sort({ latest_message_date: -1 });
     } catch (error) {
-        console.log(error);
         return next(new HttpError("Error while getting conversations. Try again", 500));
     }
     if (!user) {
@@ -239,6 +238,7 @@ async function addMessageToConversation(req, res, next) {
 
 async function getMessages(req, res, next) {
     const conversation_id = req.params.convId;
+
     let messages;
     try {
         messages = await Messaage.find({ conversation_id }).sort({ sent_date: 1 });
@@ -253,6 +253,7 @@ async function getMessages(req, res, next) {
         item.message = cryptoEncrypt.decrypt(item.message);
         return item;
     })
+    console.log(messages);
     res.status(200).json(messages);
 
 }

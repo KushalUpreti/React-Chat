@@ -1,37 +1,41 @@
 import './MidDiv.css';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { useLocation, useHistory } from 'react-router-dom';
 import { useHttpClient } from '../hooks/http-hook';
-import { withRouter } from 'react-router';
 
 import MessageHeader from './MessageHeader';
 import ConversationHolder from './CoversationHolder';
 import SendMessage from './SendMessage';
 
 function MidDiv(props) {
+    const [messages, setMessages] = useState([]);
 
-    const [username, setUsername] = useState("");
-    const [initials, setInitials] = useState("");
+    const location = useLocation();
+    const recipient = location.userData.name;
+    const history = useHistory();
     const { sendRequest } = useHttpClient();
 
     useEffect(() => {
-        fetchUserInfo();
-    }, [])
+        if (!recipient) {
+            history.push("/");
+        }
+        getMessages(location.userData.conversationId);
+    }, [location.userData.id])
 
-    async function fetchUserInfo() {
-        const params = new URLSearchParams(props.location.search);
-        let recipient = params.get("recipient");
-        const username = await sendRequest(`http://localhost:8080/user/userInfo/${recipient}`);
-        setUsername(username.data.username);
-        setInitials(username.data.username.charAt(0));
+    async function getMessages(conversationId) {
+        const ans = await sendRequest(`http://localhost:8080/user/allMessages/${conversationId}`, "GET", null, null);
+        setMessages(ans.data);
+        console.log(ans.data);
     }
 
+
     return <div className="midDiv">
-        <MessageHeader username={username} initials={initials} />
+        <MessageHeader username={recipient} initials={location.userData.initials} />
         <div className="conversation">
-            <ConversationHolder />
+            <ConversationHolder messages={messages} />
             <SendMessage />
         </div>
     </div>
 }
 
-export default withRouter(MidDiv);
+export default MidDiv;

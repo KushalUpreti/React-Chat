@@ -30,6 +30,7 @@ function Dashboard() {
     }
 
     function prepareData(item) {
+        let conversationId = item._id;
         let conversationName = item.conversation_name;
         conversationName = conversationName.replace(username, "");
         let recipient = conversationName;
@@ -58,9 +59,7 @@ function Dashboard() {
             return item !== userId;
         }).pop();
 
-
-
-        return { conversationName, time, initials, path, recipient };
+        return { conversationName, time, initials, path, recipient, conversationId };
     }
 
     return <>
@@ -77,8 +76,9 @@ function Dashboard() {
 
                 <div style={{ overflowY: "scroll", height: "70%" }}>
                     {conversation.length > 0 ? conversation.map((item) => {
-                        const { conversationName, initials, time, path, recipient } = prepareData(item)
-                        return <ConversationCard key={item.date_created} initials={initials} recipient={conversationName} time={time} username={recipient} recipientId={path} />
+                        const { conversationName, initials, time, path, recipient, conversationId } = prepareData(item)
+                        return <ConversationCard key={item.date_created} initials={initials} recipient={conversationName}
+                            time={time} username={recipient} recipientId={path} convId={conversationId} />
                     }) : <p style={{ marginTop: "60%", padding: "15px" }}>No conversation made yet!!</p>}
                 </div>
             </EdgeContainer>

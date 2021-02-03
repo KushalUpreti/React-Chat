@@ -1,7 +1,12 @@
 import './MessageHeader.css';
 import Avatar from './Avatar';
+import { useEffect } from 'react';
 
 function MessageHeader(props) {
+    useEffect(() => {
+        console.log("user");
+    }, [])
+
     return <>
         <div className="messageHeader">
             <div className="recieverInfo">
