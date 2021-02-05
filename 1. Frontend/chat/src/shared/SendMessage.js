@@ -1,11 +1,16 @@
 import './SendMessage.css';
-import { useEffect } from 'react';
+import { useState } from 'react';
 
 
 function SendMessage(props) {
+    const [message, setMessage] = useState("");
 
-    return <form className="sendMessage">
-        <input type="text" placeholder="Enter message.." />
+    function inputHandler(e) {
+        setMessage(e.target.value);
+    }
+
+    return <form className="sendMessage" onSubmit={(e) => { props.send(e, message); setMessage("") }}>
+        <input type="text" value={message} placeholder="Enter message.." onChange={inputHandler} />
         <button>Send</button>
     </form>
 }

@@ -46,6 +46,16 @@ io.on("connection", (socket) => {
     const id = socket.handshake.query.id
     socket.join(id);
 
+    socket.on('send-message', ({ recipients, messageObject }) => {
+        const newRecipients = recipients.filter(r => r !== id)
+        console.log(messageObject.message);
+        newRecipients.forEach(recipient => {
+            socket.broadcast.to(recipient).emit('receive-message', {
+                sender: id, message: messageObject
+            })
+        })
+    })
+
 });
 
 

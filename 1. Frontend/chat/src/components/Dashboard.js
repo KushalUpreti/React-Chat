@@ -35,6 +35,10 @@ function Dashboard() {
         conversationName = conversationName.replace(username, "");
         let recipient = conversationName;
         conversationName = conversationName.trim();
+        conversationName = conversationName.slice(0, conversationName.indexOf(" "));
+        if (conversationName.length >= 14) {
+            conversationName = conversationName.slice(0, 12) + "..";
+        }
 
         let messageDate = new Date(item.latest_message_date);
 
@@ -55,11 +59,12 @@ function Dashboard() {
 
         });
 
+
         const path = values.filter((item) => {
             return item !== userId;
         }).pop();
 
-        return { conversationName, time, initials, path, recipient, conversationId };
+        return { conversationName, time, initials, path, recipient, conversationId, values };
     }
 
     return <>
@@ -69,16 +74,16 @@ function Dashboard() {
                 <UserInfo username={username} userId={userId} />
                 <SearchBar />
                 <h2 style={{
-                    margin: "10px",
+                    margin: "15px 10px 5px 10px",
                     padding: "10px",
                     fontFamily: "'Merriweather Sans', sans-serif"
                 }}>Chats</h2>
 
                 <div style={{ overflowY: "scroll", height: "70%" }}>
                     {conversation.length > 0 ? conversation.map((item) => {
-                        const { conversationName, initials, time, path, recipient, conversationId } = prepareData(item)
+                        const { conversationName, initials, time, path, recipient, conversationId, values } = prepareData(item)
                         return <ConversationCard key={item.date_created} initials={initials} recipient={conversationName}
-                            time={time} username={recipient} recipientId={path} convId={conversationId} />
+                            time={time} username={recipient} recipientId={path} convId={conversationId} recipients={values} />
                     }) : <p style={{ marginTop: "60%", padding: "15px" }}>No conversation made yet!!</p>}
                 </div>
             </EdgeContainer>

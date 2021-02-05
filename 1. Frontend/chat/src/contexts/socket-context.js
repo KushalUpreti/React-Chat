@@ -17,6 +17,7 @@ function SocketProvider({ children }) {
             'http://localhost:8080',
             { query: { id } }
         )
+
         setSocket(newSocket)
 
         return () => newSocket.close()

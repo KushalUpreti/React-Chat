@@ -11,11 +11,12 @@ export const useAuth = () => {
 
 
     const login = useCallback((recievedData) => {
-        setToken(recievedData.token);
         setUserDetails({
             username: recievedData.username,
             userId: recievedData.userId
         });
+        setToken(recievedData.token);
+
 
         let obj = {
             token: recievedData.token,

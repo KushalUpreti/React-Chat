@@ -159,7 +159,6 @@ async function createConversation(req, res, next) {
     })
 
     const query = await Conversation.find({ users: newUsers });
-    console.log(query);
     if (query.length != 0) {
         return next(new HttpError("The conversation already exists", 409));
     }
@@ -253,7 +252,6 @@ async function getMessages(req, res, next) {
         item.message = cryptoEncrypt.decrypt(item.message);
         return item;
     })
-    console.log(messages);
     res.status(200).json(messages);
 
 }
@@ -266,7 +264,6 @@ async function getUserInfo(req, res, next) {
     } catch (error) {
         return next(new HttpError("Error while finding user. Try again", 500));
     }
-    console.log(info.username);
     res.status(200).json({ username: info.username });
 }
 
