@@ -2,9 +2,9 @@ import './App.css';
 import SocketProvider from './contexts/socket-context';
 import { useAuth } from './hooks/Auth-hook';
 import AuthContext from "./contexts/auth-context";
-import Signup from "./components/Signup";
-import Login from './components/Login';
-import Dashboard from './components/Dashboard';
+import Signup from "./pages/Signup";
+import Login from './pages/Login';
+import Dashboard from './pages/Dashboard';
 import { BrowserRouter, Switch, Redirect, Route } from 'react-router-dom';
 
 function App() {

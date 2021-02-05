@@ -1,5 +1,5 @@
 import './Signup.css';
-import { useState, useEffect, useContext } from 'react';
+import { useState, useContext } from 'react';
 import { useHistory } from 'react-router';
 import { useHttpClient } from '../hooks/http-hook';
 import AuthContext from '../contexts/auth-context';
@@ -13,30 +13,30 @@ function Signup() {
         matched: false,
     });
 
-    const { isLoading, error, clearError, sendRequest } = useHttpClient();
+    const { sendRequest } = useHttpClient();
     const auth = useContext(AuthContext);
     const history = useHistory();
 
-    const checkPasswordMatch = () => {
-        if (state.password.length > 0 && state.rePassword.length > 0) {
-            if (state.password === state.rePassword) {
-                setState({
-                    ...state,
-                    matched: true
-                })
-            } else {
-                setState({
-                    ...state,
-                    matched: false
-                })
-            }
-        } else {
-            setState({
-                ...state,
-                matched: false
-            })
-        }
-    }
+    // const checkPasswordMatch = () => {
+    //     if (state.password.length > 0 && state.rePassword.length > 0) {
+    //         if (state.password === state.rePassword) {
+    //             setState({
+    //                 ...state,
+    //                 matched: true
+    //             })
+    //         } else {
+    //             setState({
+    //                 ...state,
+    //                 matched: false
+    //             })
+    //         }
+    //     } else {
+    //         setState({
+    //             ...state,
+    //             matched: false
+    //         })
+    //     }
+    // }
 
     const signup = async (e) => {
         e.preventDefault();

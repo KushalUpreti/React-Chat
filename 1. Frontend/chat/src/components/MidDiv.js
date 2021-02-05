@@ -1,5 +1,5 @@
 import './MidDiv.css';
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState, useContext, useCallback } from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
 import { useHttpClient } from '../hooks/http-hook';
 import { useSocketObject } from '../contexts/socket-context';
@@ -15,9 +15,10 @@ function MidDiv() {
 
     const location = useLocation();
     const history = useHistory();
-    const { sendRequest } = useHttpClient();
     const socket = useSocketObject();
     const auth = useContext(AuthContext);
+
+    const { sendRequest } = useHttpClient();
 
     const recipient = location.userData.name;
     const recipients = location.userData.recipients;
@@ -26,11 +27,11 @@ function MidDiv() {
 
     useEffect(() => {
         socket.on('receive-message', (incoming) => {
-
-            const array = [...messages];
-            array.push(incoming.message);
-            console.log(array);
-            // setMessages(array);
+            setMessages((prevState) => {
+                const array = [...prevState];
+                array.push(incoming.message);
+                return array;
+            })
         })
     }, [socket])
 
@@ -46,7 +47,7 @@ function MidDiv() {
         setMessages(ans.data);
     }
 
-    function sendMessage(e, message) {
+    const sendMessage = useCallback((e, message) => {
         e.preventDefault();
         let messageObject = {
             conversation_id: conversationId,
@@ -55,8 +56,13 @@ function MidDiv() {
             sent_date: new Date()
         }
         socket.emit('send-message', { recipients, messageObject });
+        setMessages((prevState) => {
+            const array = [...prevState];
+            array.push(messageObject);
+            return array;
+        })
 
-    }
+    }, [socket]);
 
 
     return <div className="midDiv">

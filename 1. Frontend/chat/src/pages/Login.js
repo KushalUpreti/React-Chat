@@ -1,5 +1,5 @@
 import './Login.css';
-import { useState, useEffect, useContext } from 'react';
+import { useState, useContext } from 'react';
 import { useHistory } from 'react-router';
 import { useHttpClient } from '../hooks/http-hook';
 import AuthContext from '../contexts/auth-context';
@@ -10,7 +10,7 @@ function Login() {
         password: "",
     });
 
-    const { isLoading, error, clearError, sendRequest } = useHttpClient();
+    const { sendRequest } = useHttpClient();
     const auth = useContext(AuthContext);
     const history = useHistory();
 

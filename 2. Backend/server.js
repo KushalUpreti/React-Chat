@@ -48,7 +48,6 @@ io.on("connection", (socket) => {
 
     socket.on('send-message', ({ recipients, messageObject }) => {
         const newRecipients = recipients.filter(r => r !== id)
-        console.log(messageObject.message);
         newRecipients.forEach(recipient => {
             socket.broadcast.to(recipient).emit('receive-message', {
                 sender: id, message: messageObject
