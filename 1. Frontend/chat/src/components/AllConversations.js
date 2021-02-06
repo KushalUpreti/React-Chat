@@ -8,12 +8,27 @@ function AllConvesations(props) {
     const { sendRequest } = useHttpClient();
 
     const socket = useSocketObject();
-    console.log(socket);
 
     useEffect(() => {
-        // socket.on('receive-message', (incoming) => {
-        //     console.log("change conversation");
-        // })
+        if (socket !== undefined) {
+            socket.on('receive-message', (incoming) => {
+                setConversation((prevState) => {
+                    const array = [...prevState];
+                    const index = array.findIndex((item) => {
+                        return item._id === incoming.message.conversation_id;
+                    })
+                    const convo = array[index];
+                    const date = new Date();
+                    convo.latest_message_date = date;
+                    const newArray = array.filter((item) => {
+                        return item._id !== incoming.message.conversation_id;
+                    })
+                    newArray.unshift(convo);
+                    return newArray;
+                })
+            })
+        }
+
     }, [socket])
 
     useEffect(() => {
@@ -36,16 +51,7 @@ function AllConvesations(props) {
             conversationName = conversationName.slice(0, 12) + "..";
         }
 
-        let messageDate = new Date(item.latest_message_date);
-
-        let diff = Math.abs(new Date() - messageDate);
-        let days = Math.floor((diff / (1000 * 60 * 60 * 24)));
-        let time;
-
-        if (days > 1) time = `${days} days ago`;
-        else if (days === 1) time = `${days} day ago`;
-        else time = "Today";
-
+        let time = getMessageDate(item.latest_message_date)
         const initials = conversationName.charAt(0);
         const values = [];
 
@@ -61,10 +67,24 @@ function AllConvesations(props) {
         return { conversationName, time, initials, path, recipient, conversationId, values };
     }
 
+    function getMessageDate(date) {
+        let messageDate = new Date(date);
+
+        let diff = Math.abs(new Date() - messageDate);
+        let days = Math.floor((diff / (1000 * 60 * 60 * 24)));
+        let time;
+
+        if (days > 1) time = `${days} days ago`;
+        else if (days === 1) time = `${days} day ago`;
+        else time = "Today";
+
+        return time;
+    }
+    let counter = 0;
     return <div style={{ overflowY: "scroll", height: "70%" }}>
         {conversation.length > 0 ? conversation.map((item) => {
             const { conversationName, initials, time, path, recipient, conversationId, values } = prepareData(item)
-            return <ConversationCard key={item.date_created} initials={initials} recipient={conversationName}
+            return <ConversationCard key={item.date_created + " " + ++counter} initials={initials} recipient={conversationName}
                 time={time} username={recipient} recipientId={path} convId={conversationId} recipients={values} />
         }) : <p style={{ marginTop: "60%", padding: "15px" }}>No conversation made yet!!</p>}
     </div>

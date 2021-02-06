@@ -1,0 +1,11 @@
+.addFriend {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 15px;
+  border-radius: 40px;
+}
+
+.addFriend h5 {
+  font-family: "Nunito", sans-serif;
+}

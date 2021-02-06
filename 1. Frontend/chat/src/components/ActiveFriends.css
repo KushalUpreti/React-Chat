@@ -1,0 +1,25 @@
+.activeFriends {
+  height: 50%;
+  margin: 16px 5px 5px 5px;
+  padding: 10px 15px;
+  box-shadow: rgb(0 0 0 / 12%) 0px 1px 3px, rgb(0 0 0 / 24%) 0px 1px 2px;
+  overflow-y: scroll;
+}
+
+.activeFriends h4 {
+  font-family: "Nunito", sans-serif;
+  color: green;
+  margin-bottom: 20px;
+}
+
+.activeList {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.activeList p {
+  font-family: "Merriweather Sans", sans-serif;
+  margin-left: 10px;
+  font-size: 0.9rem;
+}

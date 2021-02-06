@@ -1,5 +1,5 @@
 import './MidDiv.css';
-import { useEffect, useState, useContext, useCallback } from 'react';
+import { useEffect, useState, useContext, useCallback, createRef } from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
 import { useHttpClient } from '../hooks/http-hook';
 import { useSocketObject } from '../contexts/socket-context';
@@ -16,6 +16,7 @@ function MidDiv() {
     const location = useLocation();
     const history = useHistory();
     const socket = useSocketObject();
+    const divRef = createRef();
     const auth = useContext(AuthContext);
 
     const { sendRequest } = useHttpClient();
@@ -47,6 +48,7 @@ function MidDiv() {
         setMessages(ans.data);
     }
 
+
     const sendMessage = useCallback((e, message) => {
         e.preventDefault();
         let messageObject = {
@@ -62,13 +64,17 @@ function MidDiv() {
             return array;
         })
 
+        const messages = document.querySelector('.conversationHolder');
+        console.log(messages);
+        messages.scrollTop = messages.scrollHeight;
+
     }, [socket]);
 
 
     return <div className="midDiv">
         <MessageHeader username={recipient} initials={location.userData.initials} />
         <div className="conversation">
-            <ConversationHolder messages={messages} />
+            <ConversationHolder messages={messages} refObj={divRef} />
             <SendMessage send={sendMessage} />
         </div>
     </div>

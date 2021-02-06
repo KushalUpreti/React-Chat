@@ -12,8 +12,8 @@ function MessageContainer(props) {
 function ConversationHolder(props) {
     const auth = useContext(AuthContext);
 
-
-    return <div className="conversationHolder">
+    return <div className="conversationHolder" ref={props.refObj}>
+        <div class="fix"></div>
         {props.messages ? props.messages.map((item) => {
             let style = {
                 justifyContent: 'flex-start',
@@ -30,7 +30,7 @@ function ConversationHolder(props) {
                 }
             }
 
-            return <MessageContainer key={item.sent_date} justify={style}>
+            return <MessageContainer key={item.sent_date + " " + item.message} justify={style}>
                 <Message message={item.message} color={messageStyle} />
             </MessageContainer>
         }) : null}

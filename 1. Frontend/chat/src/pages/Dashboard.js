@@ -17,7 +17,6 @@ function Dashboard() {
             </Route>
             <RightDiv />
         </Container>
-
     </>;
 }
 
