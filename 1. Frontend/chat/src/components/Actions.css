@@ -6,6 +6,10 @@
   border-radius: 40px;
 }
 
+i:hover {
+  transform: scale(1.1);
+}
+
 .addFriend h5 {
   font-family: "Nunito", sans-serif;
 }

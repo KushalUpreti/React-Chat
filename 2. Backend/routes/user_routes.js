@@ -16,9 +16,9 @@ router.post("/login", [
     check('password').not().isEmpty(),
     check('password').isLength({ min: 5 })], userController.login);
 
-router.patch("/addOrRemoveFriend", userController.addOrRemoveFriend);
+router.post("/addOrRemoveFriend", userController.addOrRemoveFriend);
 
-router.post("/createConversation", userController.createConversation);
+router.post("/createConversation", userController.createGroup);
 
 router.get("/getAllConversations/:id", userController.getAllConversations);
 

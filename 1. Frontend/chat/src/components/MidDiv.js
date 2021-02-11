@@ -48,9 +48,9 @@ function MidDiv() {
         setMessages(ans.data);
     }
 
-
     const sendMessage = useCallback((e, message) => {
         e.preventDefault();
+        if (message.length === 0) { return; }
         let messageObject = {
             conversation_id: conversationId,
             message,
@@ -64,8 +64,19 @@ function MidDiv() {
             return array;
         })
 
-        const messages = document.querySelector('.conversationHolder');
-        console.log(messages);
+        const elem = document.querySelector('.conversationHolder');
+        var lastScrollTop = 0;
+        var timer = window.setInterval(function () {
+            elem.scrollTop = elem.scrollHeight;
+            lastScrollTop = elem.scrollTop
+        }, 50);
+
+        elem.addEventListener("scroll", function () {
+            if (lastScrollTop < elem.scrollTop) {
+                window.clearInterval(timer);
+            }
+        }, false);
+
         messages.scrollTop = messages.scrollHeight;
 
     }, [socket]);

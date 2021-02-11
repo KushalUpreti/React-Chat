@@ -3,7 +3,7 @@ import './ActiveFriends.css'
 
 function ActiveFriends(props) {
     return (
-        <div class="activeFriends">
+        <div className="activeFriends">
             <h4>Active Friends</h4>
             <div className="activeList">
                 <Avatar style={{ width: "30px", height: "30px", color: "white", margin: " -2px 0.1px" }} initials="P" />

@@ -10,7 +10,7 @@ function SendMessage(props) {
     }
 
     return <form className="sendMessage" onSubmit={(e) => { props.send(e, message); setMessage("") }}>
-        <input type="text" value={message} placeholder="Enter message.." onChange={inputHandler} />
+        <input required type="text" value={message} placeholder="Enter message.." onChange={inputHandler} />
         <button>Send</button>
     </form>
 }

@@ -26,6 +26,7 @@ function AllConvesations(props) {
                     newArray.unshift(convo);
                     return newArray;
                 })
+
             })
         }
 
@@ -69,17 +70,20 @@ function AllConvesations(props) {
 
     function getMessageDate(date) {
         let messageDate = new Date(date);
-
         let diff = Math.abs(new Date() - messageDate);
         let days = Math.floor((diff / (1000 * 60 * 60 * 24)));
         let time;
 
         if (days > 1) time = `${days} days ago`;
         else if (days === 1) time = `${days} day ago`;
-        else time = "Today";
+        else {
+            time = messageDate.getHours() + ":" + messageDate.getMinutes();
+        }
 
         return time;
     }
+
+
     let counter = 0;
     return <div style={{ overflowY: "scroll", height: "70%" }}>
         {conversation.length > 0 ? conversation.map((item) => {

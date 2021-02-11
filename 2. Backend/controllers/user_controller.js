@@ -111,6 +111,12 @@ async function addOrRemoveFriend(req, res, next) {
     let user;
     try {
         user = await User.findById(userId);
+        const search = user.friends.find((item) => {
+            return item === friendId;
+        })
+        if (search !== undefined) {
+            return next(new HttpError("Already friend with that person", 409));
+        }
     } catch (error) {
         return next(new HttpError("Internal error while finding the user", 500));
     }
@@ -144,16 +150,25 @@ async function addOrRemoveFriend(req, res, next) {
         return next(new HttpError("Error while adding friend. Try again", 500));
     }
 
+    let conversation_name = user.username + " " + friend.username;
+    const users = [userId, friendId];
+    const admin = userId;
+
+    await createConvo(conversation_name, users, admin, next);
     res.status(200).json({ message });
 }
 
 
-async function createConversation(req, res, next) {
+async function createGroup(req, res, next) {
     const conversation_name = req.body.conversation_name;
     const admin = mongoose.Types.ObjectId(req.body.admin);
     const users = req.body.users; //id of all users in the conversation.
-    const latest_message_date = null;
 
+    createConvo(conversation_name, users, admin, next)
+    res.status(200).json(newConvo);
+}
+
+async function createConvo(conversation_name, users, admin, next) {
     const newUsers = users.map((item) => {
         return { user_id: item };
     })
@@ -167,7 +182,7 @@ async function createConversation(req, res, next) {
         conversation_name,
         date_created: new Date(),
         users: newUsers,
-        latest_message_date,
+        latest_message_date: new Date(),
         admin: admin
     })
     try {
@@ -176,7 +191,6 @@ async function createConversation(req, res, next) {
         console.log(error);
         return next(new HttpError("Error while creating conversation. Try again", 500));
     }
-    res.status(200).json(newConvo);
 }
 
 
@@ -270,7 +284,7 @@ async function getUserInfo(req, res, next) {
 exports.signup = signup;
 exports.login = login;
 exports.addOrRemoveFriend = addOrRemoveFriend;
-exports.createConversation = createConversation;
+exports.createGroup = createGroup;
 exports.getAllConversations = getAllConversations;
 exports.addMessageToConversation = addMessageToConversation;
 exports.getMessages = getMessages;

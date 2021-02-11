@@ -13,8 +13,8 @@ function ConversationHolder(props) {
     const auth = useContext(AuthContext);
 
     return <div className="conversationHolder" ref={props.refObj}>
-        <div class="fix"></div>
-        {props.messages ? props.messages.map((item) => {
+        <div className="fix"></div>
+        {props.messages.length > 0 ? props.messages.map((item) => {
             let style = {
                 justifyContent: 'flex-start',
             }

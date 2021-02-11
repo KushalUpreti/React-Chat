@@ -4,7 +4,7 @@ function Actions(props) {
     return (
         <div className="addFriend" style={props.style}>
             <h5>{props.action}</h5>
-            <i class={props.class} aria-hidden="true"></i>
+            <i className={props.class} aria-hidden="true" onClick={props.click}></i>
         </div>
     )
 }

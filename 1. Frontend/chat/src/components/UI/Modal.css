@@ -1,0 +1,65 @@
+.Modal {
+  position: fixed;
+  height: 30%;
+  width: 40%;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+  background-color: rgba(255, 255, 255, 0.712);
+  z-index: 15;
+  top: 30vh;
+  left: 30%;
+  text-align: center;
+  padding: 10px;
+}
+
+.Modal h3 {
+  font-family: "Merriweather Sans", sans-serif;
+  color: black;
+  font-size: 20px;
+  margin-top: 10%;
+}
+
+.containForm {
+  text-align: left;
+  margin-left: 20%;
+}
+
+.idForm {
+  margin-top: 20px;
+}
+
+.idForm input {
+  margin-right: 10px;
+  margin-bottom: 10px;
+  width: 53%;
+  padding-left: 10px;
+  height: 30px;
+  outline: 0;
+  border: solid;
+  border-width: 0;
+  background-color: #e6e6e6;
+}
+
+.submitId {
+  margin-top: 5px;
+  width: 77px;
+  height: 30px;
+  background-color: #f44336;
+  color: white;
+  border: 2px solid #f44336;
+  transition-duration: 0.4s;
+  cursor: pointer;
+}
+
+.submitId:hover {
+  background-color: white;
+  color: #f44336;
+}
+
+@media (max-width: 460px) {
+  .Modal {
+    left: 10%;
+    top: 15vh;
+    width: 80%;
+  }
+}
