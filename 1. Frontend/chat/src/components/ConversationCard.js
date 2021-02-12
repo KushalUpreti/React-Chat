@@ -17,7 +17,7 @@ function ConversationCard(props) {
                         <h4>{props.recipient}</h4>
                         <p>{props.time}</p>
                     </div>
-                    <h5>la thik cha</h5>
+                    <h5>{props.latest_message}</h5>
                 </div>
             </div>
         </NavLink>

@@ -154,8 +154,8 @@ async function addOrRemoveFriend(req, res, next) {
     const users = [userId, friendId];
     const admin = userId;
 
-    await createConvo(conversation_name, users, admin, next);
-    res.status(200).json({ message });
+    const newConversation = await createConvo(conversation_name, users, admin, next);
+    res.status(200).json(newConversation);
 }
 
 
@@ -183,6 +183,7 @@ async function createConvo(conversation_name, users, admin, next) {
         date_created: new Date(),
         users: newUsers,
         latest_message_date: new Date(),
+        latest_message: null,
         admin: admin
     })
     try {
@@ -191,6 +192,7 @@ async function createConvo(conversation_name, users, admin, next) {
         console.log(error);
         return next(new HttpError("Error while creating conversation. Try again", 500));
     }
+    return newConvo;
 }
 
 
@@ -205,7 +207,6 @@ async function getAllConversations(req, res, next) {
     if (!user) {
         return next(new HttpError("No conversations found", 404));
     }
-
     res.status(200).json(user);
 }
 
@@ -222,6 +223,11 @@ async function addMessageToConversation(req, res, next) {
 
     let message = req.body.message;
     message = message.trim();
+    let actualMsg = message;
+    if (actualMsg.length > 25) {
+        actualMsg = actualMsg.slice(0, 25) + "...";
+    }
+
     const conversation_id = req.body.conversation_id;
     const sent_by = mongoose.Types.ObjectId(req.body.sent_by);
 
@@ -241,7 +247,7 @@ async function addMessageToConversation(req, res, next) {
 
     try {
         await newMessage.save();
-        await Conversation.findByIdAndUpdate(conversation_id, { latest_message_date: date });
+        await Conversation.findByIdAndUpdate(conversation_id, { latest_message_date: date, latest_message: actualMsg });
     } catch (error) {
         return next(new HttpError("Error while saving message. Try again", 500));
     }

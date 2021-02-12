@@ -1,10 +1,15 @@
 import { useState, useEffect } from 'react';
 import { useHttpClient } from '../hooks/http-hook';
 import { useSocketObject } from '../contexts/socket-context';
+import { useSelector, useDispatch } from 'react-redux';
+import { loadConversation, updateConversation, selectConvo } from '../Store/Reducers/conversationSlice';
+
 import ConversationCard from './ConversationCard';
 
 function AllConvesations(props) {
-    const [conversation, setConversation] = useState([]);
+    const conversationRedux = useSelector(selectConvo);
+    const dispatch = useDispatch();
+
     const { sendRequest } = useHttpClient();
 
     const socket = useSocketObject();
@@ -12,25 +17,12 @@ function AllConvesations(props) {
     useEffect(() => {
         if (socket !== undefined) {
             socket.on('receive-message', (incoming) => {
-                setConversation((prevState) => {
-                    const array = [...prevState];
-                    const index = array.findIndex((item) => {
-                        return item._id === incoming.message.conversation_id;
-                    })
-                    const convo = array[index];
-                    const date = new Date();
-                    convo.latest_message_date = date;
-                    const newArray = array.filter((item) => {
-                        return item._id !== incoming.message.conversation_id;
-                    })
-                    newArray.unshift(convo);
-                    return newArray;
-                })
-
+                dispatch(updateConversation(incoming));
             })
         }
 
     }, [socket])
+
 
     useEffect(() => {
         fetchConversation();
@@ -38,7 +30,7 @@ function AllConvesations(props) {
 
     async function fetchConversation() {
         const conversations = await sendRequest(`http://localhost:8080/user/getAllConversations/${props.userId}`, "GET", null, null);
-        setConversation(conversations.data);
+        dispatch(loadConversation(conversations.data));
     }
 
     function prepareData(item) {
@@ -65,7 +57,12 @@ function AllConvesations(props) {
             return item !== props.userId;
         }).pop();
 
-        return { conversationName, time, initials, path, recipient, conversationId, values };
+        let latest_message = item.latest_message;
+        if (latest_message === null) {
+            latest_message = "Say hi to your new friend";
+        }
+
+        return { conversationName, time, initials, path, recipient, conversationId, values, latest_message };
     }
 
     function getMessageDate(date) {
@@ -83,13 +80,12 @@ function AllConvesations(props) {
         return time;
     }
 
-
     let counter = 0;
     return <div style={{ overflowY: "scroll", height: "70%" }}>
-        {conversation.length > 0 ? conversation.map((item) => {
-            const { conversationName, initials, time, path, recipient, conversationId, values } = prepareData(item)
+        {conversationRedux.length > 0 ? conversationRedux.map((item) => {
+            const { conversationName, initials, time, path, recipient, conversationId, values, latest_message } = prepareData(item)
             return <ConversationCard key={item.date_created + " " + ++counter} initials={initials} recipient={conversationName}
-                time={time} username={recipient} recipientId={path} convId={conversationId} recipients={values} />
+                time={time} username={recipient} recipientId={path} convId={conversationId} recipients={values} latest_message={latest_message} />
         }) : <p style={{ marginTop: "60%", padding: "15px" }}>No conversation made yet!!</p>}
     </div>
 }

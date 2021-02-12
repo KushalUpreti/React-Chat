@@ -5,7 +5,6 @@ import { useHttpClient } from '../hooks/http-hook';
 import { useSocketObject } from '../contexts/socket-context';
 import AuthContext from '../contexts/auth-context';
 
-
 import MessageHeader from './MessageHeader';
 import ConversationHolder from './CoversationHolder';
 import SendMessage from './SendMessage';
@@ -29,7 +28,11 @@ function MidDiv() {
     useEffect(() => {
         socket.on('receive-message', (incoming) => {
             setMessages((prevState) => {
-                const array = [...prevState];
+                let array = [];
+                if (Object.keys(prevState).length !== 0) {
+                    array = [...prevState];
+                }
+
                 array.push(incoming.message);
                 return array;
             })
@@ -58,11 +61,19 @@ function MidDiv() {
             sent_date: new Date()
         }
         socket.emit('send-message', { recipients, messageObject });
+
         setMessages((prevState) => {
-            const array = [...prevState];
+            let array = [];
+
+            if (Object.keys(prevState).length !== 0) {
+                array = [...prevState];
+            }
+
             array.push(messageObject);
             return array;
         })
+
+
 
         const elem = document.querySelector('.conversationHolder');
         var lastScrollTop = 0;

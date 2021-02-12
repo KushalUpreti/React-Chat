@@ -1,19 +1,22 @@
 import { useState, useContext } from 'react';
 import { useHttpClient } from '../hooks/http-hook';
+import { useDispatch } from 'react-redux';
 import AuthContext from '../contexts/auth-context';
 import EdgeContainer from './EdgeContainer';
 import Modal from './UI/Modal';
-
+import { addNewConversation } from '../Store/Reducers/conversationSlice';
 import Actions from './Actions';
 import ActiveFriends from './ActiveFriends';
 import Suggested from './Suggested';
 
 function RightDiv(props) {
-    const [modal, setModal] = useState(false);
     const { sendRequest } = useHttpClient();
     const auth = useContext(AuthContext);
+    const dispatch = useDispatch();
 
+    const [modal, setModal] = useState(false);
     const [text, setText] = useState("");
+
 
     const addFriendHandler = () => {
         setModal(true);
@@ -35,10 +38,10 @@ function RightDiv(props) {
                 "Content-Type": "application/json",
             }
         }
-
-        await sendRequest("http://localhost:8080/user/addOrRemoveFriend", "POST", payload, config);
         closeModalHandler();
-        window.location.reload();
+        const newConversation = await sendRequest("http://localhost:8080/user/addOrRemoveFriend", "POST", payload, config);
+        dispatch(addNewConversation(newConversation.data));
+
     }
 
     const createGroupHandler = () => {

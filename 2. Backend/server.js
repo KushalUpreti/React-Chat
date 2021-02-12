@@ -47,12 +47,13 @@ io.on("connection", (socket) => {
     socket.join(id);
 
     socket.on('send-message', ({ recipients, messageObject }) => {
-        const newRecipients = recipients.filter(r => r !== id)
+        const newRecipients = recipients.filter(r => r !== id);
         newRecipients.forEach(recipient => {
             socket.broadcast.to(recipient).emit('receive-message', {
                 sender: id, message: messageObject
             })
         })
+        
     })
 
 });
