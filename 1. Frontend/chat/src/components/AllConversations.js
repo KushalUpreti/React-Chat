@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useHttpClient } from '../hooks/http-hook';
 import { useSocketObject } from '../contexts/socket-context';
 import { useSelector, useDispatch } from 'react-redux';

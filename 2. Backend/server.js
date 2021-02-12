@@ -39,7 +39,6 @@ app.use((err, req, res, next) => {
     }
     res.status(err.code || 500);
     res.json({ message: err.message || 'An unknown error occurred!' });
-
 })
 
 io.on("connection", (socket) => {
@@ -53,9 +52,7 @@ io.on("connection", (socket) => {
                 sender: id, message: messageObject
             })
         })
-        
     })
-
 });
 
 

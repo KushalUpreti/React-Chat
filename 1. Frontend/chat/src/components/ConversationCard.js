@@ -7,7 +7,7 @@ function ConversationCard(props) {
     return (
         <NavLink style={{ textDecoration: 'none', color: "black" }} to={{
             pathname: path,
-            search: `?recipient=${props.recipientId}`,
+            search: `?conversation=${props.convId}`,
             userData: { name: props.username, initials: props.initials, id: props.recipientId, conversationId: props.convId, recipients: props.recipients }
         }} >
             <div className="conversationCard">

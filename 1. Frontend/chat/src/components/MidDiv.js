@@ -1,8 +1,10 @@
 import './MidDiv.css';
-import { useEffect, useState, useContext, useCallback, createRef } from 'react';
+import { useEffect, useState, useContext, useCallback } from 'react';
+import { updateConversation } from '../Store/Reducers/conversationSlice';
 import { useLocation, useHistory } from 'react-router-dom';
 import { useHttpClient } from '../hooks/http-hook';
 import { useSocketObject } from '../contexts/socket-context';
+import { useDispatch } from 'react-redux';
 import AuthContext from '../contexts/auth-context';
 
 import MessageHeader from './MessageHeader';
@@ -15,9 +17,8 @@ function MidDiv() {
     const location = useLocation();
     const history = useHistory();
     const socket = useSocketObject();
-    const divRef = createRef();
     const auth = useContext(AuthContext);
-
+    const dispatch = useDispatch();
     const { sendRequest } = useHttpClient();
 
     const recipient = location.userData.name;
@@ -44,7 +45,7 @@ function MidDiv() {
             history.push("/");
         }
         getMessages(conversationId);
-    }, [location.userData.id])
+    }, [location.userData])
 
     async function getMessages(conversationId) {
         const ans = await sendRequest(`http://localhost:8080/user/allMessages/${conversationId}`, "GET", null, null);
@@ -53,6 +54,8 @@ function MidDiv() {
 
     const sendMessage = useCallback((e, message) => {
         e.preventDefault();
+        const a = new URLSearchParams(location.search);
+        console.log(a.get("conversation"));
         if (message.length === 0) { return; }
         let messageObject = {
             conversation_id: conversationId,
@@ -64,31 +67,28 @@ function MidDiv() {
 
         setMessages((prevState) => {
             let array = [];
-
             if (Object.keys(prevState).length !== 0) {
                 array = [...prevState];
             }
-
             array.push(messageObject);
             return array;
         })
 
+        dispatch(updateConversation({ message: messageObject }));
+        // sendRequest()
 
+        // const elem = document.querySelector('.conversationHolder');
+        // var lastScrollTop = 0;
+        // var timer = window.setInterval(function () {
+        //     elem.scrollTop = elem.scrollHeight;
+        //     lastScrollTop = elem.scrollTop
+        // }, 50);
 
-        const elem = document.querySelector('.conversationHolder');
-        var lastScrollTop = 0;
-        var timer = window.setInterval(function () {
-            elem.scrollTop = elem.scrollHeight;
-            lastScrollTop = elem.scrollTop
-        }, 50);
-
-        elem.addEventListener("scroll", function () {
-            if (lastScrollTop < elem.scrollTop) {
-                window.clearInterval(timer);
-            }
-        }, false);
-
-        messages.scrollTop = messages.scrollHeight;
+        // elem.addEventListener("scroll", function () {
+        //     if (lastScrollTop < elem.scrollTop) {
+        //         window.clearInterval(timer);
+        //     }
+        // }, false);
 
     }, [socket]);
 
@@ -96,7 +96,7 @@ function MidDiv() {
     return <div className="midDiv">
         <MessageHeader username={recipient} initials={location.userData.initials} />
         <div className="conversation">
-            <ConversationHolder messages={messages} refObj={divRef} />
+            <ConversationHolder messages={messages} />
             <SendMessage send={sendMessage} />
         </div>
     </div>

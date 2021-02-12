@@ -12,7 +12,7 @@ function MessageContainer(props) {
 function ConversationHolder(props) {
     const auth = useContext(AuthContext);
 
-    return <div className="conversationHolder" ref={props.refObj}>
+    return <div className="conversationHolder" >
         <div className="fix"></div>
         {props.messages.length > 0 ? props.messages.map((item) => {
             let style = {
