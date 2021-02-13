@@ -108,6 +108,10 @@ async function addOrRemoveFriend(req, res, next) {
     const actionType = req.body.action;
     let message;
 
+    if (userId === friendId) {
+        return next(new HttpError("Invalid request. Can't be friend with oneself", 400));
+    }
+
     let user;
     try {
         user = await User.findById(userId);
@@ -115,6 +119,7 @@ async function addOrRemoveFriend(req, res, next) {
             return item === friendId;
         })
         if (search !== undefined) {
+            console.log("already friend");
             return next(new HttpError("Already friend with that person", 409));
         }
     } catch (error) {
@@ -282,10 +287,16 @@ async function searchUsers(req, res, next) {
     }
 
     const searchQuery = req.params.query;
-    const regex = new RegExp(".*" + searchQuery + ".*", "i");
+    let regex;
+    try {
+        regex = new RegExp(".*" + searchQuery + ".*", "i");
+    } catch (error) {
+        return next(new HttpError("Invalid search query", 400));
+    }
+
     let searchResult;
     try {
-        searchResult = await User.find({ "username": regex });
+        searchResult = await User.find({ "username": regex }).limit(7);
     } catch (error) {
         return next(new HttpError("Error while getting query. Try again", 500));
     }

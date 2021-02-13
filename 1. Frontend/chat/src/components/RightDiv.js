@@ -28,6 +28,12 @@ function RightDiv(props) {
 
     const onAddFormSubmit = async (e) => {
         e.preventDefault();
+        closeModalHandler();
+        if (!text) { return; }
+        if (text === auth.userId) {
+            console.log("Invalid Id");
+            return;
+        }
         const payload = {
             id: auth.userId,
             friendId: text,
@@ -38,7 +44,7 @@ function RightDiv(props) {
                 "Content-Type": "application/json",
             }
         }
-        closeModalHandler();
+
         const newConversation = await sendRequest("http://localhost:8080/user/addOrRemoveFriend", "POST", payload, config);
         dispatch(addNewConversation(newConversation.data));
 

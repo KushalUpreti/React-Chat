@@ -1,0 +1,453 @@
+{
+    "extension": "linecounter",
+    "version": "0.2.7",
+    "workspace": "d:\\Bsc\\L5\\Web\\0. ReactApp\\chatapp\\1. Frontend\\chat",
+    "linecount": [
+        {
+            "version": "0.2.7",
+            "counttime": "2021-02-13 17:10:12",
+            "filesum": 66,
+            "codesum": 18139,
+            "commentsum": 83,
+            "blanksum": 292,
+            "statistics": {
+                ".js": {
+                    "code": 837,
+                    "comment": 43,
+                    "blank": 182
+                },
+                ".css": {
+                    "code": 534,
+                    "comment": 3,
+                    "blank": 70
+                },
+                "": {
+                    "code": 19,
+                    "comment": 1,
+                    "blank": 5
+                },
+                ".json": {
+                    "code": 16686,
+                    "comment": 0,
+                    "blank": 3
+                },
+                ".txt": {
+                    "code": 3,
+                    "comment": 1,
+                    "blank": 0
+                },
+                ".md": {
+                    "code": 38,
+                    "comment": 12,
+                    "blank": 32
+                },
+                ".html": {
+                    "code": 22,
+                    "comment": 23,
+                    "blank": 0
+                }
+            },
+            "filelist": [
+                {
+                    "blank": 0,
+                    "code": 1,
+                    "comment": 0,
+                    "filename": ".eslintcache"
+                },
+                {
+                    "blank": 5,
+                    "code": 18,
+                    "comment": 1,
+                    "filename": ".gitignore"
+                },
+                {
+                    "blank": 0,
+                    "code": 16620,
+                    "comment": 0,
+                    "filename": "package-lock.json"
+                },
+                {
+                    "blank": 3,
+                    "code": 41,
+                    "comment": 0,
+                    "filename": "package.json"
+                },
+                {
+                    "filename": "public\\favicon.ico",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "blank": 0,
+                    "code": 22,
+                    "comment": 23,
+                    "filename": "public\\index.html"
+                },
+                {
+                    "filename": "public\\logo192.png",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "public\\logo512.png",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "blank": 0,
+                    "code": 25,
+                    "comment": 0,
+                    "filename": "public\\manifest.json"
+                },
+                {
+                    "blank": 0,
+                    "code": 3,
+                    "comment": 1,
+                    "filename": "public\\robots.txt"
+                },
+                {
+                    "blank": 32,
+                    "code": 38,
+                    "comment": 12,
+                    "filename": "README.md"
+                },
+                {
+                    "blank": 3,
+                    "code": 13,
+                    "comment": 0,
+                    "filename": "src\\App.css"
+                },
+                {
+                    "blank": 6,
+                    "code": 47,
+                    "comment": 0,
+                    "filename": "src\\App.js"
+                },
+                {
+                    "blank": 1,
+                    "code": 7,
+                    "comment": 0,
+                    "filename": "src\\App.test.js"
+                },
+                {
+                    "blank": 2,
+                    "code": 13,
+                    "comment": 0,
+                    "filename": "src\\components\\Actions.css"
+                },
+                {
+                    "blank": 2,
+                    "code": 10,
+                    "comment": 0,
+                    "filename": "src\\components\\Actions.js"
+                },
+                {
+                    "blank": 3,
+                    "code": 22,
+                    "comment": 0,
+                    "filename": "src\\components\\ActiveFriends.css"
+                },
+                {
+                    "blank": 5,
+                    "code": 14,
+                    "comment": 0,
+                    "filename": "src\\components\\ActiveFriends.js"
+                },
+                {
+                    "blank": 21,
+                    "code": 72,
+                    "comment": 1,
+                    "filename": "src\\components\\AllConversations.js"
+                },
+                {
+                    "blank": 0,
+                    "code": 7,
+                    "comment": 0,
+                    "filename": "src\\components\\Avatar.css"
+                },
+                {
+                    "blank": 2,
+                    "code": 9,
+                    "comment": 0,
+                    "filename": "src\\components\\Avatar.js"
+                },
+                {
+                    "blank": 0,
+                    "code": 6,
+                    "comment": 0,
+                    "filename": "src\\components\\Container.css"
+                },
+                {
+                    "blank": 1,
+                    "code": 9,
+                    "comment": 0,
+                    "filename": "src\\components\\Container.js"
+                },
+                {
+                    "blank": 5,
+                    "code": 27,
+                    "comment": 0,
+                    "filename": "src\\components\\ConversationCard.css"
+                },
+                {
+                    "blank": 3,
+                    "code": 25,
+                    "comment": 0,
+                    "filename": "src\\components\\ConversationCard.js"
+                },
+                {
+                    "blank": 2,
+                    "code": 17,
+                    "comment": 1,
+                    "filename": "src\\components\\ConversationHolder.css"
+                },
+                {
+                    "blank": 6,
+                    "code": 35,
+                    "comment": 0,
+                    "filename": "src\\components\\CoversationHolder.js"
+                },
+                {
+                    "blank": 0,
+                    "code": 4,
+                    "comment": 0,
+                    "filename": "src\\components\\EdgeContainer.css"
+                },
+                {
+                    "blank": 1,
+                    "code": 9,
+                    "comment": 0,
+                    "filename": "src\\components\\EdgeContainer.js"
+                },
+                {
+                    "blank": 2,
+                    "code": 17,
+                    "comment": 2,
+                    "filename": "src\\components\\Header.css"
+                },
+                {
+                    "blank": 3,
+                    "code": 13,
+                    "comment": 0,
+                    "filename": "src\\components\\Header.js"
+                },
+                {
+                    "blank": 14,
+                    "code": 53,
+                    "comment": 1,
+                    "filename": "src\\components\\LeftDiv.js"
+                },
+                {
+                    "blank": 0,
+                    "code": 11,
+                    "comment": 0,
+                    "filename": "src\\components\\Message.css"
+                },
+                {
+                    "blank": 2,
+                    "code": 7,
+                    "comment": 0,
+                    "filename": "src\\components\\Message.js"
+                },
+                {
+                    "blank": 3,
+                    "code": 25,
+                    "comment": 0,
+                    "filename": "src\\components\\MessageHeader.css"
+                },
+                {
+                    "blank": 4,
+                    "code": 16,
+                    "comment": 1,
+                    "filename": "src\\components\\MessageHeader.js"
+                },
+                {
+                    "blank": 1,
+                    "code": 16,
+                    "comment": 0,
+                    "filename": "src\\components\\MidDiv.css"
+                },
+                {
+                    "blank": 18,
+                    "code": 75,
+                    "comment": 13,
+                    "filename": "src\\components\\MidDiv.js"
+                },
+                {
+                    "blank": 14,
+                    "code": 54,
+                    "comment": 0,
+                    "filename": "src\\components\\RightDiv.js"
+                },
+                {
+                    "blank": 2,
+                    "code": 15,
+                    "comment": 0,
+                    "filename": "src\\components\\SearchBar.css"
+                },
+                {
+                    "blank": 1,
+                    "code": 9,
+                    "comment": 0,
+                    "filename": "src\\components\\SearchBar.js"
+                },
+                {
+                    "blank": 4,
+                    "code": 33,
+                    "comment": 0,
+                    "filename": "src\\components\\SendMessage.css"
+                },
+                {
+                    "blank": 5,
+                    "code": 13,
+                    "comment": 0,
+                    "filename": "src\\components\\SendMessage.js"
+                },
+                {
+                    "blank": 3,
+                    "code": 21,
+                    "comment": 0,
+                    "filename": "src\\components\\Suggested.css"
+                },
+                {
+                    "blank": 3,
+                    "code": 15,
+                    "comment": 0,
+                    "filename": "src\\components\\Suggested.js"
+                },
+                {
+                    "blank": 0,
+                    "code": 10,
+                    "comment": 0,
+                    "filename": "src\\components\\UI\\Backdrop.css"
+                },
+                {
+                    "blank": 3,
+                    "code": 10,
+                    "comment": 0,
+                    "filename": "src\\components\\UI\\Backdrop.js"
+                },
+                {
+                    "blank": 7,
+                    "code": 58,
+                    "comment": 0,
+                    "filename": "src\\components\\UI\\Modal.css"
+                },
+                {
+                    "blank": 2,
+                    "code": 8,
+                    "comment": 0,
+                    "filename": "src\\components\\UI\\Modal.js"
+                },
+                {
+                    "blank": 2,
+                    "code": 22,
+                    "comment": 0,
+                    "filename": "src\\components\\UserInfo.css"
+                },
+                {
+                    "blank": 3,
+                    "code": 13,
+                    "comment": 0,
+                    "filename": "src\\components\\UserInfo.js"
+                },
+                {
+                    "blank": 3,
+                    "code": 10,
+                    "comment": 0,
+                    "filename": "src\\contexts\\auth-context.js"
+                },
+                {
+                    "blank": 7,
+                    "code": 26,
+                    "comment": 0,
+                    "filename": "src\\contexts\\socket-context.js"
+                },
+                {
+                    "blank": 10,
+                    "code": 39,
+                    "comment": 0,
+                    "filename": "src\\hooks\\Auth-hook.js"
+                },
+                {
+                    "blank": 7,
+                    "code": 33,
+                    "comment": 0,
+                    "filename": "src\\hooks\\http-hook.js"
+                },
+                {
+                    "blank": 1,
+                    "code": 12,
+                    "comment": 0,
+                    "filename": "src\\index.css"
+                },
+                {
+                    "blank": 3,
+                    "code": 16,
+                    "comment": 3,
+                    "filename": "src\\index.js"
+                },
+                {
+                    "blank": 4,
+                    "code": 19,
+                    "comment": 0,
+                    "filename": "src\\pages\\Dashboard.js"
+                },
+                {
+                    "blank": 15,
+                    "code": 92,
+                    "comment": 0,
+                    "filename": "src\\pages\\Login.css"
+                },
+                {
+                    "blank": 8,
+                    "code": 49,
+                    "comment": 0,
+                    "filename": "src\\pages\\Login.js"
+                },
+                {
+                    "blank": 15,
+                    "code": 93,
+                    "comment": 0,
+                    "filename": "src\\pages\\Signup.css"
+                },
+                {
+                    "blank": 11,
+                    "code": 68,
+                    "comment": 20,
+                    "filename": "src\\pages\\Signup.js"
+                },
+                {
+                    "blank": 1,
+                    "code": 12,
+                    "comment": 0,
+                    "filename": "src\\reportWebVitals.js"
+                },
+                {
+                    "blank": 0,
+                    "code": 1,
+                    "comment": 4,
+                    "filename": "src\\setupTests.js"
+                },
+                {
+                    "blank": 7,
+                    "code": 34,
+                    "comment": 0,
+                    "filename": "src\\Store\\Reducers\\conversationSlice.js"
+                },
+                {
+                    "blank": 1,
+                    "code": 7,
+                    "comment": 0,
+                    "filename": "src\\Store\\store.js"
+                }
+            ]
+        }
+    ]
+}

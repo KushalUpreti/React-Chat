@@ -1,14 +1,19 @@
 import { useContext, useState, useEffect, useCallback } from 'react';
 import { useHttpClient } from '../hooks/http-hook';
+import { useDispatch } from 'react-redux';
+import { addNewConversation } from '../Store/Reducers/conversationSlice';
 import EdgeContainer from './EdgeContainer';
 import UserInfo from './UserInfo';
 import SearchBar from './SearchBar';
+import SearchContainer from './SearchContainer';
 import AllConversations from './AllConversations';
 import AuthContext from '../contexts/auth-context';
 
 function LeftDiv() {
     const auth = useContext(AuthContext);
     const { sendRequest } = useHttpClient();
+    const dispatch = useDispatch();
+
     const [query, setQuery] = useState({
         text: "",
         searching: false
@@ -48,10 +53,43 @@ function LeftDiv() {
         })
     }
 
+    const addFriendHandler = async (friendId) => {
+        if (friendId === userId) {
+            return;
+        }
+
+        const payload = {
+            id: userId,
+            friendId,
+            action: true
+        }
+        let config = {
+            headers: {
+                "Content-Type": "application/json",
+            }
+        }
+
+        const newConversation = await sendRequest("http://localhost:8080/user/addOrRemoveFriend", "POST", payload, config);
+        if (!newConversation) { return; }
+        dispatch(addNewConversation(newConversation.data));
+
+        setSearchResult(prevState => {
+            const array = [...prevState];
+            const newArray = array.filter((item) => {
+                return item._id !== friendId;
+            })
+            return newArray;
+        })
+    }
+
     return (
         <EdgeContainer margin="12px 5px 12px 0">
             <UserInfo username={username} userId={userId} />
-            <SearchBar text={query.text} handler={searchHandler} />
+            <div>
+                <SearchBar text={query.text} handler={searchHandler} />
+                {query.searching ? <SearchContainer searches={searchResult} addFriend={addFriendHandler} /> : null}
+            </div>
+
             <h2 style={{
                 margin: "15px 10px 5px 10px",
                 padding: "10px",

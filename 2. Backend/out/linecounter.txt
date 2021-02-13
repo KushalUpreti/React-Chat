@@ -1,0 +1,66 @@
+===============================================================================
+EXTENSION NAME : linecounter
+EXTENSION VERSION : 0.2.7
+-------------------------------------------------------------------------------
+count time : 2021-02-13 17:07:59
+count workspace : d:\Bsc\L5\Web\0. ReactApp\chatapp\2. Backend
+total files : 13
+total code lines : 2600
+total comment lines : 7
+total blank lines : 98
+
+    statistics
+   |      extension|     total code|  total comment|    total blank|percent|
+   -------------------------------------------------------------------------
+   |            .js|            393|              6|             85|     15|
+   |          .json|           2119|              0|              0|     82|
+   |               |             20|              1|              5|   0.77|
+   |          .html|             68|              0|              8|    2.6|
+   -------------------------------------------------------------------------
+.env, code is 3, comment is 0, blank is 0.
+.gitignore, code is 17, comment is 1, blank is 5.
+controllers\user_controller.js, code is 257, comment is 4, blank is 49.
+index.html, code is 68, comment is 0, blank is 8.
+models\conversation.js, code is 11, comment is 0, blank is 2.
+models\crypto.js, code is 22, comment is 1, blank is 4.
+models\http-error.js, code is 7, comment is 0, blank is 1.
+models\message.js, code is 9, comment is 0, blank is 2.
+models\user.js, code is 11, comment is 0, blank is 4.
+package-lock.json, code is 2096, comment is 0, blank is 0.
+package.json, code is 23, comment is 0, blank is 0.
+routes\user_routes.js, code is 23, comment is 0, blank is 10.
+server.js, code is 53, comment is 1, blank is 13.
+===============================================================================
+===============================================================================
+EXTENSION NAME : linecounter
+EXTENSION VERSION : 0.2.7
+-------------------------------------------------------------------------------
+count time : 2021-02-13 17:09:06
+count workspace : d:\Bsc\L5\Web\0. ReactApp\chatapp\2. Backend
+total files : 13
+total code lines : 2600
+total comment lines : 7
+total blank lines : 98
+
+    statistics
+   |      extension|     total code|  total comment|    total blank|percent|
+   -------------------------------------------------------------------------
+   |            .js|            393|              6|             85|     15|
+   |          .json|           2119|              0|              0|     82|
+   |          .html|             68|              0|              8|    2.6|
+   |               |             20|              1|              5|   0.77|
+   -------------------------------------------------------------------------
+.env, code is 3, comment is 0, blank is 0.
+.gitignore, code is 17, comment is 1, blank is 5.
+controllers\user_controller.js, code is 257, comment is 4, blank is 49.
+index.html, code is 68, comment is 0, blank is 8.
+models\conversation.js, code is 11, comment is 0, blank is 2.
+models\crypto.js, code is 22, comment is 1, blank is 4.
+models\http-error.js, code is 7, comment is 0, blank is 1.
+models\message.js, code is 9, comment is 0, blank is 2.
+models\user.js, code is 11, comment is 0, blank is 4.
+package-lock.json, code is 2096, comment is 0, blank is 0.
+package.json, code is 23, comment is 0, blank is 0.
+routes\user_routes.js, code is 23, comment is 0, blank is 10.
+server.js, code is 53, comment is 1, blank is 13.
+===============================================================================

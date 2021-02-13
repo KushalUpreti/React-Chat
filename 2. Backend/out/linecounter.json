@@ -1,0 +1,227 @@
+{
+    "extension": "linecounter",
+    "version": "0.2.7",
+    "workspace": "d:\\Bsc\\L5\\Web\\0. ReactApp\\chatapp\\2. Backend",
+    "linecount": [
+        {
+            "version": "0.2.7",
+            "counttime": "2021-02-13 17:07:59",
+            "filesum": 13,
+            "codesum": 2600,
+            "commentsum": 7,
+            "blanksum": 98,
+            "statistics": {
+                ".js": {
+                    "code": 393,
+                    "comment": 6,
+                    "blank": 85
+                },
+                ".json": {
+                    "code": 2119,
+                    "comment": 0,
+                    "blank": 0
+                },
+                "": {
+                    "code": 20,
+                    "comment": 1,
+                    "blank": 5
+                },
+                ".html": {
+                    "code": 68,
+                    "comment": 0,
+                    "blank": 8
+                }
+            },
+            "filelist": [
+                {
+                    "blank": 0,
+                    "code": 3,
+                    "comment": 0,
+                    "filename": ".env"
+                },
+                {
+                    "blank": 5,
+                    "code": 17,
+                    "comment": 1,
+                    "filename": ".gitignore"
+                },
+                {
+                    "blank": 49,
+                    "code": 257,
+                    "comment": 4,
+                    "filename": "controllers\\user_controller.js"
+                },
+                {
+                    "blank": 8,
+                    "code": 68,
+                    "comment": 0,
+                    "filename": "index.html"
+                },
+                {
+                    "blank": 2,
+                    "code": 11,
+                    "comment": 0,
+                    "filename": "models\\conversation.js"
+                },
+                {
+                    "blank": 4,
+                    "code": 22,
+                    "comment": 1,
+                    "filename": "models\\crypto.js"
+                },
+                {
+                    "blank": 1,
+                    "code": 7,
+                    "comment": 0,
+                    "filename": "models\\http-error.js"
+                },
+                {
+                    "blank": 2,
+                    "code": 9,
+                    "comment": 0,
+                    "filename": "models\\message.js"
+                },
+                {
+                    "blank": 4,
+                    "code": 11,
+                    "comment": 0,
+                    "filename": "models\\user.js"
+                },
+                {
+                    "blank": 0,
+                    "code": 2096,
+                    "comment": 0,
+                    "filename": "package-lock.json"
+                },
+                {
+                    "blank": 0,
+                    "code": 23,
+                    "comment": 0,
+                    "filename": "package.json"
+                },
+                {
+                    "blank": 10,
+                    "code": 23,
+                    "comment": 0,
+                    "filename": "routes\\user_routes.js"
+                },
+                {
+                    "blank": 13,
+                    "code": 53,
+                    "comment": 1,
+                    "filename": "server.js"
+                }
+            ]
+        },
+        {
+            "version": "0.2.7",
+            "counttime": "2021-02-13 17:09:06",
+            "filesum": 13,
+            "codesum": 2600,
+            "commentsum": 7,
+            "blanksum": 98,
+            "statistics": {
+                ".js": {
+                    "code": 393,
+                    "comment": 6,
+                    "blank": 85
+                },
+                ".json": {
+                    "code": 2119,
+                    "comment": 0,
+                    "blank": 0
+                },
+                ".html": {
+                    "code": 68,
+                    "comment": 0,
+                    "blank": 8
+                },
+                "": {
+                    "code": 20,
+                    "comment": 1,
+                    "blank": 5
+                }
+            },
+            "filelist": [
+                {
+                    "blank": 0,
+                    "code": 3,
+                    "comment": 0,
+                    "filename": ".env"
+                },
+                {
+                    "blank": 5,
+                    "code": 17,
+                    "comment": 1,
+                    "filename": ".gitignore"
+                },
+                {
+                    "blank": 49,
+                    "code": 257,
+                    "comment": 4,
+                    "filename": "controllers\\user_controller.js"
+                },
+                {
+                    "blank": 8,
+                    "code": 68,
+                    "comment": 0,
+                    "filename": "index.html"
+                },
+                {
+                    "blank": 2,
+                    "code": 11,
+                    "comment": 0,
+                    "filename": "models\\conversation.js"
+                },
+                {
+                    "blank": 4,
+                    "code": 22,
+                    "comment": 1,
+                    "filename": "models\\crypto.js"
+                },
+                {
+                    "blank": 1,
+                    "code": 7,
+                    "comment": 0,
+                    "filename": "models\\http-error.js"
+                },
+                {
+                    "blank": 2,
+                    "code": 9,
+                    "comment": 0,
+                    "filename": "models\\message.js"
+                },
+                {
+                    "blank": 4,
+                    "code": 11,
+                    "comment": 0,
+                    "filename": "models\\user.js"
+                },
+                {
+                    "blank": 0,
+                    "code": 2096,
+                    "comment": 0,
+                    "filename": "package-lock.json"
+                },
+                {
+                    "blank": 0,
+                    "code": 23,
+                    "comment": 0,
+                    "filename": "package.json"
+                },
+                {
+                    "blank": 10,
+                    "code": 23,
+                    "comment": 0,
+                    "filename": "routes\\user_routes.js"
+                },
+                {
+                    "blank": 13,
+                    "code": 53,
+                    "comment": 1,
+                    "filename": "server.js"
+                }
+            ]
+        }
+    ]
+}
