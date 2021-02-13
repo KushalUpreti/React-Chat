@@ -276,15 +276,27 @@ async function getMessages(req, res, next) {
 
 }
 
-async function getUserInfo(req, res, next) {
-    const userId = req.params.id;
-    let info;
-    try {
-        info = await User.findById(userId);
-    } catch (error) {
-        return next(new HttpError("Error while finding user. Try again", 500));
+async function searchUsers(req, res, next) {
+    if (req.params.query.length === 0) {
+        return next(new HttpError("Invalid search query", 400));
     }
-    res.status(200).json({ username: info.username });
+
+    const searchQuery = req.params.query;
+    const regex = new RegExp(".*" + searchQuery + ".*", "i");
+    let searchResult;
+    try {
+        searchResult = await User.find({ "username": regex });
+    } catch (error) {
+        return next(new HttpError("Error while getting query. Try again", 500));
+    }
+    const filteredResult = searchResult.map((item) => {
+        return {
+            _id: item._id,
+            username: item.username,
+            initials: item.username.charAt(0)
+        }
+    });
+    res.json(filteredResult)
 }
 
 exports.signup = signup;
@@ -294,4 +306,4 @@ exports.createGroup = createGroup;
 exports.getAllConversations = getAllConversations;
 exports.addMessageToConversation = addMessageToConversation;
 exports.getMessages = getMessages;
-exports.getUserInfo = getUserInfo;
+exports.searchUsers = searchUsers;
