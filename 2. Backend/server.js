@@ -52,13 +52,14 @@ io.on("connection", (socket) => {
                 sender: id, message: messageObject
             })
         })
+
     })
 });
 
 
 mongoose.connect(`mongodb+srv://IcyHotShoto:${process.env.MONGO_DB_DATABASE_PASSWORD}@cluster0.dbftm.mongodb.net/chat?retryWrites=true&w=majority`, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => {
-        http.listen(8080, () => {
+        http.listen(process.env.PORT || 8080, () => {
             console.log('listening on :8080');
         });
     }).catch((err) => {

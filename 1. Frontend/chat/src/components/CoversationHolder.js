@@ -1,6 +1,7 @@
 import './ConversationHolder.css';
 import Message from './Message';
 import AuthContext from '../contexts/auth-context';
+import { getMessageDate } from '../sharedFunctions/sharedFunctions';
 import { useContext } from 'react';
 
 function MessageContainer(props) {
@@ -29,12 +30,12 @@ function ConversationHolder(props) {
                     backgroundColor: 'rgb(0, 132, 255)'
                 }
             }
-
+            const date = "Sent time: " + getMessageDate(item.sent_date);
             return <MessageContainer key={item.sent_date + " " + item.message} justify={style}>
-                <Message message={item.message} color={messageStyle} />
+                <Message message={item.message} color={messageStyle} date={date} />
             </MessageContainer>
         }) : null}
-
+        <div className="dummy"></div>
     </div>
 }
 

@@ -9,7 +9,7 @@ import RightDiv from '../components/RightDiv';
 function Dashboard() {
 
     return <>
-        <Header title="React Chat" caption="Wauu nice nice" />
+        <Header title="React Chat" caption="Keep in touch" />
         <Container>
             <LeftDiv />
             <Route path="/messages">

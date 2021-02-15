@@ -3,6 +3,7 @@ import { useHttpClient } from '../hooks/http-hook';
 import { useSocketObject } from '../contexts/socket-context';
 import { useSelector, useDispatch } from 'react-redux';
 import { loadConversation, updateConversation, selectConvo } from '../Store/Reducers/conversationSlice';
+import { getMessageDate } from '../sharedFunctions/sharedFunctions';
 
 import ConversationCard from './ConversationCard';
 
@@ -29,7 +30,8 @@ function AllConvesations(props) {
     }, [])
 
     async function fetchConversation() {
-        const conversations = await sendRequest(`http://localhost:8080/user/getAllConversations/${props.userId}`, "GET", null, null);
+
+        const conversations = await sendRequest(`https://reactchat01.herokuapp.com/user/getAllConversations/${props.userId}`, "GET", null, null);
         dispatch(loadConversation(conversations.data));
     }
 
@@ -63,21 +65,6 @@ function AllConvesations(props) {
         }
 
         return { conversationName, time, initials, path, recipient, conversationId, values, latest_message };
-    }
-
-    function getMessageDate(date) {
-        let messageDate = new Date(date);
-        let diff = Math.abs(new Date() - messageDate);
-        let days = Math.floor((diff / (1000 * 60 * 60 * 24)));
-        let time;
-
-        if (days > 1) time = `${days} days ago`;
-        else if (days === 1) time = `${days} day ago`;
-        else {
-            time = messageDate.getHours() + ":" + messageDate.getMinutes();
-        }
-
-        return time;
     }
 
     let counter = 0;

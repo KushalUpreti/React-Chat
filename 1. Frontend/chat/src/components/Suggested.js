@@ -1,14 +1,12 @@
 import Avatar from './Avatar';
+import AddFriend from './AddFriend';
 import './Suggested.css'
 
 function Suggested(props) {
     return (<>
         <div className="suggested">
             <h4>Suggested Friends</h4>
-            <div className="suggestedList">
-                <Avatar style={{ width: "30px", height: "30px", color: "white", margin: " -2px 0.1px" }} initials="S" />
-                <p>Sweta Shrestha</p>
-            </div>
+            <AddFriend username="Sweta Shrestha" initials="S" key="eae23123" id="3423e42" addFriend={() => { }} />
         </div>
 
     </>

@@ -1,14 +1,17 @@
 import './Header.css';
+import { useContext } from 'react';
 import { NavLink } from 'react-router-dom';
+import AuthContext from "../contexts/auth-context";
 
 function Header(props) {
+    const auth = useContext(AuthContext);
     return (
         <header>
             <NavLink to="/" style={{ textDecoration: "none" }}>
                 <h3 className="headerh2">{props.title}</h3>
             </NavLink>
 
-            <h5 className="headerh5">{props.caption}</h5>
+            <button class="logout" onClick={auth.logout}>Log Out</button>
         </header>
     )
 }

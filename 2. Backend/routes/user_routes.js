@@ -2,6 +2,9 @@ const express = require('express');
 const { check } = require('express-validator');
 const userController = require('../controllers/user_controller');
 const router = express.Router();
+const dotenv = require('dotenv');
+const authCheck = require('../middlewares/auth-check');
+dotenv.config();
 
 router.post("/signup", [
     check('username').not().isEmpty(),
@@ -15,6 +18,8 @@ router.post("/login", [
     check('email').isEmail(),
     check('password').not().isEmpty(),
     check('password').isLength({ min: 5 })], userController.login);
+
+// router.use(authCheck);
 
 router.post("/addOrRemoveFriend", userController.addOrRemoveFriend);
 

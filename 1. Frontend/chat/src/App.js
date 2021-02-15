@@ -33,14 +33,14 @@ function App() {
 
 
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/ReactChat">
       <AuthContext.Provider value={{
         isLoggedIn: !!token,
         login,
         logout,
         token,
-        username: userDetails.username,
-        userId: userDetails.userId
+        username: userDetails.username || null,
+        userId: userDetails.userId || null
       }}>
         <div className="App">
           {routes}

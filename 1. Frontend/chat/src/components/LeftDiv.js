@@ -25,7 +25,12 @@ function LeftDiv() {
     const userId = auth.userId;
 
     const downloadSearchData = useCallback(async (text) => {
-        const result = await sendRequest(`http://localhost:8080/user/searchUsers/${text}`, "GET", null, null);
+        let config = {
+            headers: {
+                Authorization: 'Bearer ' + auth.token,
+            }
+        }
+        const result = await sendRequest(`https://reactchat01.herokuapp.com/user/searchUsers/${text}`, "GET", null, config);
         setSearchResult(result.data);
 
     }, [sendRequest])
@@ -65,11 +70,12 @@ function LeftDiv() {
         }
         let config = {
             headers: {
+                Authorization: 'Bearer ' + auth.token,
                 "Content-Type": "application/json",
             }
         }
 
-        const newConversation = await sendRequest("http://localhost:8080/user/addOrRemoveFriend", "POST", payload, config);
+        const newConversation = await sendRequest("https://reactchat01.herokuapp.com/user/addOrRemoveFriend", "POST", payload, config);
         if (!newConversation) { return; }
         dispatch(addNewConversation(newConversation.data));
 

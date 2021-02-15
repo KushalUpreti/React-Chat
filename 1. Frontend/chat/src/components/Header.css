@@ -10,12 +10,24 @@ header {
 
 /* React Chat */
 .headerh2 {
+  float: right;
   padding: 12px;
   margin-left: 10px;
   color: #ff0028;
 }
 
-/* Message go brr */
-.headerh5 {
-  padding: 16px;
+.logout {
+  border: 1px solid transparent;
+  color: #292929;
+  text-decoration: none;
+  padding: 0.5rem;
+  margin-right: 15px;
+  font-size: 0.9rem;
+  font-family: "Montserrat", sans-serif;
+  background: transparent;
+}
+
+.logout:hover {
+  border-bottom: 2px solid #ff0505;
+  cursor: pointer;
 }

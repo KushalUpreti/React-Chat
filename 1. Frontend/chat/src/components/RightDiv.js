@@ -41,11 +41,12 @@ function RightDiv(props) {
         }
         let config = {
             headers: {
+                Authorization: 'Bearer ' + auth.token,
                 "Content-Type": "application/json",
             }
         }
 
-        const newConversation = await sendRequest("http://localhost:8080/user/addOrRemoveFriend", "POST", payload, config);
+        const newConversation = await sendRequest("https://reactchat01.herokuapp.com/user/addOrRemoveFriend", "POST", payload, config);
         dispatch(addNewConversation(newConversation.data));
 
     }

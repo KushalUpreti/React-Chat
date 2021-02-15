@@ -29,7 +29,10 @@ export const useAuth = () => {
 
     const logout = useCallback(() => {
         setToken("");
-        setUserDetails(null);
+        setUserDetails({
+            username: null,
+            userId: null
+        });
         localStorage.removeItem('userData');
     }, []);
 
