@@ -1,21 +1,45 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { useHttpClient } from '../hooks/http-hook';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useSocketObject } from '../contexts/socket-context';
 import AuthContext from '../contexts/auth-context';
 import EdgeContainer from './EdgeContainer';
 import Modal from './UI/Modal';
 import { addNewConversation } from '../Store/Reducers/conversationSlice';
+import { addAllActiveUsers, selectActive, addActiveUser, removeOfflineUser } from '../Store/Reducers/activeUsersSlice';
 import Actions from './Actions';
 import ActiveFriends from './ActiveFriends';
 import Suggested from './Suggested';
 
 function RightDiv(props) {
     const { sendRequest } = useHttpClient();
+    const socket = useSocketObject();
     const auth = useContext(AuthContext);
     const dispatch = useDispatch();
 
     const [modal, setModal] = useState(false);
     const [text, setText] = useState("");
+    const activeRedux = useSelector(selectActive);
+
+    useEffect(() => {
+        if (socket !== undefined) {
+            socket.on('active', (incoming) => {
+                dispatch(addActiveUser(incoming));
+            });
+
+            socket.on('offline', (incoming) => {
+                console.log("off");
+                dispatch(removeOfflineUser(incoming));
+            })
+        }
+
+
+        async function fetchActiveFriends() {
+            const activeFriends = await sendRequest(`http://localhost:8080/user/getAllActiveUsers/${auth.userId}`, "GET", null, null);
+            dispatch(addAllActiveUsers(activeFriends.data));
+        }
+        fetchActiveFriends();
+    }, []);
 
 
     const addFriendHandler = () => {
@@ -46,7 +70,7 @@ function RightDiv(props) {
             }
         }
 
-        const newConversation = await sendRequest("https://reactchat01.herokuapp.com/user/addOrRemoveFriend", "POST", payload, config);
+        const newConversation = await sendRequest("http://localhost:8080/user/addOrRemoveFriend", "POST", payload, config);
         dispatch(addNewConversation(newConversation.data));
 
     }
@@ -66,7 +90,7 @@ function RightDiv(props) {
 
             <Actions action="Add Friend" class="fa fa-user-plus" style={{ margin: "15px 5px 0 5px" }} click={addFriendHandler} />
             <Actions action="Create Group" class="fa fa-users" style={{ margin: "10px 5px 0 5px" }} click={createGroupHandler} />
-            <ActiveFriends />
+            <ActiveFriends active={activeRedux} />
             <Suggested />
         </EdgeContainer>
     )

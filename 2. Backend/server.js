@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const http = require('http').Server(app);
 const mongoose = require('mongoose');
+const userController = require('./controllers/user_controller');
 const io = require('socket.io')(http, {
     cors: {
         origin: "*",
@@ -45,6 +46,8 @@ io.on("connection", (socket) => {
     const id = socket.handshake.query.id
     socket.join(id);
 
+    userController.activeStatus(id, socket, 'active', true);
+
     socket.on('send-message', ({ recipients, messageObject }) => {
         const newRecipients = recipients.filter(r => r !== id);
         newRecipients.forEach(recipient => {
@@ -52,8 +55,11 @@ io.on("connection", (socket) => {
                 sender: id, message: messageObject
             })
         })
-
     })
+
+    socket.on('disconnect', function () {
+        userController.activeStatus(socket.handshake.query.id, socket, 'offline', false);
+    });
 });
 
 

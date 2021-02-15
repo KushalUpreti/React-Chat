@@ -30,15 +30,17 @@ function LeftDiv() {
                 Authorization: 'Bearer ' + auth.token,
             }
         }
-        const result = await sendRequest(`https://reactchat01.herokuapp.com/user/searchUsers/${text}`, "GET", null, config);
-        setSearchResult(result.data);
+        const result = await sendRequest(`http://localhost:8080/user/searchUsers/${text}`, "GET", null, config);
+        const newArray = result.data.filter((item) => {
+            return item._id !== auth.userId;
+        })
+        setSearchResult(newArray);
 
     }, [sendRequest])
 
     useEffect(() => {
         if (query.text.length === 0) { return }
         downloadSearchData(query.text);
-        console.log("Rerender check");
     }, [query, downloadSearchData])
 
 
@@ -75,7 +77,7 @@ function LeftDiv() {
             }
         }
 
-        const newConversation = await sendRequest("https://reactchat01.herokuapp.com/user/addOrRemoveFriend", "POST", payload, config);
+        const newConversation = await sendRequest("http://localhost:8080/user/addOrRemoveFriend", "POST", payload, config);
         if (!newConversation) { return; }
         dispatch(addNewConversation(newConversation.data));
 

@@ -7,7 +7,8 @@ const user = new Schema({
     username: { type: String, required: true },
     email: { type: String, required: true, unique: true, },
     password: { type: String, required: true, minlength: 5 },
-    friends: [{ type: String }]
+    friends: [{ type: String }],
+    active: { type: Boolean, required: true }
 })
 
 user.plugin(unique_validator);

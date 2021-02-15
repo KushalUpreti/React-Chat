@@ -11,7 +11,7 @@ function Header(props) {
                 <h3 className="headerh2">{props.title}</h3>
             </NavLink>
 
-            <button class="logout" onClick={auth.logout}>Log Out</button>
+            <button className="logout" onClick={auth.logout}>Log Out</button>
         </header>
     )
 }

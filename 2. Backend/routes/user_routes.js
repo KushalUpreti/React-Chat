@@ -34,5 +34,7 @@ router.get("/allMessages/:convId", userController.getMessages);
 
 router.get("/searchUsers/:query", userController.searchUsers);
 
+router.get("/getAllActiveUsers/:userId", userController.getAllActiveUsers);
+
 
 module.exports = router;

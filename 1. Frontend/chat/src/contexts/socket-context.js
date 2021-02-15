@@ -14,7 +14,7 @@ function SocketProvider({ children }) {
     const id = auth.userId;
     useEffect(() => {
         const newSocket = io(
-            'https://reactchat01.herokuapp.com',
+            'http://localhost:8080/',
             { query: { id } }
         )
 

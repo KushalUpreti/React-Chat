@@ -31,7 +31,7 @@ function AllConvesations(props) {
 
     async function fetchConversation() {
 
-        const conversations = await sendRequest(`https://reactchat01.herokuapp.com/user/getAllConversations/${props.userId}`, "GET", null, null);
+        const conversations = await sendRequest(`http://localhost:8080/user/getAllConversations/${props.userId}`, "GET", null, null);
         dispatch(loadConversation(conversations.data));
     }
 

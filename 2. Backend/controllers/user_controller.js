@@ -144,10 +144,16 @@ async function addOrRemoveFriend(req, res, next) {
         if (actionType === true) {
             user.friends.push(friendId);
             user.save();
+
+            friend.friends.push(userId);
+            friend.save();
             message = "Friend added";
         } else {
             user.friends.pull(friendId);
             user.save();
+
+            friend.friends.pull(userId);
+            friend.save();
             message = "Friend deleted";
         }
 
@@ -261,11 +267,12 @@ async function addMessageToConversation(req, res, next) {
 
 
 async function getMessages(req, res, next) {
+
     const conversation_id = req.params.convId;
 
     let messages;
     try {
-        messages = await Messaage.find({ conversation_id }).sort({ sent_date: 1 });
+        messages = await Messaage.find({ conversation_id }).sort({ sent_date: 1 }).limit(30);
     } catch (error) {
         return next(new HttpError("Error while saving message. Try again", 500));
     }
@@ -310,6 +317,50 @@ async function searchUsers(req, res, next) {
     res.json(filteredResult)
 }
 
+async function getAllActiveUsers(req, res, next) {
+    const userId = req.params.userId;
+    let user
+    try {
+        user = await User.findOne({ _id: mongoose.Types.ObjectId(userId) });
+    } catch (error) {
+        return next(new HttpError("Error while getting user. Try again", 500));
+    }
+
+    let activeFriends = [];
+
+    for (let index = 0; index < user.friends.length; index++) {
+        const recipient = user.friends[index];
+        let friend;
+        try {
+            friend = await User.findOne({ _id: mongoose.Types.ObjectId(recipient) });
+        } catch (error) {
+            console.log(error);
+        }
+
+        if (friend.active === true) {
+            const friendObj = {
+                username: friend.username,
+                initials: friend.username.charAt(0)
+            }
+            activeFriends.push(friendObj);
+        }
+    }
+    res.json(activeFriends);
+}
+
+async function activeStatus(userId, socket, emit, active) {
+    const user = await User.findOne({ _id: mongoose.Types.ObjectId(userId) });
+    user.friends.forEach((recipient) => {
+        socket.broadcast.to(recipient).emit(emit, {
+            id: user._id, username: user.username, initials: user.username.charAt(0)
+        })
+    });
+
+    await User.updateOne({ _id: mongoose.Types.ObjectId(userId) }, { active: active });
+}
+
+
+
 exports.signup = signup;
 exports.login = login;
 exports.addOrRemoveFriend = addOrRemoveFriend;
@@ -318,3 +369,5 @@ exports.getAllConversations = getAllConversations;
 exports.addMessageToConversation = addMessageToConversation;
 exports.getMessages = getMessages;
 exports.searchUsers = searchUsers;
+exports.activeStatus = activeStatus;
+exports.getAllActiveUsers = getAllActiveUsers;
