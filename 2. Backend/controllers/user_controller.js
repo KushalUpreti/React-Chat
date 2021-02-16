@@ -339,6 +339,7 @@ async function getAllActiveUsers(req, res, next) {
 
         if (friend.active === true) {
             const friendObj = {
+                id: friend._id,
                 username: friend.username,
                 initials: friend.username.charAt(0)
             }
@@ -355,7 +356,6 @@ async function activeStatus(userId, socket, emit, active) {
             id: user._id, username: user.username, initials: user.username.charAt(0)
         })
     });
-
     await User.updateOne({ _id: mongoose.Types.ObjectId(userId) }, { active: active });
 }
 

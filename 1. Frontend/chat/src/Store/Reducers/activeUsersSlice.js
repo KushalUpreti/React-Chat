@@ -18,8 +18,15 @@ const activeUsersSlice = createSlice({
 
         },
         addActiveUser: (state, action) => {
-            console.log(action.payload);
-            state.activeUsers.push(action.payload);
+            const find = state.activeUsers.find((item) => {
+                return item.id === action.payload.id;
+            })
+            if (!find) {
+                state.activeUsers.push(action.payload);
+            }
+            else {
+                return state;
+            }
         },
         removeOfflineUser: (state, action) => {
             const newArray = state.activeUsers.filter((item) => {

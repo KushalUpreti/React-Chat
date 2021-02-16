@@ -56,7 +56,7 @@ function MidDiv() {
 
     async function getMessages(conversationId) {
 
-        const ans = await sendRequest(`http://localhost:8080/user/allMessages/${conversationId}`, "GET", null, null);
+        const ans = await sendRequest(`https://reactchat01.herokuapp.com/user/allMessages/${conversationId}`, "GET", null, null);
         setMessages(ans.data);
     }
 
@@ -96,7 +96,7 @@ function MidDiv() {
             }
         }
 
-        sendRequest("http://localhost:8080/user/addMessage", "POST", payload, config);
+        sendRequest("https://reactchat01.herokuapp.com/user/addMessage", "POST", payload, config);
 
         const elem = document.querySelector('.dummy');
         elem.scrollIntoView({ behavior: 'smooth' });
