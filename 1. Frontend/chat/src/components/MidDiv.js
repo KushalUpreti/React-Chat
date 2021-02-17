@@ -6,7 +6,7 @@ import { useHttpClient } from '../hooks/http-hook';
 import { useSocketObject } from '../contexts/socket-context';
 import { useDispatch } from 'react-redux';
 import AuthContext from '../contexts/auth-context';
-
+import Spinner from './UI/Spinner';
 import MessageHeader from './MessageHeader';
 import ConversationHolder from './CoversationHolder';
 import SendMessage from './SendMessage';
@@ -20,7 +20,7 @@ function MidDiv() {
     const socket = useSocketObject();
     const auth = useContext(AuthContext);
     const dispatch = useDispatch();
-    const { sendRequest } = useHttpClient();
+    const { sendRequest, isLoading } = useHttpClient();
 
     const recipient = location.userData.name;
     const recipients = location.userData.recipients;
@@ -56,7 +56,7 @@ function MidDiv() {
 
     async function getMessages(conversationId) {
 
-        const ans = await sendRequest(`https://reactchat01.herokuapp.com/user/allMessages/${conversationId}`, "GET", null, null);
+        const ans = await sendRequest(`http://localhost:8080/user/allMessages/${conversationId}`, "GET", null, null);
         setMessages(ans.data);
     }
 
@@ -96,7 +96,7 @@ function MidDiv() {
             }
         }
 
-        sendRequest("https://reactchat01.herokuapp.com/user/addMessage", "POST", payload, config);
+        sendRequest("http://localhost:8080/user/addMessage", "POST", payload, config);
 
         const elem = document.querySelector('.dummy');
         elem.scrollIntoView({ behavior: 'smooth' });
@@ -106,10 +106,12 @@ function MidDiv() {
 
     return <div className="midDiv">
         <MessageHeader username={recipient} initials={location.userData.initials} />
-        <div className="conversation">
+        {!isLoading ? <div className="conversation">
             <ConversationHolder messages={messages} />
             <SendMessage send={sendMessage} />
-        </div>
+        </div> : <Spinner boxStyle={{ marginTop: "40vh", width: "100px", height: "100px" }} borderStyle={{ width: "50px", height: "50px" }} />
+        }
+
     </div>
 }
 

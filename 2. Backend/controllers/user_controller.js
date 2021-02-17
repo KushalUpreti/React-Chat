@@ -30,6 +30,7 @@ async function signup(req, res, next) {
     try {
         hashedPassword = await bcrypt.hash(password, 12);
     } catch (err) {
+        console.log(err);
         const error = new HttpError(
             'Could not create user, please try again.',
             500
@@ -41,12 +42,14 @@ async function signup(req, res, next) {
         username,
         email,
         password: hashedPassword,
+        active: true,
         friends: []
     })
 
     try {
         await newUser.save();
     } catch (err) {
+        console.log(err);
         const error = new HttpError(
             'Signing up failed, please try again later.',
             500

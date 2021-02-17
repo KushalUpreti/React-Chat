@@ -30,7 +30,7 @@ function LeftDiv() {
                 Authorization: 'Bearer ' + auth.token,
             }
         }
-        const result = await sendRequest(`https://reactchat01.herokuapp.com/user/searchUsers/${text}`, "GET", null, config);
+        const result = await sendRequest(`http://localhost:8080/user/searchUsers/${text}`, "GET", null, config);
         const newArray = result.data.filter((item) => {
             return item._id !== auth.userId;
         })
@@ -77,7 +77,7 @@ function LeftDiv() {
             }
         }
 
-        const newConversation = await sendRequest("https://reactchat01.herokuapp.com/user/addOrRemoveFriend", "POST", payload, config);
+        const newConversation = await sendRequest("http://localhost:8080/user/addOrRemoveFriend", "POST", payload, config);
         if (!newConversation) { return; }
         dispatch(addNewConversation(newConversation.data));
 
@@ -105,7 +105,6 @@ function LeftDiv() {
             }}>Chats</h2>
 
             <AllConversations username={username} userId={userId} />
-
         </EdgeContainer>
     )
 }

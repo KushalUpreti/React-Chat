@@ -32,6 +32,7 @@
   font-family: "Nunito", sans-serif;
   color: #663f3f;
   font-size: 2rem;
+  margin-bottom: 10px;
 }
 
 .signUpH3SignUp {
@@ -51,7 +52,7 @@
   font-size: 12px;
   font-family: sans-serif;
   color: white;
-  margin-top: 20px;
+  margin-top: 10px;
   padding: 0 20px 0 20px;
 }
 

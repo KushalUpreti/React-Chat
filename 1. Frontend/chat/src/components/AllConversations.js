@@ -4,14 +4,14 @@ import { useSocketObject } from '../contexts/socket-context';
 import { useSelector, useDispatch } from 'react-redux';
 import { loadConversation, updateConversation, selectConvo } from '../Store/Reducers/conversationSlice';
 import { getMessageDate } from '../sharedFunctions/sharedFunctions';
-
+import Spinner from './UI/Spinner';
 import ConversationCard from './ConversationCard';
 
 function AllConvesations(props) {
     const conversationRedux = useSelector(selectConvo);
     const dispatch = useDispatch();
 
-    const { sendRequest } = useHttpClient();
+    const { sendRequest, isLoading } = useHttpClient();
 
     const socket = useSocketObject();
 
@@ -30,8 +30,7 @@ function AllConvesations(props) {
     }, [])
 
     async function fetchConversation() {
-
-        const conversations = await sendRequest(`https://reactchat01.herokuapp.com/user/getAllConversations/${props.userId}`, "GET", null, null);
+        const conversations = await sendRequest(`http://localhost:8080/user/getAllConversations/${props.userId}`, "GET", null, null);
         dispatch(loadConversation(conversations.data));
     }
 
@@ -67,13 +66,25 @@ function AllConvesations(props) {
         return { conversationName, time, initials, path, recipient, conversationId, values, latest_message };
     }
 
+    let content = null;
     let counter = 0;
-    return <div style={{ overflowY: "scroll", height: "70%" }}>
-        {conversationRedux.length > 0 ? conversationRedux.map((item) => {
+
+    if (!isLoading & conversationRedux.length > 0) {
+        content = conversationRedux.map((item) => {
             const { conversationName, initials, time, path, recipient, conversationId, values, latest_message } = prepareData(item)
             return <ConversationCard key={item.date_created + " " + ++counter} initials={initials} recipient={conversationName}
                 time={time} username={recipient} recipientId={path} convId={conversationId} recipients={values} latest_message={latest_message} />
-        }) : <p style={{ marginTop: "60%", padding: "15px" }}>No conversation made yet!!</p>}
+        });
+    }
+    else if (!isLoading & conversationRedux.length === 0) {
+        content = <p style={{ marginTop: "60%", padding: "15px" }}>No conversation made yet!!</p>;
+    } else {
+        content = <Spinner boxStyle={{ marginTop: "40vh", width: "50px", height: "50px" }} borderStyle={{ width: "25px", height: "25px" }} />
+    }
+
+
+    return <div style={{ overflowY: "scroll", height: "70%" }}>
+        {content}
     </div>
 }
 

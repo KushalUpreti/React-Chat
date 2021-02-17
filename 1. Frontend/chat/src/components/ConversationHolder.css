@@ -1,11 +1,10 @@
 .conversationHolder {
   display: flex;
   flex-direction: column;
-  /* justify-content: flex-end; */
   flex: 1 1 auto;
   margin-bottom: 10px;
   height: 100%;
-  /* overflow-y: scroll; */
+  overflow-y: scroll;
 }
 
 .fix {

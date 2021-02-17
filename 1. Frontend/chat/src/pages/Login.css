@@ -31,6 +31,7 @@
 .signUpH2 {
   font-family: "Nunito", sans-serif;
   color: #663f3f;
+  margin-bottom: 10px;
   font-size: 2rem;
 }
 
@@ -38,6 +39,7 @@
   font-family: "Nunito", sans-serif;
   color: white;
   margin-top: 40%;
+  margin-bottom: 10px;
   font-size: 1.6rem;
 }
 
@@ -51,6 +53,7 @@
   font-size: 12px;
   font-family: sans-serif;
   color: white;
+  margin-bottom: 10px;
   padding: 0 20px 0 20px;
 }
 
@@ -77,9 +80,9 @@ input:focus {
   margin-top: 5px;
   width: 77px;
   height: 30px;
-  background-color: #f44336;
+  background-color: #ff0028;
   color: white;
-  border: 2px solid #f44336;
+  border: 2px solid #ff0028;
   transition-duration: 0.4s;
   cursor: pointer;
 }
