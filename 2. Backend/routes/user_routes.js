@@ -36,5 +36,7 @@ router.get("/searchUsers/:query", userController.searchUsers);
 
 router.get("/getAllActiveUsers/:userId", userController.getAllActiveUsers);
 
+router.post("/deleteAllMessages", userController.deleteAllMessages);
+
 
 module.exports = router;

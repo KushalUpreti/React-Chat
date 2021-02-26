@@ -224,12 +224,6 @@ async function getAllConversations(req, res, next) {
     res.status(200).json(user);
 }
 
-
-async function deleteConversation(req, res, next) {
-    const request_id = req.body.id;
-
-}
-
 async function addMessageToConversation(req, res, next) {
     if (!validationResult(req).isEmpty()) {
         return next(new HttpError("Input error", 400));
@@ -333,6 +327,7 @@ async function getAllActiveUsers(req, res, next) {
 
     for (let index = 0; index < user.friends.length; index++) {
         const recipient = user.friends[index];
+
         let friend;
         try {
             friend = await User.findOne({ _id: mongoose.Types.ObjectId(recipient) });
@@ -351,6 +346,48 @@ async function getAllActiveUsers(req, res, next) {
     }
     res.json(activeFriends);
 }
+
+async function deleteAllMessages(req, res, next) {
+    const conversation_id = req.body.conversation_id;
+    const userId = req.body.user_id;
+    let conv;
+    try {
+        conv = await Conversation.find({ users: { $elemMatch: { user_id: userId, } }, _id: conversation_id });
+    } catch (error) {
+        console.log(error);
+        return next(new HttpError("Internal error. Try again", 500));
+    }
+    try {
+        await Messaage.deleteMany({ conversation_id: mongoose.Types.ObjectId(conversation_id) });
+    } catch (error) {
+        return next(new HttpError("Error while deleting messages. Try again", 500));
+    }
+    res.status(200).json({ message: "Messages deleted" });
+}
+
+async function deleteConversation(req, res, next) {
+    const conversation_id = req.body.conversation_id;
+    const userId = req.body.user_id;
+    let conv;
+    try {
+        conv = await Conversation.find({ users: { $elemMatch: { user_id: userId, } }, _id: conversation_id });
+    } catch (error) {
+        console.log(error);
+        return next(new HttpError("Internal error. Try again", 500));
+    }
+    try {
+        await Messaage.deleteMany({ conversation_id: mongoose.Types.ObjectId(conversation_id) });
+    } catch (error) {
+        return next(new HttpError("Error while deleting messages. Try again", 500));
+    }
+    try {
+        await Conversation.deleteOne({ conversation_id: mongoose.Types.ObjectId(conversation_id) });
+    } catch (error) {
+        return next(new HttpError("Error while deleting conversation. Try again", 500));
+    }
+    res.status(200).json({ message: "Conversation deleted" });
+}
+
 
 async function activeStatus(userId, socket, emit, active) {
     const user = await User.findOne({ _id: mongoose.Types.ObjectId(userId) });
@@ -374,3 +411,5 @@ exports.getMessages = getMessages;
 exports.searchUsers = searchUsers;
 exports.activeStatus = activeStatus;
 exports.getAllActiveUsers = getAllActiveUsers;
+exports.deleteAllMessages = deleteAllMessages;
+exports.deleteConversation = deleteConversation;

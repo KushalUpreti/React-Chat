@@ -39,7 +39,7 @@ function RightDiv(props) {
 
 
         async function fetchActiveFriends() {
-            const activeFriends = await sendRequest(`http://localhost:8080/user/getAllActiveUsers/${auth.userId}`, "GET", null, null);
+            const activeFriends = await sendRequest(`https://reactchat01.herokuapp.com/user/getAllActiveUsers/${auth.userId}`, "GET", null, null);
             dispatch(addAllActiveUsers(activeFriends.data));
         }
         fetchActiveFriends();
@@ -74,7 +74,7 @@ function RightDiv(props) {
             }
         }
 
-        const newConversation = await sendRequest("http://localhost:8080/user/addOrRemoveFriend", "POST", payload, config);
+        const newConversation = await sendRequest("https://reactchat01.herokuapp.com/user/addOrRemoveFriend", "POST", payload, config);
         dispatch(addNewConversation(newConversation.data));
 
     }

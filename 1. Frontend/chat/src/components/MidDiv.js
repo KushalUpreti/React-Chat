@@ -4,23 +4,24 @@ import { updateConversation } from '../Store/Reducers/conversationSlice';
 import { useLocation, useHistory } from 'react-router-dom';
 import { useHttpClient } from '../hooks/http-hook';
 import { useSocketObject } from '../contexts/socket-context';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { addMessageToConversation, selectMessage, addAllMessages } from '../Store/Reducers/messageReducer';
 import AuthContext from '../contexts/auth-context';
-import Spinner from './UI/Spinner';
 import MessageHeader from './MessageHeader';
 import ConversationHolder from './CoversationHolder';
 import SendMessage from './SendMessage';
 
 function MidDiv() {
     const [messages, setMessages] = useState([]);
-
+    const messageRedux = useSelector(selectMessage);
     const location = useLocation();
     const ref = useRef();
     const history = useHistory();
     const socket = useSocketObject();
     const auth = useContext(AuthContext);
     const dispatch = useDispatch();
-    const { sendRequest, isLoading } = useHttpClient();
+
+    const { sendRequest } = useHttpClient();
 
     const recipient = location.userData.name;
     const recipients = location.userData.recipients;
@@ -32,16 +33,7 @@ function MidDiv() {
             if (incoming.message.conversation_id !== ref.current) {
                 return;
             }
-
-            setMessages((prevState) => {
-                let array = [];
-                if (Object.keys(prevState).length !== 0) {
-                    array = [...prevState];
-                }
-
-                array.push(incoming.message);
-                return array;
-            })
+            dispatch(addMessageToConversation(incoming.message));
         });
     }, [socket])
 
@@ -55,8 +47,8 @@ function MidDiv() {
     }, [location.userData])
 
     async function getMessages(conversationId) {
-
-        const ans = await sendRequest(`http://localhost:8080/user/allMessages/${conversationId}`, "GET", null, null);
+        const ans = await sendRequest(`https://reactchat01.herokuapp.com/user/allMessages/${conversationId}`, "GET", null, null);
+        dispatch(addAllMessages(ans.data));
         setMessages(ans.data);
     }
 
@@ -72,15 +64,7 @@ function MidDiv() {
         }
         socket.emit('send-message', { recipients, messageObject });
 
-        setMessages((prevState) => {
-            let array = [];
-            if (Object.keys(prevState).length !== 0) {
-                array = [...prevState];
-            }
-            array.push(messageObject);
-            return array;
-        })
-
+        dispatch(addMessageToConversation(messageObject));
         dispatch(updateConversation({ message: messageObject }));
 
         const payload = {
@@ -96,7 +80,7 @@ function MidDiv() {
             }
         }
 
-        sendRequest("http://localhost:8080/user/addMessage", "POST", payload, config);
+        sendRequest("https://reactchat01.herokuapp.com/user/addMessage", "POST", payload, config);
 
         const elem = document.querySelector('.dummy');
         elem.scrollIntoView({ behavior: 'smooth' });
@@ -105,12 +89,11 @@ function MidDiv() {
 
 
     return <div className="midDiv">
-        <MessageHeader username={recipient} initials={location.userData.initials} />
-        {!isLoading ? <div className="conversation">
-            <ConversationHolder messages={messages} />
+        <MessageHeader username={recipient} initials={location.userData.initials} convId={conversationId} user_id={auth.userId} />
+        <div className="conversation">
+            <ConversationHolder messages={messageRedux} />
             <SendMessage send={sendMessage} />
-        </div> : <Spinner boxStyle={{ marginTop: "40vh", width: "100px", height: "100px" }} borderStyle={{ width: "50px", height: "50px" }} />
-        }
+        </div>
 
     </div>
 }

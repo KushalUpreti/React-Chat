@@ -30,7 +30,7 @@ function LeftDiv() {
                 Authorization: 'Bearer ' + auth.token,
             }
         }
-        const result = await sendRequest(`http://localhost:8080/user/searchUsers/${text}`, "GET", null, config);
+        const result = await sendRequest(`https://reactchat01.herokuapp.com/user/searchUsers/${text}`, "GET", null, config);
         const newArray = result.data.filter((item) => {
             return item._id !== auth.userId;
         })
@@ -77,7 +77,7 @@ function LeftDiv() {
             }
         }
 
-        const newConversation = await sendRequest("http://localhost:8080/user/addOrRemoveFriend", "POST", payload, config);
+        const newConversation = await sendRequest("https://reactchat01.herokuapp.com/user/addOrRemoveFriend", "POST", payload, config);
         if (!newConversation) { return; }
         dispatch(addNewConversation(newConversation.data));
 
@@ -95,7 +95,7 @@ function LeftDiv() {
             <UserInfo username={username} userId={userId} />
             <div>
                 <SearchBar text={query.text} handler={searchHandler} />
-                {query.searching ? <SearchContainer searches={searchResult} addFriend={addFriendHandler} /> : null}
+                {query.searching ? <SearchContainer searches={searchResult} addFriend={addFriendHandler} search={true} /> : null}
             </div>
 
             <h2 style={{
