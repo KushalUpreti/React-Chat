@@ -1,6 +1,7 @@
 .midDiv {
   flex-grow: 1;
   height: 100%;
+  width: 65%;
   margin: 12px 5px;
 }
 

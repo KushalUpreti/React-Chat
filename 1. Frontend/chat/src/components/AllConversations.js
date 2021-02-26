@@ -40,7 +40,10 @@ function AllConvesations(props) {
         conversationName = conversationName.replace(props.username, "");
         let recipient = conversationName;
         conversationName = conversationName.trim();
-        conversationName = conversationName.slice(0, conversationName.indexOf(" "));
+        let spaceIndex = conversationName.indexOf(" ");
+        if (spaceIndex !== -1) {
+            conversationName = conversationName.slice(0, spaceIndex);
+        }
         if (conversationName.length >= 14) {
             conversationName = conversationName.slice(0, 12) + "..";
         }
@@ -68,18 +71,18 @@ function AllConvesations(props) {
 
     let content = null;
     let counter = 0;
-
-    if (!isLoading & conversationRedux.length > 0) {
+    if (!isLoading && conversationRedux.length > 0) {
         content = conversationRedux.map((item) => {
             const { conversationName, initials, time, path, recipient, conversationId, values, latest_message } = prepareData(item)
             return <ConversationCard key={item.date_created + " " + ++counter} initials={initials} recipient={conversationName}
                 time={time} username={recipient} recipientId={path} convId={conversationId} recipients={values} latest_message={latest_message} />
         });
     }
-    else if (!isLoading & conversationRedux.length === 0) {
+    else if (!isLoading && conversationRedux.length === 0) {
         content = <p style={{ marginTop: "60%", padding: "15px" }}>No conversation made yet!!</p>;
-    } else {
-        content = <Spinner boxStyle={{ marginTop: "40vh", width: "50px", height: "50px" }} borderStyle={{ width: "25px", height: "25px" }} />
+    }
+    else {
+        content = <Spinner boxStyle={{ marginTop: "20vh", width: "50px", height: "50px" }} borderStyle={{ width: "25px", height: "25px" }} />
     }
 
 

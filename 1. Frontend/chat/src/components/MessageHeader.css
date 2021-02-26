@@ -5,6 +5,29 @@
   margin-top: 10px;
   padding: 5px;
   border-radius: 15px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.menuContainer {
+  width: 25px;
+  text-align: center;
+  cursor: pointer;
+  margin-right: 5px;
+  border-radius: 50%;
+}
+
+.menuContainer:hover {
+  background-color: beige;
+}
+
+.menu {
+  width: 6px;
+  height: 6px;
+  margin: 7px auto;
+  border-radius: 50%;
+  background-color: black;
+  box-shadow: 0px 9px 0px black, 0px 18px 0px black;
 }
 
 .recieverInfo {

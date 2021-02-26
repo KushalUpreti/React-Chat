@@ -3,8 +3,6 @@ import Avatar from './Avatar';
 // import { useEffect } from 'react';
 
 function MessageHeader(props) {
-
-
     return <>
         <div className="messageHeader">
             <div className="recieverInfo">
@@ -14,6 +12,10 @@ function MessageHeader(props) {
                     <h5>Last active 5 min ago</h5>
                 </div>
             </div>
+            <div className="menuContainer">
+                <div className="menu"></div>
+            </div>
+
         </div>
     </>
 }
