@@ -24,6 +24,12 @@ const conversationSlice = createSlice({
             newArray.unshift(convo);
             state.conversations = newArray;
         },
+        removeConversation: (state, action) => {
+            state.conversations.filter((item) => {
+                return item._id !== action.payload;
+            })
+            return state;
+        },
 
         loadConversation: (state, action) => {
             state.conversations = action.payload;
@@ -31,11 +37,7 @@ const conversationSlice = createSlice({
     }
 });
 
-export const loadAllConversations = data => async dispatch => {
-
-};
-
-export const { addNewConversation, loadConversation, updateConversation } = conversationSlice.actions;
+export const { addNewConversation, loadConversation, updateConversation, removeConversation } = conversationSlice.actions;
 export const selectConvo = state => state.conversation.conversations;
 
 export default conversationSlice.reducer;

@@ -372,7 +372,6 @@ async function deleteConversation(req, res, next) {
     try {
         conv = await Conversation.find({ users: { $elemMatch: { user_id: userId, } }, _id: conversation_id });
     } catch (error) {
-        console.log(error);
         return next(new HttpError("Internal error. Try again", 500));
     }
     try {
@@ -381,7 +380,7 @@ async function deleteConversation(req, res, next) {
         return next(new HttpError("Error while deleting messages. Try again", 500));
     }
     try {
-        await Conversation.deleteOne({ conversation_id: mongoose.Types.ObjectId(conversation_id) });
+        await Conversation.deleteOne({ _id: mongoose.Types.ObjectId(conversation_id) });
     } catch (error) {
         return next(new HttpError("Error while deleting conversation. Try again", 500));
     }

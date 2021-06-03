@@ -1,10 +1,10 @@
 import { Route } from 'react-router-dom'
 
-import Header from '../components/Header';
-import Container from '../components/Container';
-import LeftDiv from '../components/LeftDiv';
-import MidDiv from '../components/MidDiv';
-import RightDiv from '../components/RightDiv';
+import Header from '../components/Sections/Header/Header';
+import Container from '../components/Container/Container';
+import LeftDiv from '../components/Sections/LeftDiv';
+import MidDiv from '../components/Sections/MidDiv/MidDiv';
+import RightDiv from '../components/Sections/RightDiv';
 
 function Dashboard() {
 

@@ -1,4 +1,4 @@
-import Avatar from './Avatar';
+import Avatar from '../Avatar/Avatar';
 import './ActiveFriends.css'
 
 function ActiveFriends(props) {

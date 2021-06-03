@@ -4,8 +4,8 @@ import { useSocketObject } from '../contexts/socket-context';
 import { useSelector, useDispatch } from 'react-redux';
 import { loadConversation, updateConversation, selectConvo } from '../Store/Reducers/conversationSlice';
 import { getMessageDate } from '../sharedFunctions/sharedFunctions';
-import Spinner from './UI/Spinner';
-import ConversationCard from './ConversationCard';
+import Spinner from './UI/Spinner/Spinner';
+import ConversationCard from './ConversationCard/ConversationCard';
 
 function AllConvesations(props) {
     const conversationRedux = useSelector(selectConvo);

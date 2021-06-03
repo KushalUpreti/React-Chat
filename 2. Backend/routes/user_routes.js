@@ -38,5 +38,7 @@ router.get("/getAllActiveUsers/:userId", userController.getAllActiveUsers);
 
 router.post("/deleteAllMessages", userController.deleteAllMessages);
 
+router.post("/deleteConversation", userController.deleteConversation);
+
 
 module.exports = router;

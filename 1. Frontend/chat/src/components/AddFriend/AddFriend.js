@@ -1,5 +1,5 @@
 import './AddFriend.css';
-import Avatar from './Avatar';
+import Avatar from '../Avatar/Avatar';
 
 function AddFriend(props) {
     return (

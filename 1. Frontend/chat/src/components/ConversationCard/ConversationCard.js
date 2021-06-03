@@ -1,6 +1,6 @@
 import './ConversationCard.css';
 import { NavLink } from 'react-router-dom';
-import Avatar from './Avatar';
+import Avatar from '../Avatar/Avatar';
 
 function ConversationCard(props) {
     let path = `/messages`

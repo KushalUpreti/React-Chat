@@ -1,5 +1,5 @@
 import './SearchContainer.css';
-import AddFriend from './AddFriend';
+import AddFriend from '../AddFriend/AddFriend';
 
 function SearchContainer(props) {
     return (

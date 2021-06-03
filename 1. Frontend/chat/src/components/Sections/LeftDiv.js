@@ -1,13 +1,13 @@
 import { useContext, useState, useEffect, useCallback } from 'react';
-import { useHttpClient } from '../hooks/http-hook';
+import { useHttpClient } from '../../hooks/http-hook';
 import { useDispatch } from 'react-redux';
-import { addNewConversation } from '../Store/Reducers/conversationSlice';
-import EdgeContainer from './EdgeContainer';
-import UserInfo from './UserInfo';
-import SearchBar from './SearchBar';
-import SearchContainer from './SearchContainer';
-import AllConversations from './AllConversations';
-import AuthContext from '../contexts/auth-context';
+import { addNewConversation } from '../../Store/Reducers/conversationSlice';
+import EdgeContainer from '../EdgeContainer/EdgeContainer';
+import UserInfo from '../UserInfo/UserInfo';
+import SearchBar from '../SearchBar/SearchBar';
+import SearchContainer from '../SearchContainer/SearchContainer';
+import AllConversations from '../AllConversations';
+import AuthContext from '../../contexts/auth-context';
 
 function LeftDiv() {
     const auth = useContext(AuthContext);

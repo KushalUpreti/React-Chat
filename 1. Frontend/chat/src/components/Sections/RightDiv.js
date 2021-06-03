@@ -1,15 +1,15 @@
 import { useState, useContext, useEffect } from 'react';
-import { useHttpClient } from '../hooks/http-hook';
+import { useHttpClient } from '../../hooks/http-hook';
 import { useDispatch, useSelector } from 'react-redux';
-import { useSocketObject } from '../contexts/socket-context';
-import AuthContext from '../contexts/auth-context';
-import EdgeContainer from './EdgeContainer';
-import Modal from './UI/Modal';
-import { addNewConversation } from '../Store/Reducers/conversationSlice';
-import { addAllActiveUsers, selectActive, addActiveUser, removeOfflineUser } from '../Store/Reducers/activeUsersSlice';
-import Actions from './Actions';
-import ActiveFriends from './ActiveFriends';
-import Suggested from './Suggested';
+import { useSocketObject } from '../../contexts/socket-context';
+import AuthContext from '../../contexts/auth-context';
+import EdgeContainer from '../EdgeContainer/EdgeContainer';
+import Modal from '../UI/Modal/Modal';
+import { addNewConversation } from '../../Store/Reducers/conversationSlice';
+import { addAllActiveUsers, selectActive, addActiveUser, removeOfflineUser } from '../../Store/Reducers/activeUsersSlice';
+import Actions from '../Actions/Actions';
+import ActiveFriends from '../ActiveFriends/ActiveFriends';
+import Suggested from '../Suggested/Suggested';
 
 function RightDiv(props) {
     const { sendRequest } = useHttpClient();

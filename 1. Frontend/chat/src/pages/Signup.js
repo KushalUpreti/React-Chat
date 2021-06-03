@@ -3,7 +3,7 @@ import { useState, useContext } from 'react';
 import { useHistory } from 'react-router';
 import { useHttpClient } from '../hooks/http-hook';
 import AuthContext from '../contexts/auth-context';
-import Spinner from '../components/UI/Spinner';
+import Spinner from '../components/UI/Spinner/Spinner';
 
 function Signup() {
     const [state, setState] = useState({

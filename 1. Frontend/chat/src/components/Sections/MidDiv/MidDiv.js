@@ -1,15 +1,15 @@
 import './MidDiv.css';
 import { useEffect, useState, useContext, useCallback, useRef } from 'react';
-import { updateConversation } from '../Store/Reducers/conversationSlice';
+import { updateConversation } from '../../../Store/Reducers/conversationSlice';
 import { useLocation, useHistory } from 'react-router-dom';
-import { useHttpClient } from '../hooks/http-hook';
-import { useSocketObject } from '../contexts/socket-context';
+import { useHttpClient } from '../../../hooks/http-hook';
+import { useSocketObject } from '../../../contexts/socket-context';
 import { useDispatch, useSelector } from 'react-redux';
-import { addMessageToConversation, selectMessage, addAllMessages } from '../Store/Reducers/messageReducer';
-import AuthContext from '../contexts/auth-context';
-import MessageHeader from './MessageHeader';
-import ConversationHolder from './CoversationHolder';
-import SendMessage from './SendMessage';
+import { addMessageToConversation, selectMessage, addAllMessages } from '../../../Store/Reducers/messageReducer';
+import AuthContext from '../../../contexts/auth-context';
+import MessageHeader from '../../MessageHeader/MessageHeader';
+import ConversationHolder from '../../ConversationHolder/CoversationHolder';
+import SendMessage from '../../SendMessage/SendMessage';
 
 function MidDiv() {
     const [messages, setMessages] = useState([]);

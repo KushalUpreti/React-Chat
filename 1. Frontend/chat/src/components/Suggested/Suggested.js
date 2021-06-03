@@ -1,5 +1,5 @@
-import Avatar from './Avatar';
-import AddFriend from './AddFriend';
+// import Avatar from './Avatar';
+import AddFriend from '../AddFriend/AddFriend';
 import './Suggested.css'
 
 function Suggested(props) {

@@ -1,7 +1,7 @@
 import './ConversationHolder.css';
-import Message from './Message';
-import AuthContext from '../contexts/auth-context';
-import { getMessageDate } from '../sharedFunctions/sharedFunctions';
+import Message from '../Message/Message';
+import AuthContext from '../../contexts/auth-context';
+import { getMessageDate } from '../../sharedFunctions/sharedFunctions';
 import { useContext } from 'react';
 
 function MessageContainer(props) {
