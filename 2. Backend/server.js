@@ -9,7 +9,6 @@ const io = require('socket.io')(http, {
     },
 });
 
-
 const dotenv = require('dotenv');
 const userRouter = require('./routes/user_routes');
 const HttpError = require('./models/http-error');

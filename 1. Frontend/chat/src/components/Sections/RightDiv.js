@@ -24,22 +24,24 @@ function RightDiv(props) {
     useEffect(() => {
         if (socket !== undefined) {
             socket.on('active', (incoming) => {
-                console.log("Active");
                 dispatch(addActiveUser(incoming));
             });
 
             socket.on('offline', (incoming) => {
-                console.log("off");
                 dispatch(removeOfflineUser(incoming));
             })
         }
     }, [socket])
 
     useEffect(() => {
-
-
         async function fetchActiveFriends() {
-            const activeFriends = await sendRequest(`https://reactchat01.herokuapp.com/user/getAllActiveUsers/${auth.userId}`, "GET", null, null);
+            let config = {
+                headers: {
+                    Authorization: 'Bearer ' + auth.token,
+                    "Content-Type": "application/json",
+                }
+            }
+            const activeFriends = await sendRequest(`http://localhost:8080/user/getAllActiveUsers/${auth.userId}`, "GET",config, null);
             dispatch(addAllActiveUsers(activeFriends.data));
         }
         fetchActiveFriends();
@@ -68,13 +70,14 @@ function RightDiv(props) {
             action: true
         }
         let config = {
+            payload,
             headers: {
                 Authorization: 'Bearer ' + auth.token,
                 "Content-Type": "application/json",
             }
         }
 
-        const newConversation = await sendRequest("https://reactchat01.herokuapp.com/user/addOrRemoveFriend", "POST", payload, config);
+        const newConversation = await sendRequest("http://localhost:8080/user/addOrRemoveFriend", "POST", config, null);
         dispatch(addNewConversation(newConversation.data));
 
     }

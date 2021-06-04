@@ -5,14 +5,13 @@ import { useLocation, useHistory } from 'react-router-dom';
 import { useHttpClient } from '../../../hooks/http-hook';
 import { useSocketObject } from '../../../contexts/socket-context';
 import { useDispatch, useSelector } from 'react-redux';
-import { addMessageToConversation, selectMessage, addAllMessages } from '../../../Store/Reducers/messageReducer';
+import { addMessageToConversation, selectMessage, addAllMessages } from '../../../Store/Reducers/messageSlice';
 import AuthContext from '../../../contexts/auth-context';
 import MessageHeader from '../../MessageHeader/MessageHeader';
 import ConversationHolder from '../../ConversationHolder/CoversationHolder';
 import SendMessage from '../../SendMessage/SendMessage';
 
 function MidDiv() {
-    const [messages, setMessages] = useState([]);
     const messageRedux = useSelector(selectMessage);
     const location = useLocation();
     const ref = useRef();
@@ -47,9 +46,14 @@ function MidDiv() {
     }, [location.userData])
 
     async function getMessages(conversationId) {
-        const ans = await sendRequest(`https://reactchat01.herokuapp.com/user/allMessages/${conversationId}`, "GET", null, null);
+        let config = {
+            headers: {
+                Authorization: 'Bearer ' + auth.token,
+                "Content-Type": "application/json",
+            }
+        }
+        const ans = await sendRequest(`http://localhost:8080/user/allMessages/${conversationId}`, "GET", config, null);
         dispatch(addAllMessages(ans.data));
-        setMessages(ans.data);
     }
 
     const sendMessage = useCallback((e, message) => {
@@ -74,13 +78,14 @@ function MidDiv() {
         }
 
         let config = {
+            payload,
             headers: {
                 Authorization: 'Bearer ' + auth.token,
                 "Content-Type": "application/json",
             }
         }
 
-        sendRequest("https://reactchat01.herokuapp.com/user/addMessage", "POST", payload, config);
+        sendRequest("http://localhost:8080/user/addMessage", "POST", config, null);
 
         const elem = document.querySelector('.dummy');
         elem.scrollIntoView({ behavior: 'smooth' });

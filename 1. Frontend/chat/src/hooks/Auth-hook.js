@@ -17,7 +17,6 @@ export const useAuth = () => {
         });
         setToken(recievedData.token);
 
-
         let obj = {
             token: recievedData.token,
             username: recievedData.username,

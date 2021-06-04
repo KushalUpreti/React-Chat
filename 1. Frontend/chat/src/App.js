@@ -10,13 +10,7 @@ import { BrowserRouter, Switch, Redirect, Route } from 'react-router-dom';
 function App() {
   const { token, userDetails, login, logout } = useAuth();
 
-  let routes = <>
-    <Switch>
-      <Route path="/signup"><Signup /></Route>
-      <Route path="/login"><Login></Login></Route>
-      <Redirect to="/signup"></Redirect>
-    </Switch>
-  </>;
+  let routes=null;
 
   if (token) {
     routes = <>
@@ -29,6 +23,14 @@ function App() {
         <Redirect to="/"></Redirect>
       </Switch>
     </>;
+  }else{
+    routes = <>
+    <Switch>
+      <Route path="/signup"><Signup /></Route>
+      <Route path="/login"><Login/></Route>
+      <Redirect to="/signup"></Redirect>
+    </Switch>
+  </>;
   }
 
 
@@ -39,7 +41,7 @@ function App() {
         login,
         logout,
         token,
-        username: userDetails.username || null,
+        username: userDetails.username || "",
         userId: userDetails.userId || null
       }}>
         <div className="App">

@@ -13,7 +13,7 @@ ReactDOM.render(
     </Provider>
 
   </React.StrictMode>,
-  document.getElementById('root')
+    document.getElementById('root')
 );
 //http://localhost:8080/
 //https://reactchat01.herokuapp.com/

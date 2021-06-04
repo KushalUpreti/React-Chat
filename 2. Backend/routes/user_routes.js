@@ -19,7 +19,7 @@ router.post("/login", [
     check('password').not().isEmpty(),
     check('password').isLength({ min: 5 })], userController.login);
 
-// router.use(authCheck);
+router.use(authCheck);
 
 router.post("/addOrRemoveFriend", userController.addOrRemoveFriend);
 

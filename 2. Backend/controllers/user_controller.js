@@ -109,7 +109,6 @@ async function addOrRemoveFriend(req, res, next) {
     const userId = req.body.id;
     const friendId = req.body.friendId;
     const actionType = req.body.action;
-    let message;
 
     if (userId === friendId) {
         return next(new HttpError("Invalid request. Can't be friend with oneself", 400));
@@ -334,7 +333,6 @@ async function getAllActiveUsers(req, res, next) {
         } catch (error) {
             console.log(error);
         }
-
         if (friend.active === true) {
             const friendObj = {
                 id: friend._id,
@@ -362,6 +360,7 @@ async function deleteAllMessages(req, res, next) {
     } catch (error) {
         return next(new HttpError("Error while deleting messages. Try again", 500));
     }
+    conv.latest_message = "Say Hi to your new friend";
     res.status(200).json({ message: "Messages deleted" });
 }
 

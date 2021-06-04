@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { useHttpClient } from '../hooks/http-hook';
 import { useSocketObject } from '../contexts/socket-context';
 import { useSelector, useDispatch } from 'react-redux';
@@ -6,14 +6,14 @@ import { loadConversation, updateConversation, selectConvo } from '../Store/Redu
 import { getMessageDate } from '../sharedFunctions/sharedFunctions';
 import Spinner from './UI/Spinner/Spinner';
 import ConversationCard from './ConversationCard/ConversationCard';
+import AuthContext from '../contexts/auth-context';
 
 function AllConvesations(props) {
     const conversationRedux = useSelector(selectConvo);
     const dispatch = useDispatch();
-
     const { sendRequest, isLoading } = useHttpClient();
-
     const socket = useSocketObject();
+    const auth = useContext(AuthContext);
 
     useEffect(() => {
         if (socket !== undefined) {
@@ -30,7 +30,13 @@ function AllConvesations(props) {
     }, [])
 
     async function fetchConversation() {
-        const conversations = await sendRequest(`https://reactchat01.herokuapp.com/user/getAllConversations/${props.userId}`, "GET", null, null);
+        let config = {
+            headers: {
+                Authorization: 'Bearer ' + auth.token,
+                "Content-Type": "application/json",
+            }
+        }
+        const conversations = await sendRequest(`http://localhost:8080/user/getAllConversations/${props.userId}`, "GET", config, null);
         dispatch(loadConversation(conversations.data));
     }
 

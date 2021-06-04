@@ -23,11 +23,12 @@ function Login() {
         }
         let config = {
             headers: {
+                Authorization: 'Bearer ' + auth.token,
                 "Content-Type": "application/json",
             }
         }
 
-        const result = await sendRequest("https://reactchat01.herokuapp.com/user/login", "POST", payload, config);
+        const result = await sendRequest("http://localhost:8080/user/login", "POST", payload, config);
         if (!result) { return }
         auth.login(result.data);
     }
@@ -56,7 +57,7 @@ function Login() {
                     <p className="signUpPLogin">Let's go on a journey and connect with people all around the world.</p>
                     <button className="formButton2" onClick={() => { history.push("/signup") }}>Sign Up</button>
                 </div>
-            </div> : <Spinner boxStyle={{ marginTop: "40vh", width: "100px", height: "100px" }} borderStyle={{ width: "50px", height: "50px" }} />
+            </div> : <Spinner outerStyle={{top:"40%", left:"48%"}} style={{width:"70px",height:"70px"}} />
         }
     </>
 }

@@ -21,8 +21,6 @@ const messageSlice = createSlice({
     }
 });
 
-
-
 export const { addMessageToConversation, addAllMessages, removeAllMessages } = messageSlice.actions;
 export const selectMessage = state => state.message.messages;
 

@@ -1,4 +1,4 @@
-import { Route } from 'react-router-dom'
+import { Redirect, Route, Switch } from 'react-router-dom'
 
 import Header from '../components/Sections/Header/Header';
 import Container from '../components/Container/Container';
@@ -12,9 +12,13 @@ function Dashboard() {
         <Header title="React Chat" caption="Keep in touch" />
         <Container>
             <LeftDiv />
-            <Route path="/messages">
+            <Switch>
+            <Route path="/messages" exact>
                 <MidDiv />
             </Route>
+            <Redirect to="/"/>
+            </Switch>
+
             <RightDiv />
         </Container>
     </>;

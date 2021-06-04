@@ -1,17 +1,19 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { useHttpClient } from '../../hooks/http-hook';
 import { useDispatch } from 'react-redux';
-import { removeAllMessages } from '../../Store/Reducers/messageReducer';
+import { removeAllMessages } from '../../Store/Reducers/messageSlice';
 import { removeConversation } from '../../Store/Reducers/conversationSlice';
 import './MessageHeader.css';
 import Avatar from '../Avatar/Avatar';
 import SearchContainer from '../SearchContainer/SearchContainer';
 import Actions from '../Actions/Actions';
+import AuthContext from '../../contexts/auth-context';
 
 function MessageHeader(props) {
     const [menu, setMenu] = useState(false);
     const { sendRequest } = useHttpClient();
     const dispatch = useDispatch();
+    const auth = useContext(AuthContext);
 
     const menuHandler = () => {
         setMenu(prevState => {
@@ -25,11 +27,13 @@ function MessageHeader(props) {
             user_id: props.user_id
         }
         let config = {
+            payload,
             headers: {
+                Authorization: 'Bearer ' + auth.token,
                 "Content-Type": "application/json",
             }
         }
-        await sendRequest("http://localhost:8080/user/deleteAllMessages", "POST", payload, config);
+        await sendRequest("http://localhost:8080/user/deleteAllMessages", "POST", config, null);
         dispatch(removeAllMessages(null));
     }
 
@@ -39,11 +43,13 @@ function MessageHeader(props) {
             user_id: props.user_id
         }
         let config = {
+            payload,
             headers: {
+                Authorization: 'Bearer ' + auth.token,
                 "Content-Type": "application/json",
             }
         }
-        await sendRequest("http://localhost:8080/user/deleteConversation", "POST", payload, config);
+        await sendRequest("http://localhost:8080/user/deleteConversation", "POST", config, null);
         dispatch(removeConversation(props.convId));
     }
 
