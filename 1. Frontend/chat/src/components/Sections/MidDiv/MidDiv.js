@@ -22,9 +22,9 @@ function MidDiv() {
 
     const { sendRequest } = useHttpClient();
 
+    const {recipients,conversationId,id,initials} = location.userData;
     const recipient = location.userData.name;
-    const recipients = location.userData.recipients;
-    const conversationId = location.userData.conversationId;
+
 
 
     useEffect(() => {
@@ -76,16 +76,14 @@ function MidDiv() {
             conversation_id: ref.current,
             sent_by: auth.userId
         }
-
         let config = {
-            payload,
             headers: {
                 Authorization: 'Bearer ' + auth.token,
                 "Content-Type": "application/json",
             }
         }
 
-        sendRequest("http://localhost:8080/user/addMessage", "POST", config, null);
+        sendRequest("http://localhost:8080/user/addMessage", "POST", payload, config);
 
         const elem = document.querySelector('.dummy');
         elem.scrollIntoView({ behavior: 'smooth' });
@@ -94,7 +92,12 @@ function MidDiv() {
 
 
     return <div className="midDiv">
-        <MessageHeader username={recipient} initials={location.userData.initials} convId={conversationId} user_id={auth.userId} />
+        <MessageHeader 
+        username={recipient} 
+        initials={initials} 
+        convId={conversationId} 
+        user_id={auth.userId} 
+        friendId={id}/>
         <div className="conversation">
             <ConversationHolder messages={messageRedux} />
             <SendMessage send={sendMessage} />

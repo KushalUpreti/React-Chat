@@ -8,12 +8,14 @@ import Avatar from '../Avatar/Avatar';
 import SearchContainer from '../SearchContainer/SearchContainer';
 import Actions from '../Actions/Actions';
 import AuthContext from '../../contexts/auth-context';
+import { useHistory } from 'react-router';
 
 function MessageHeader(props) {
     const [menu, setMenu] = useState(false);
     const { sendRequest } = useHttpClient();
     const dispatch = useDispatch();
     const auth = useContext(AuthContext);
+    const history = useHistory();
 
     const menuHandler = () => {
         setMenu(prevState => {
@@ -24,7 +26,8 @@ function MessageHeader(props) {
     const deleteMessage = async () => {
         const payload = {
             conversation_id: props.convId,
-            user_id: props.user_id
+            user_id: props.user_id,
+            friendId:props.friendId
         }
         let config = {
             payload,
@@ -37,21 +40,30 @@ function MessageHeader(props) {
         dispatch(removeAllMessages(null));
     }
 
-    const deleteConversation = async () => {
+    const unfriendUser = async () => {
         const payload = {
             conversation_id: props.convId,
-            user_id: props.user_id
+            user_id: props.user_id,
+            friendId:props.friendId
         }
+        
         let config = {
-            payload,
             headers: {
                 Authorization: 'Bearer ' + auth.token,
                 "Content-Type": "application/json",
             }
         }
-        await sendRequest("http://localhost:8080/user/deleteConversation", "POST", config, null);
+        let result;
+        try {
+            result =  await sendRequest("http://localhost:8080/user/unfriendUser", "POST", payload, config);
+        } catch (error) {
+            console.log(error);
+        }
+        if(!result)return
         dispatch(removeConversation(props.convId));
+        history.push('/');
     }
+
 
     const style = {
         marginBottom: "20px",
@@ -70,10 +82,9 @@ function MessageHeader(props) {
             <div className="menuContainer" onClick={menuHandler}>
                 <div className="menu" ></div>
             </div>
-            {menu ? <SearchContainer searches={[]} style={{ right: "30px", top: "25px", height: "220px" }}>
+            {menu ? <SearchContainer searches={[]} style={{ right: "30px", top: "25px", height: "170px" }}>
                 <Actions action="Delete all messages" class="fas fa-trash-alt" style={style} click={deleteMessage} />
-                <Actions action="Delete this convo" class="fas fa-trash " style={style} click={deleteConversation} />
-                <Actions action="Unfriend user" class="fas fa-user-slash" style={style} />
+                <Actions action="Unfriend user" class="fas fa-user-slash" style={style} click={unfriendUser}/>
                 <Actions action="Block user" class="fas fa-shield-alt" style={style} />
                 <p style={{ color: "red", fontSize: "13px", padding: "0 5px" }}>Warning! No confirmation option will appear</p>
             </SearchContainer> : null}

@@ -67,17 +67,18 @@ function RightDiv(props) {
         const payload = {
             id: auth.userId,
             friendId: text,
-            action: true
         }
         let config = {
-            payload,
             headers: {
                 Authorization: 'Bearer ' + auth.token,
                 "Content-Type": "application/json",
             }
         }
 
-        const newConversation = await sendRequest("http://localhost:8080/user/addOrRemoveFriend", "POST", config, null);
+        const newConversation = await sendRequest("http://localhost:8080/user/addOrRemoveFriend", "POST", payload, config);
+        if(!newConversation.data){
+            return;
+        }
         dispatch(addNewConversation(newConversation.data));
 
     }

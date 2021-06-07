@@ -72,14 +72,13 @@ function LeftDiv() {
             action: true
         }
         let config = {
-            payload,
             headers: {
                 Authorization: 'Bearer ' + auth.token,
                 "Content-Type": "application/json",
             }
         }
 
-        const newConversation = await sendRequest("http://localhost:8080/user/addOrRemoveFriend", "POST", config, null);
+        const newConversation = await sendRequest("http://localhost:8080/user/addOrRemoveFriend", "POST", payload, config);
         if (!newConversation) { return; }
         dispatch(addNewConversation(newConversation.data));
 

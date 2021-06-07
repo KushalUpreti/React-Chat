@@ -88,7 +88,7 @@ function AllConvesations(props) {
         content = <p style={{ marginTop: "60%", padding: "15px" }}>No conversation made yet!!</p>;
     }
     else {
-        content = <Spinner style={{ margin: "20vh 0 0 7vw", width: "50px", height: "50px" }} />
+        content = <Spinner outerStyle={{top:"20%", left:"40%"}} style={{width:"40px",height:"40px", borderWidth:"4px"}} />
     }
 
 

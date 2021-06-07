@@ -9,7 +9,7 @@ module.exports = (req, res, next) => {
     }
     let token;
     try { 
-            token = req.headers.authorization.split(' ')[1];
+        token = req.headers.authorization.split(' ')[1];
         if (!token) {
             throw new HttpError(401, "Authentication error");
         }
@@ -17,6 +17,7 @@ module.exports = (req, res, next) => {
         req.userData = { userId: decodedToken.userId };
         next();
     } catch (err) {
-        return next(new HttpError(401, 'Authentication error'));
+        console.log(err);
+        return next(new HttpError(401, 'Authentication error. Token invalid'));
     }
 }

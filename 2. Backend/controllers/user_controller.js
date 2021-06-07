@@ -105,10 +105,9 @@ async function login(req, res, next) {
 
 
 // Add or remove a friend from the friend list
-async function addOrRemoveFriend(req, res, next) {
+async function addFriend(req, res, next) {
     const userId = req.body.id;
     const friendId = req.body.friendId;
-    const actionType = req.body.action;
 
     if (userId === friendId) {
         return next(new HttpError("Invalid request. Can't be friend with oneself", 400));
@@ -142,24 +141,13 @@ async function addOrRemoveFriend(req, res, next) {
     }
 
     try {
-
-        if (actionType === true) {
             user.friends.push(friendId);
             user.save();
 
             friend.friends.push(userId);
             friend.save();
             message = "Friend added";
-        } else {
-            user.friends.pull(friendId);
-            user.save();
-
-            friend.friends.pull(userId);
-            friend.save();
-            message = "Friend deleted";
-        }
-
-    } catch (error) {
+        } catch (error) {
         return next(new HttpError("Error while adding friend. Try again", 500));
     }
 
@@ -364,15 +352,36 @@ async function deleteAllMessages(req, res, next) {
     res.status(200).json({ message: "Messages deleted" });
 }
 
-async function deleteConversation(req, res, next) {
+async function unfriendUser(req, res, next) {
     const conversation_id = req.body.conversation_id;
     const userId = req.body.user_id;
-    let conv;
+    const friendId = req.body.friendId;
+    
+
+    let user;
     try {
-        conv = await Conversation.find({ users: { $elemMatch: { user_id: userId, } }, _id: conversation_id });
+        user = await User.findById(userId);
     } catch (error) {
-        return next(new HttpError("Internal error. Try again", 500));
+        return next(new HttpError("Internal error while finding the user", 500));
     }
+
+    let friend;
+    try {
+        friend = await User.findById(friendId);
+    } catch (error) {
+        return next(new HttpError("Internal error while finding the friend", 500));
+    }
+
+    try {
+            user.friends.pull(friendId);
+            user.save();
+
+            friend.friends.pull(userId);
+            friend.save();
+    } catch (error) {
+        return next(new HttpError("Error while deleting friend. Try again", 500));
+    }
+
     try {
         await Messaage.deleteMany({ conversation_id: mongoose.Types.ObjectId(conversation_id) });
     } catch (error) {
@@ -383,7 +392,9 @@ async function deleteConversation(req, res, next) {
     } catch (error) {
         return next(new HttpError("Error while deleting conversation. Try again", 500));
     }
-    res.status(200).json({ message: "Conversation deleted" });
+
+
+    res.status(200).json({ message: "User unfriended." });
 }
 
 
@@ -401,7 +412,7 @@ async function activeStatus(userId, socket, emit, active) {
 
 exports.signup = signup;
 exports.login = login;
-exports.addOrRemoveFriend = addOrRemoveFriend;
+exports.addFriend = addFriend;
 exports.createGroup = createGroup;
 exports.getAllConversations = getAllConversations;
 exports.addMessageToConversation = addMessageToConversation;
@@ -410,4 +421,4 @@ exports.searchUsers = searchUsers;
 exports.activeStatus = activeStatus;
 exports.getAllActiveUsers = getAllActiveUsers;
 exports.deleteAllMessages = deleteAllMessages;
-exports.deleteConversation = deleteConversation;
+exports.unfriendUser = unfriendUser;

@@ -21,7 +21,7 @@ router.post("/login", [
 
 router.use(authCheck);
 
-router.post("/addOrRemoveFriend", userController.addOrRemoveFriend);
+router.post("/addOrRemoveFriend", userController.addFriend);
 
 router.post("/createConversation", userController.createGroup);
 
@@ -38,7 +38,7 @@ router.get("/getAllActiveUsers/:userId", userController.getAllActiveUsers);
 
 router.post("/deleteAllMessages", userController.deleteAllMessages);
 
-router.post("/deleteConversation", userController.deleteConversation);
+router.post("/unfriendUser", userController.unfriendUser);
 
 
 module.exports = router;

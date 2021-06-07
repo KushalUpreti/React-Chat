@@ -25,7 +25,7 @@ const conversationSlice = createSlice({
             state.conversations = newArray;
         },
         removeConversation: (state, action) => {
-            state.conversations.filter((item) => {
+            state.conversations = state.conversations.filter((item) => {
                 return item._id !== action.payload;
             })
             return state;

@@ -7,7 +7,12 @@ const messageSlice = createSlice({
     },
     reducers: {
         addMessageToConversation: (state, action) => {
-            state.messages.push(action.payload);
+            if(state.messages.length>0){
+                state.messages.push(action.payload);
+            }else{
+                state.messages = [action.payload]
+            }
+
             return state;
         },
         addAllMessages: (state, action) => {
