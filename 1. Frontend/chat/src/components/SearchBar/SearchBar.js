@@ -1,7 +1,7 @@
 import './SearchBar.css';
 function SearchBar(props) {
     return (
-        <form className="searchbar" onSubmit={props.onSubmit}>
+        <form className="searchbar" onSubmit={props.onSubmit} style={props.formStyle}>
             <input
                 type="search"
                 placeholder={props.placeholder}

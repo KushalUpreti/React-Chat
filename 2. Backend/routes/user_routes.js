@@ -47,4 +47,6 @@ router.post("/createGroup", [
     check('admin_id').not().isEmpty(),
 ], userController.createGroup);
 
+router.get("/getAllFriends", userController.getAllFriends);
+
 module.exports = router;

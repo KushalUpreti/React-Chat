@@ -119,7 +119,7 @@ async function login(req, res, next) {
 }
 
 async function addFriend(req, res, next) {
-    const userId = req.body.id;
+    const userId = req.userData.userId;
     const friendId = req.body.friendId;
 
     if (userId === friendId) {
@@ -468,6 +468,31 @@ async function activeStatus(userId, socket, emit, active) {
     );
 }
 
+const getAllFriends = async (req, res, next) => {
+    const userId = req.userData.userId;
+    let user;
+    try {
+        user = await User.findById(userId);
+    } catch (error) {
+        return next(new HttpError("Internal error while finding the user", 500));
+    }
+
+    const friendArray = [...user.friends];
+    const friendObject = [];
+
+    for (let i = 0; i < friendArray.length; i++) {
+        let friend;
+        try {
+            friend = await User.findById(friendArray[i]);
+        } catch (error) {
+            return next(new HttpError("Internal error while finding the user", 500));
+        }
+        const newObj = { ...friend._doc };
+        friendObject.push({ username: newObj.username, id: newObj._id });
+    }
+    res.json(friendObject);
+}
+
 exports.signup = signup;
 exports.login = login;
 exports.addFriend = addFriend;
@@ -480,3 +505,4 @@ exports.activeStatus = activeStatus;
 exports.getAllActiveUsers = getAllActiveUsers;
 exports.deleteAllMessages = deleteAllMessages;
 exports.unfriendUser = unfriendUser;
+exports.getAllFriends = getAllFriends;

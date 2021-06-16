@@ -11,6 +11,7 @@ import Actions from '../Actions/Actions';
 import ActiveFriends from '../ActiveFriends/ActiveFriends';
 import Suggested from '../Suggested/Suggested';
 import AddFriendForm from '../AddFriendForm/AddFriendForm';
+import Group from '../../pages/GroupComponent/Group';
 
 function RightDiv(props) {
     const { sendRequest } = useHttpClient();
@@ -18,7 +19,8 @@ function RightDiv(props) {
     const auth = useContext(AuthContext);
     const dispatch = useDispatch();
 
-    const [modal, setModal] = useState(false);
+    const [modalAddFriend, setModalAddName] = useState(false);
+    const [modalCreateGroup, setModalCreateGroup] = useState(false);
     const [text, setText] = useState("");
     const activeRedux = useSelector(selectActive);
 
@@ -50,7 +52,7 @@ function RightDiv(props) {
 
 
     const addFriendHandler = () => {
-        setModal(true);
+        setModalAddName(true);
     }
 
     const onTypeHandler = (e) => {
@@ -59,14 +61,13 @@ function RightDiv(props) {
 
     const onAddFormSubmit = async (e) => {
         e.preventDefault();
-        closeModalHandler();
+        setModalAddName(false);
         if (!text) { return; }
         if (text === auth.userId) {
             console.log("Invalid Id");
             return;
         }
         const payload = {
-            id: auth.userId,
             friendId: text,
         }
         let config = {
@@ -85,18 +86,29 @@ function RightDiv(props) {
     }
 
     const createGroupHandler = () => {
-
-    }
-
-    const closeModalHandler = () => {
-        setModal(false);
+        setModalCreateGroup(true);
     }
 
 
     return (
         <EdgeContainer margin="10px 12px 12px 5px">
-            {modal ? <Modal show={modal} hide={closeModalHandler}>
-                <AddFriendForm onAddFormSubmit={onAddFormSubmit} onTypeHandler={onTypeHandler} text={text} />
+            {modalAddFriend ? <Modal
+                show={modalAddFriend}
+                hide={() => { setModalAddName(false); }}
+                style={{ height: "30%", top: "20vh" }}>
+
+                <AddFriendForm
+                    onAddFormSubmit={onAddFormSubmit}
+                    onTypeHandler={onTypeHandler}
+                    text={text} />
+            </Modal> : null}
+
+
+            {modalCreateGroup ? <Modal
+                show={modalCreateGroup}
+                hide={() => { setModalCreateGroup(false); }}
+                style={{ height: "80%", top: "10vh" }}>
+                <Group />
             </Modal> : null}
 
             <Actions action="Add Friend" class="fa fa-user-plus" style={{ margin: "15px 5px 0 5px" }} click={addFriendHandler} />

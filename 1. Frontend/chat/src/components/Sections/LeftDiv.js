@@ -40,7 +40,10 @@ function LeftDiv() {
     }, [sendRequest])
 
     useEffect(() => {
-        if (query.text.length === 0) { return }
+        if (query.text.length === 0) {
+            setSearchResult([]);
+            return
+        }
         downloadSearchData(query.text);
     }, [query, downloadSearchData])
 
@@ -67,7 +70,6 @@ function LeftDiv() {
         }
 
         const payload = {
-            id: userId,
             friendId,
             action: true
         }
