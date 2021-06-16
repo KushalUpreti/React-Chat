@@ -47,7 +47,7 @@ function AllConvesations(props) {
         let recipient = conversationName;
         conversationName = conversationName.trim();
         let spaceIndex = conversationName.indexOf(" ");
-        if (spaceIndex !== -1) {
+        if (spaceIndex !== -1 && item.users.length < 3) {
             conversationName = conversationName.slice(0, spaceIndex);
         }
         if (conversationName.length >= 14) {
@@ -68,9 +68,6 @@ function AllConvesations(props) {
         }).pop();
 
         let latest_message = item.latest_message;
-        if (latest_message === null) {
-            latest_message = "Say hi to your new friend";
-        }
 
         return { conversationName, time, initials, path, recipient, conversationId, values, latest_message };
     }
@@ -88,7 +85,7 @@ function AllConvesations(props) {
         content = <p style={{ marginTop: "60%", padding: "15px" }}>No conversation made yet!!</p>;
     }
     else {
-        content = <Spinner outerStyle={{top:"20%", left:"40%"}} style={{width:"40px",height:"40px", borderWidth:"4px"}} />
+        content = <Spinner outerStyle={{ top: "20%", left: "40%" }} style={{ width: "40px", height: "40px", borderWidth: "4px" }} />
     }
 
 

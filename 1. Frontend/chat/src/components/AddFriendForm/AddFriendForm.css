@@ -1,0 +1,36 @@
+.containForm {
+  text-align: left;
+  margin-left: 20%;
+}
+
+.idForm {
+  margin-top: 20px;
+}
+
+.idForm input {
+  margin-right: 10px;
+  margin-bottom: 10px;
+  width: 53%;
+  padding-left: 10px;
+  height: 30px;
+  outline: 0;
+  border: solid;
+  border-width: 0;
+  background-color: #e6e6e6;
+}
+
+.submitId {
+  margin-top: 5px;
+  width: 77px;
+  height: 30px;
+  background-color: #f44336;
+  color: white;
+  border: 2px solid #f44336;
+  transition-duration: 0.4s;
+  cursor: pointer;
+}
+
+.submitId:hover {
+  background-color: white;
+  color: #f44336;
+}

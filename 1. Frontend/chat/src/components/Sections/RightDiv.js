@@ -10,6 +10,7 @@ import { addAllActiveUsers, selectActive, addActiveUser, removeOfflineUser } fro
 import Actions from '../Actions/Actions';
 import ActiveFriends from '../ActiveFriends/ActiveFriends';
 import Suggested from '../Suggested/Suggested';
+import AddFriendForm from '../AddFriendForm/AddFriendForm';
 
 function RightDiv(props) {
     const { sendRequest } = useHttpClient();
@@ -41,7 +42,7 @@ function RightDiv(props) {
                     "Content-Type": "application/json",
                 }
             }
-            const activeFriends = await sendRequest(`http://localhost:8080/user/getAllActiveUsers/${auth.userId}`, "GET",config, null);
+            const activeFriends = await sendRequest(`http://localhost:8080/user/getAllActiveUsers/${auth.userId}`, "GET", config, null);
             dispatch(addAllActiveUsers(activeFriends.data));
         }
         fetchActiveFriends();
@@ -76,7 +77,7 @@ function RightDiv(props) {
         }
 
         const newConversation = await sendRequest("http://localhost:8080/user/addOrRemoveFriend", "POST", payload, config);
-        if(!newConversation.data){
+        if (!newConversation.data) {
             return;
         }
         dispatch(addNewConversation(newConversation.data));
@@ -94,7 +95,9 @@ function RightDiv(props) {
 
     return (
         <EdgeContainer margin="10px 12px 12px 5px">
-            {modal ? <Modal show={modal} hide={closeModalHandler} submit={onAddFormSubmit} type={onTypeHandler} textValue={text} /> : null}
+            {modal ? <Modal show={modal} hide={closeModalHandler}>
+                <AddFriendForm onAddFormSubmit={onAddFormSubmit} onTypeHandler={onTypeHandler} text={text} />
+            </Modal> : null}
 
             <Actions action="Add Friend" class="fa fa-user-plus" style={{ margin: "15px 5px 0 5px" }} click={addFriendHandler} />
             <Actions action="Create Group" class="fa fa-users" style={{ margin: "10px 5px 0 5px" }} click={createGroupHandler} />

@@ -2,15 +2,15 @@ import './App.css';
 import SocketProvider from './contexts/socket-context';
 import { useAuth } from './hooks/Auth-hook';
 import AuthContext from "./contexts/auth-context";
-import Signup from "./pages/Signup";
-import Login from './pages/Login';
+import Signup from "./pages/Signup/Signup";
+import Login from './pages/Login/Login';
 import Dashboard from './pages/Dashboard';
 import { BrowserRouter, Switch, Redirect, Route } from 'react-router-dom';
 
 function App() {
   const { token, userDetails, login, logout } = useAuth();
 
-  let routes=null;
+  let routes = null;
 
   if (token) {
     routes = <>
@@ -23,14 +23,14 @@ function App() {
         <Redirect to="/"></Redirect>
       </Switch>
     </>;
-  }else{
+  } else {
     routes = <>
-    <Switch>
-      <Route path="/signup"><Signup /></Route>
-      <Route path="/login"><Login/></Route>
-      <Redirect to="/signup"></Redirect>
-    </Switch>
-  </>;
+      <Switch>
+        <Route path="/signup"><Signup /></Route>
+        <Route path="/login"><Login /></Route>
+        <Redirect to="/signup"></Redirect>
+      </Switch>
+    </>;
   }
 
 

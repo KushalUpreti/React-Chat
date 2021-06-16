@@ -1,0 +1,77 @@
+.createGroup {
+  width: 40%;
+  margin: 0 auto;
+}
+
+.title {
+  text-align: center;
+  font-family: "Merriweather Sans", sans-serif;
+  margin-bottom: 20px;
+}
+
+.createGroup p {
+  display: inline;
+}
+
+.createGroup input[type="checkbox"] {
+  transform: scale(1.4);
+}
+
+.createGroup input[type="checkbox"]:checked {
+  filter: invert();
+}
+
+.searchbar {
+  width: 100%;
+  height: 30px;
+  border-radius: 40px;
+  border: solid 0;
+  text-align: center;
+  box-shadow: rgb(0 0 0 / 12%) 0px 1px 3px, rgb(0 0 0 / 24%) 0px 1px 2px;
+  margin-bottom: 10px;
+}
+
+.searchbar:nth-child(2) {
+  margin-bottom: 30px;
+}
+
+.searchbar:focus {
+  outline: none;
+}
+
+.friendItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 5px;
+}
+
+.friendItem p {
+  font-family: "Merriweather Sans", sans-serif;
+}
+
+.friendList {
+  max-height: 40vh;
+  overflow-y: scroll;
+  margin: 10px 0;
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+}
+
+.createBtn {
+  margin: 0 10px 0 5px;
+  width: 60px;
+  height: 38px;
+  background-color: #ff0028;
+  color: white;
+  border: 2px solid #ff0028;
+  transition-duration: 0.4s;
+  cursor: pointer;
+  font-size: 1rem;
+  padding-right: 55px;
+  float: right;
+}
+
+.createBtn:hover {
+  background-color: white;
+  color: #ff0028;
+}

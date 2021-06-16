@@ -27,8 +27,10 @@ router.post("/createConversation", userController.createGroup);
 
 router.get("/getAllConversations/:id", userController.getAllConversations);
 
-router.post("/addMessage", [check('message').not().isEmpty(),
-check('message').isLength({ min: 1 })], userController.addMessageToConversation);
+router.post("/addMessage", [
+    check('message').not().isEmpty(),
+    check('message').isLength({ min: 1 })
+], userController.addMessageToConversation);
 
 router.get("/allMessages/:convId", userController.getMessages);
 
@@ -40,5 +42,9 @@ router.post("/deleteAllMessages", userController.deleteAllMessages);
 
 router.post("/unfriendUser", userController.unfriendUser);
 
+router.post("/createGroup", [
+    check('conversation_name').isLength({ min: 3 }),
+    check('admin_id').not().isEmpty(),
+], userController.createGroup);
 
 module.exports = router;

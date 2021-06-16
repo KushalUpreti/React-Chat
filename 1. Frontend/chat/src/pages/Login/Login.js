@@ -1,9 +1,9 @@
 import './Login.css';
 import { useState, useContext } from 'react';
 import { useHistory } from 'react-router';
-import { useHttpClient } from '../hooks/http-hook';
-import AuthContext from '../contexts/auth-context';
-import Spinner from '../components/UI/Spinner/Spinner';
+import { useHttpClient } from '../../hooks/http-hook';
+import AuthContext from '../../contexts/auth-context';
+import Spinner from '../../components/UI/Spinner/Spinner';
 
 function Login() {
     const [state, setState] = useState({
@@ -57,7 +57,7 @@ function Login() {
                     <p className="signUpPLogin">Let's go on a journey and connect with people all around the world.</p>
                     <button className="formButton2" onClick={() => { history.push("/signup") }}>Sign Up</button>
                 </div>
-            </div> : <Spinner outerStyle={{top:"40%", left:"48%"}} style={{width:"70px",height:"70px"}} />
+            </div> : <Spinner outerStyle={{ top: "40%", left: "48%" }} style={{ width: "70px", height: "70px" }} />
         }
     </>
 }

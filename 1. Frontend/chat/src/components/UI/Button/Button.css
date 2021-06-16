@@ -1,0 +1,11 @@
+.button {
+  margin: 0 10px 0 5px;
+  width: 60px;
+  height: 38px;
+  background-color: #ff0028;
+  color: white;
+  border: 2px solid #ff0028;
+  transition-duration: 0.4s;
+  cursor: pointer;
+  font-size: 1rem;
+}

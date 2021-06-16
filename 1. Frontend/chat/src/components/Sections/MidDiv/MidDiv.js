@@ -22,7 +22,7 @@ function MidDiv() {
 
     const { sendRequest } = useHttpClient();
 
-    const {recipients,conversationId,id,initials} = location.userData;
+    const { recipients, conversationId, id, initials } = location.userData;
     const recipient = location.userData.name;
 
 
@@ -53,16 +53,18 @@ function MidDiv() {
             }
         }
         const ans = await sendRequest(`http://localhost:8080/user/allMessages/${conversationId}`, "GET", config, null);
+        // console.log(ans.data[0].username);
         dispatch(addAllMessages(ans.data));
     }
 
     const sendMessage = useCallback((e, message) => {
         e.preventDefault();
 
-        if (message.length === 0) { return; }
+        if (message.trim().length === 0) { return; }
         let messageObject = {
             conversation_id: conversationId,
             message,
+            username: auth.username,
             sent_by: auth.userId,
             sent_date: new Date()
         }
@@ -92,12 +94,12 @@ function MidDiv() {
 
 
     return <div className="midDiv">
-        <MessageHeader 
-        username={recipient} 
-        initials={initials} 
-        convId={conversationId} 
-        user_id={auth.userId} 
-        friendId={id}/>
+        <MessageHeader
+            username={recipient}
+            initials={initials}
+            convId={conversationId}
+            user_id={auth.userId}
+            friendId={id} />
         <div className="conversation">
             <ConversationHolder messages={messageRedux} />
             <SendMessage send={sendMessage} />

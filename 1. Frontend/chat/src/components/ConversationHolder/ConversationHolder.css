@@ -12,6 +12,7 @@
 }
 
 .messageContainer {
+  padding: 5px 0 0 10px;
   display: flex;
   margin: 1px;
   height: fit-content;

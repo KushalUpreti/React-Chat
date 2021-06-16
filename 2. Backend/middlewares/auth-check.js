@@ -8,7 +8,7 @@ module.exports = (req, res, next) => {
         return next();
     }
     let token;
-    try { 
+    try {
         token = req.headers.authorization.split(' ')[1];
         if (!token) {
             throw new HttpError(401, "Authentication error");

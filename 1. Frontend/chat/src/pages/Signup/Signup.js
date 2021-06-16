@@ -1,9 +1,9 @@
 import './Signup.css';
 import { useState, useContext } from 'react';
 import { useHistory } from 'react-router';
-import { useHttpClient } from '../hooks/http-hook';
-import AuthContext from '../contexts/auth-context';
-import Spinner from '../components/UI/Spinner/Spinner';
+import { useHttpClient } from '../../hooks/http-hook';
+import AuthContext from '../../contexts/auth-context';
+import Spinner from '../../components/UI/Spinner/Spinner';
 
 function Signup() {
     const [state, setState] = useState({

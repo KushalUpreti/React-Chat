@@ -95,7 +95,12 @@ function LeftDiv() {
         <EdgeContainer margin="12px 5px 12px 0">
             <UserInfo username={username} userId={userId} />
             <div>
-                <SearchBar text={query.text} handler={searchHandler} />
+                <SearchBar
+                    value={query}
+                    text={query.text}
+                    handler={searchHandler}
+                    placeholder="Search Users"
+                    onSubmit={(e) => { e.preventDefault(); }} />
                 {query.searching ? <SearchContainer searches={searchResult} addFriend={addFriendHandler} search={true} /> : null}
             </div>
 
