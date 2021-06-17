@@ -15,6 +15,9 @@ const conversationSlice = createSlice({
             const index = state.conversations.findIndex((item) => {
                 return item._id === action.payload.message.conversation_id;
             })
+            if (index < 0) {
+                return state;
+            }
             const convo = state.conversations[index];
             convo.latest_message_date = new Date() + "";
             convo.latest_message = action.payload.message.message;

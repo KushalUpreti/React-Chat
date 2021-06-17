@@ -56,6 +56,10 @@ io.on("connection", (socket) => {
         })
     })
 
+    socket.on('add-conversation', ({ recipients, messageObject }) => {
+
+    })
+
     socket.on('disconnect', function () {
         userController.activeStatus(socket.handshake.query.id, socket, 'offline', false);
     });

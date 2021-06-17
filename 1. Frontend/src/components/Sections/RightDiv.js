@@ -107,8 +107,8 @@ function RightDiv(props) {
             {modalCreateGroup ? <Modal
                 show={modalCreateGroup}
                 hide={() => { setModalCreateGroup(false); }}
-                style={{ height: "80%", top: "10vh" }}>
-                <Group />
+                style={{ height: "82%", top: "9vh" }}>
+                <Group hide={() => { setModalCreateGroup(false); }} />
             </Modal> : null}
 
             <Actions action="Add Friend" class="fa fa-user-plus" style={{ margin: "15px 5px 0 5px" }} click={addFriendHandler} />

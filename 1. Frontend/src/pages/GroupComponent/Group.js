@@ -4,21 +4,24 @@ import SearchBar from '../../components/SearchBar/SearchBar';
 import Button from '../../components/UI/Button/Button';
 import AuthContext from '../../contexts/auth-context';
 import { useHttpClient } from '../../hooks/http-hook';
+import { useDispatch } from 'react-redux';
+import { addNewConversation } from '../../Store/Reducers/conversationSlice';
 
 function FriendItem(props) {
     return <div class="friendItem">
         <p>{props.username}</p>
-        <input type="checkbox" onChange={props.checkHandler} checked={props.checked} />
+        <input type="checkbox" onChange={props.checkHandler} checked={props.checked || false} />
     </div>
 }
 
-export default function Group() {
+export default function Group(props) {
     const [groupName, setGroupName] = useState("");
     const [search, setSearch] = useState("");
     const [searchResult, setSearchResult] = useState([]);
     const [checkedFriends, setCheckedFriends] = useState([]);
 
     const auth = useContext(AuthContext);
+    const dispatch = useDispatch();
     const { sendRequest } = useHttpClient();
 
     useEffect(() => {
@@ -54,11 +57,11 @@ export default function Group() {
                 "Content-Type": "application/json",
             }
         }
-        const result = await sendRequest(`http://localhost:8080/user/searchUsers/${text}`, "GET", config, null);
-        const newArray = result.data.filter((item) => {
-            return item._id !== auth.userId;
-        })
-        setSearchResult(newArray);
+        // const result = await sendRequest(`http://localhost:8080/user/searchUsers/${text}`, "GET", config, null);
+        // const newArray = result.data.filter((item) => {
+        //     return item._id !== auth.userId;
+        // })
+        // setSearchResult(newArray);
 
     }, [sendRequest])
 
@@ -72,14 +75,39 @@ export default function Group() {
         const result = await sendRequest(`http://localhost:8080/user/getAllFriends`, "GET", config, config);
         if (!result) { return; }
         setSearchResult(result.data);
-
     }
 
-    const createGroup = () => {
+    const removeCommonElement = (data) => {
+        let newArray = [...data];
+
+        newArray.forEach((element, index) => {
+            checkedFriends.forEach(checked => {
+                if (element.id === checked.id) {
+                    newArray.splice(index, 1);
+                }
+            });
+        });
+        return newArray;
+    }
+
+    const createGroup = async () => {
         if (groupName.trim().length === 0 || checkedFriends.length === 0) {
             return;
         }
-
+        let payload = {
+            conversation_name: groupName,
+            users: checkedFriends.map(item => { return item.id })
+        }
+        let config = {
+            headers: {
+                Authorization: 'Bearer ' + auth.token,
+                "Content-Type": "application/json"
+            }
+        }
+        const result = await sendRequest(`http://localhost:8080/user/createGroup`, "POST", payload, config);
+        if (!result) { return }
+        dispatch(addNewConversation(result.data));
+        props.hide();
     }
 
     useEffect(() => {
@@ -108,9 +136,15 @@ export default function Group() {
         <SearchBar
             formStyle={{ margin: "0", padding: "5px 0" }}
             style={{ width: "100%" }}
-            placeholder="Search Friends."
+            placeholder="Search Friends. Coming soon."
             text={search}
-            handler={searchHandler} />
+            handler={searchHandler}
+            disabled
+        />
+
+        <div className="friendPara">
+            <p >Friends</p>
+        </div>
 
         <section class="friendList">
             {search.length === 0 ? checkedFriends.map((item) => {
@@ -124,18 +158,21 @@ export default function Group() {
             }) : null}
 
             {searchResult.map((item) => {
-                if (checkedFriends.find(checkedItem => {
-                    return item.id === checkedItem.id;
-                })) {
-                    return null;
-                }
-                return <FriendItem
-                    username={item.username}
-                    key={item._id}
-                    checkHandler={(e) => { checkedHandler(e, item) }
-
+                let valid = true;
+                checkedFriends.forEach(checked => {
+                    if (item.id === checked.id || item._id === checked.id) {
+                        valid = false;
                     }
-                />
+                });
+                if (valid) {
+                    return <FriendItem
+                        username={item.username}
+                        key={item._id}
+                        checkHandler={(e) => { checkedHandler(e, item) }
+
+                        }
+                    />
+                } else { return null; }
             })}
         </section>
         <div className="buttonContainer">

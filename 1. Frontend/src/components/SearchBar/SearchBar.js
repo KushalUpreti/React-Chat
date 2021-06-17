@@ -8,6 +8,7 @@ function SearchBar(props) {
                 value={props.text || ""}
                 onChange={props.handler}
                 style={props.style || null}
+                disabled={props.disabled}
             />
         </form>
     )

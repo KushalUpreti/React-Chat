@@ -181,13 +181,14 @@ async function addFriend(req, res, next) {
 
 async function createGroup(req, res, next) {
     const conversation_name = req.body.conversation_name;
-    const admin_id = mongoose.Types.ObjectId(req.body.admin_id);
+    const admin_id = req.userData.userId;
     const users = req.body.users; //id of all users in the conversation.
+    users.push(admin_id);
 
     const returnedVal = createConvo(conversation_name, users, admin_id, next);
     returnedVal.then(item => {
         if (item !== undefined) {
-            res.json({ message: "Group Added" })
+            res.json(item);
         }
     });
 }
