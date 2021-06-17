@@ -8,11 +8,14 @@ import SearchBar from '../SearchBar/SearchBar';
 import SearchContainer from '../SearchContainer/SearchContainer';
 import AllConversations from '../AllConversations';
 import AuthContext from '../../contexts/auth-context';
+import { useSocketObject } from '../../contexts/socket-context';
+
 
 function LeftDiv() {
     const auth = useContext(AuthContext);
     const { sendRequest } = useHttpClient();
     const dispatch = useDispatch();
+    const socket = useSocketObject();
 
     const [query, setQuery] = useState({
         text: "",
@@ -23,6 +26,14 @@ function LeftDiv() {
 
     const username = auth.username;
     const userId = auth.userId;
+
+    useEffect(() => {
+        if (socket !== undefined) {
+            socket.on('recieve-conversation', (incoming) => {
+                dispatch(addNewConversation(incoming));
+            });
+        }
+    }, [socket])
 
     const downloadSearchData = useCallback(async (text) => {
         let config = {
@@ -82,7 +93,9 @@ function LeftDiv() {
 
         const newConversation = await sendRequest("http://localhost:8080/user/addOrRemoveFriend", "POST", payload, config);
         if (!newConversation) { return; }
+
         dispatch(addNewConversation(newConversation.data));
+        socket.emit('add-conversation', { recipients: [friendId], conversationObj: newConversation.data });
 
         setSearchResult(prevState => {
             const array = [...prevState];

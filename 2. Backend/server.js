@@ -56,8 +56,11 @@ io.on("connection", (socket) => {
         })
     })
 
-    socket.on('add-conversation', ({ recipients, messageObject }) => {
-
+    socket.on('add-conversation', ({ recipients, conversationObj }) => {
+        const newRecipients = recipients.filter(r => r !== id);
+        newRecipients.forEach(recipient => {
+            socket.broadcast.to(recipient).emit('recieve-conversation', conversationObj);
+        })
     })
 
     socket.on('disconnect', function () {

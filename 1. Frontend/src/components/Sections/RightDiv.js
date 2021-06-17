@@ -81,8 +81,8 @@ function RightDiv(props) {
         if (!newConversation.data) {
             return;
         }
+        socket.emit('add-conversation', { recipients: [text], conversationObj: newConversation });
         dispatch(addNewConversation(newConversation.data));
-
     }
 
     const createGroupHandler = () => {
