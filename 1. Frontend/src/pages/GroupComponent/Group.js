@@ -6,6 +6,7 @@ import AuthContext from '../../contexts/auth-context';
 import { useHttpClient } from '../../hooks/http-hook';
 import { useDispatch } from 'react-redux';
 import { addNewConversation } from '../../Store/Reducers/conversationSlice';
+import { useSocketObject } from '../../contexts/socket-context';
 
 function FriendItem(props) {
     return <div class="friendItem">
@@ -23,6 +24,7 @@ export default function Group(props) {
     const auth = useContext(AuthContext);
     const dispatch = useDispatch();
     const { sendRequest } = useHttpClient();
+    const socket = useSocketObject();
 
     useEffect(() => {
         getAllFriends();
@@ -107,6 +109,10 @@ export default function Group(props) {
         const result = await sendRequest(`http://localhost:8080/user/createGroup`, "POST", payload, config);
         if (!result) { return }
         dispatch(addNewConversation(result.data));
+        socket.emit('add-conversation', {
+            recipients: checkedFriends.map(item => { return item.id }),
+            conversationObj: result.data
+        });
         props.hide();
     }
 
