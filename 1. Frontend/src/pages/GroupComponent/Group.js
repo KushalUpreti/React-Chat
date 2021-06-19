@@ -59,7 +59,7 @@ export default function Group(props) {
                 "Content-Type": "application/json",
             }
         }
-        // const result = await sendRequest(`http://localhost:8080/user/searchUsers/${text}`, "GET", config, null);
+        // const result = await sendRequest(`https://reactchat01.herokuapp.com/user/searchUsers/${text}`, "GET", config, null);
         // const newArray = result.data.filter((item) => {
         //     return item._id !== auth.userId;
         // })
@@ -74,7 +74,7 @@ export default function Group(props) {
                 "Content-Type": "application/json",
             }
         }
-        const result = await sendRequest(`http://localhost:8080/user/getAllFriends`, "GET", config, config);
+        const result = await sendRequest(`https://reactchat01.herokuapp.com/user/getAllFriends`, "GET", config, config);
         if (!result) { return; }
         setSearchResult(result.data);
     }
@@ -93,7 +93,7 @@ export default function Group(props) {
     }
 
     const createGroup = async () => {
-        if (groupName.trim().length === 0 || checkedFriends.length === 0) {
+        if (groupName.trim().length === 0 || checkedFriends.length < 2) {
             return;
         }
         let payload = {
@@ -106,7 +106,7 @@ export default function Group(props) {
                 "Content-Type": "application/json"
             }
         }
-        const result = await sendRequest(`http://localhost:8080/user/createGroup`, "POST", payload, config);
+        const result = await sendRequest(`https://reactchat01.herokuapp.com/user/createGroup`, "POST", payload, config);
         if (!result) { return }
         dispatch(addNewConversation(result.data));
         socket.emit('add-conversation', {
@@ -149,7 +149,7 @@ export default function Group(props) {
         />
 
         <div className="friendPara">
-            <p >Friends</p>
+            <p>Friends</p>
         </div>
 
         <section class="friendList">

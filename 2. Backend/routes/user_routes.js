@@ -49,4 +49,8 @@ router.post("/createGroup", [
 
 router.get("/getAllFriends", userController.getAllFriends);
 
+router.post("/deleteGroup", [check('conversation_id').not().isEmpty()], userController.deleteGroup);
+
+router.post("/leaveGroup", [check('conversation_id').not().isEmpty()], userController.leaveGroup);
+
 module.exports = router;

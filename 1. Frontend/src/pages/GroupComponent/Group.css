@@ -41,13 +41,12 @@
 .friendList {
   height: 40vh;
   overflow-y: scroll;
-  margin: 10px 0;
-  box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
-  padding: 10px 0;
+  /* box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px; */
 }
 
 .buttonContainer {
   display: flex;
+  margin-top: 15px;
   justify-content: flex-end;
 }
 
@@ -55,4 +54,5 @@
   display: flex;
   justify-content: flex-start;
   padding: 5px;
+  margin-top: 10px;
 }

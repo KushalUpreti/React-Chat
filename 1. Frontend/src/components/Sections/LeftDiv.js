@@ -42,7 +42,7 @@ function LeftDiv() {
                 "Content-Type": "application/json",
             }
         }
-        const result = await sendRequest(`http://localhost:8080/user/searchUsers/${text}`, "GET", config, null);
+        const result = await sendRequest(`https://reactchat01.herokuapp.com/user/searchUsers/${text}`, "GET", config, null);
         const newArray = result.data.filter((item) => {
             return item._id !== auth.userId;
         })
@@ -91,7 +91,7 @@ function LeftDiv() {
             }
         }
 
-        const newConversation = await sendRequest("http://localhost:8080/user/addOrRemoveFriend", "POST", payload, config);
+        const newConversation = await sendRequest("https://reactchat01.herokuapp.com/user/addOrRemoveFriend", "POST", payload, config);
         if (!newConversation) { return; }
 
         dispatch(addNewConversation(newConversation.data));

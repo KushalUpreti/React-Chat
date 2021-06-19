@@ -26,7 +26,6 @@ function MessageHeader(props) {
     const deleteMessage = async () => {
         const payload = {
             conversation_id: props.convId,
-            user_id: props.user_id,
             friendId: props.friendId
         }
         let config = {
@@ -35,14 +34,13 @@ function MessageHeader(props) {
                 "Content-Type": "application/json",
             }
         }
-        await sendRequest("http://localhost:8080/user/deleteAllMessages", "POST", payload, config);
+        await sendRequest("https://reactchat01.herokuapp.com/user/deleteAllMessages", "POST", payload, config);
         dispatch(removeAllMessages(null));
     }
 
     const unfriendUser = async () => {
         const payload = {
             conversation_id: props.convId,
-            user_id: props.user_id,
             friendId: props.friendId
         }
 
@@ -54,11 +52,55 @@ function MessageHeader(props) {
         }
         let result;
         try {
-            result = await sendRequest("http://localhost:8080/user/unfriendUser", "POST", payload, config);
+            result = await sendRequest("https://reactchat01.herokuapp.com/user/unfriendUser", "POST", payload, config);
         } catch (error) {
             console.log(error);
         }
         if (!result) return
+        dispatch(removeConversation(props.convId));
+        history.push('/');
+    }
+
+    const deleteGroup = async () => {
+        const payload = {
+            conversation_id: props.convId,
+        }
+
+        let config = {
+            headers: {
+                Authorization: 'Bearer ' + auth.token,
+                "Content-Type": "application/json",
+            }
+        }
+        let result;
+        try {
+            result = await sendRequest("https://reactchat01.herokuapp.com/user/deleteGroup", "POST", payload, config);
+        } catch (error) {
+            console.log(error);
+        }
+        if (!result) return
+        dispatch(removeConversation(props.convId));
+        history.push('/');
+    }
+
+    const leaveGroup = async () => {
+        const payload = {
+            conversation_id: props.convId,
+        }
+
+        let config = {
+            headers: {
+                Authorization: 'Bearer ' + auth.token,
+                "Content-Type": "application/json",
+            }
+        }
+        let result;
+        try {
+            result = await sendRequest("https://reactchat01.herokuapp.com/user/leaveGroup", "POST", payload, config);
+        } catch (error) {
+            console.log(error);
+        }
+        if (!result) return;
         dispatch(removeConversation(props.convId));
         history.push('/');
     }
@@ -89,8 +131,8 @@ function MessageHeader(props) {
                         <Actions action="Block user" class="fas fa-shield-alt" style={style} />
                     </> : <>
                         {auth.userId === props.admin ?
-                            <Actions action="Delete Group" class="fas fa-trash-alt" style={style} click={deleteMessage} /> : null}
-                        <Actions action="Leave Group" class="fas fa-rocket" style={style} click={deleteMessage} />
+                            <Actions action="Delete Group" class="fas fa-trash-alt" style={style} click={deleteGroup} /> : null}
+                        <Actions action="Leave Group" class="fas fa-rocket" style={style} click={leaveGroup} />
                     </>
                 }
                 <p style={{ color: "red", fontSize: "13px", padding: "0 5px" }}>Warning! No confirmation option will appear</p>

@@ -36,7 +36,7 @@ function AllConvesations(props) {
                 "Content-Type": "application/json",
             }
         }
-        const conversations = await sendRequest(`http://localhost:8080/user/getAllConversations/${props.userId}`, "GET", config, null);
+        const conversations = await sendRequest(`https://reactchat01.herokuapp.com/user/getAllConversations/${props.userId}`, "GET", config, null);
         dispatch(loadConversation(conversations.data));
     }
 

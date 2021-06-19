@@ -54,7 +54,7 @@ function MidDiv() {
             }
         }
         setLoading(true);
-        axios.get(`http://localhost:8080/user/allMessages/${conversationId}`, config).then(res => {
+        axios.get(`https://reactchat01.herokuapp.com/user/allMessages/${conversationId}`, config).then(res => {
             dispatch(addAllMessages(res.data));
         }).finally(() => {
             setLoading(false);
@@ -88,7 +88,7 @@ function MidDiv() {
             }
         }
 
-        sendRequest("http://localhost:8080/user/addMessage", "POST", payload, config);
+        sendRequest("https://reactchat01.herokuapp.com/user/addMessage", "POST", payload, config);
 
     }, [socket]);
 

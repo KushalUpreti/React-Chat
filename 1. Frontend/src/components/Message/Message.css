@@ -9,13 +9,13 @@
   font-size: 15px;
 }
 
-.name{
+.name {
   margin: 0 0 2px 20px;
   color: black;
-  font-size: .6875rem;
+  font-size: 0.6875rem;
 }
 
-.messageName{
+.messageName {
   display: flex;
   flex-direction: column;
   max-width: 50%;

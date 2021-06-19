@@ -11,7 +11,6 @@ const Messaage = require("../models/message");
 
 dotenv.config();
 
-// Signup function
 async function signup(req, res, next) {
     if (!validationResult(req).isEmpty()) {
         return next(
@@ -383,7 +382,7 @@ async function getAllActiveUsers(req, res, next) {
 
 async function deleteAllMessages(req, res, next) {
     const conversation_id = req.body.conversation_id;
-    const userId = req.body.user_id;
+    const userId = req.userData.userId;
     let conv;
     try {
         conv = await Conversation.find({
@@ -407,7 +406,7 @@ async function deleteAllMessages(req, res, next) {
 
 async function unfriendUser(req, res, next) {
     const conversation_id = req.body.conversation_id;
-    const userId = req.body.user_id;
+    const userId = req.userData.userId;
     const friendId = req.body.friendId;
 
     let user;
@@ -494,6 +493,79 @@ const getAllFriends = async (req, res, next) => {
     res.json(friendObject);
 }
 
+const deleteGroup = async (req, res, next) => {
+    const conversation_id = req.body.conversation_id;
+    const userId = req.userData.userId;
+
+    if (!validationResult(req).isEmpty()) {
+        return next(
+            new HttpError("Invalid inputs passed, please check your data.", 422)
+        );
+    }
+
+    let conv;
+    try {
+        conv = await Conversation.find({
+            _id: conversation_id,
+        });
+    } catch (error) {
+        console.log(error);
+        return next(new HttpError("Error finding the group. Try again", 500));
+    }
+    if (userId !== conv[0].admin + "") {
+        return next(new HttpError("Group admin privileges not found.", 401));
+    }
+    try {
+        await Messaage.deleteMany({
+            conversation_id: mongoose.Types.ObjectId(conversation_id),
+        });
+    } catch (error) {
+        return next(new HttpError("Error while deleting messages. Try again", 500));
+    }
+    try {
+        await Conversation.deleteOne({
+            _id: mongoose.Types.ObjectId(conversation_id),
+        });
+    } catch (error) {
+        return next(
+            new HttpError("Error while deleting group. Try again", 500)
+        );
+    }
+    res.status(200).json({ message: "Group deleted." });
+}
+
+const leaveGroup = async (req, res, next) => {
+    const conversation_id = req.body.conversation_id;
+    const userId = req.userData.userId;
+
+    if (!validationResult(req).isEmpty()) {
+        return next(
+            new HttpError("Invalid inputs passed, please check your data.", 422)
+        );
+    }
+
+    let conv;
+    try {
+        conv = await Conversation.find({
+            users: { $elemMatch: { user_id: userId } },
+            _id: conversation_id,
+        });
+    } catch (error) {
+        console.log(error);
+        return next(new HttpError("Error finding the group. Try again", 500));
+    }
+    if (conv.length === 0) {
+        return next(new HttpError("You are not part of this group.", 403));
+    }
+
+    conv[0].users.pull({ user_id: userId });
+    conv[0].save();
+    if (userId === conv[0].admin + "") {
+        conv[0].admin = conv[0].users[0].user_id;
+    }
+    res.status(200).json({ message: "Group left." });
+}
+
 exports.signup = signup;
 exports.login = login;
 exports.addFriend = addFriend;
@@ -507,3 +579,6 @@ exports.getAllActiveUsers = getAllActiveUsers;
 exports.deleteAllMessages = deleteAllMessages;
 exports.unfriendUser = unfriendUser;
 exports.getAllFriends = getAllFriends;
+exports.deleteGroup = deleteGroup;
+exports.leaveGroup = leaveGroup;
+

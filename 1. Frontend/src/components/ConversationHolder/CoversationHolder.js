@@ -52,7 +52,7 @@ function ConversationHolder(props) {
             </MessageContainer>
         })
     } if (props.loading) {
-        content = <Spinner outerStyle={{ top: "45%", left: "48%" }} style={{ width: "70px", height: "70px" }} />
+        content = <Spinner outerStyle={{ top: "45%", left: "48%" }} style={{ width: "60px", height: "60px" }} />
     }
 
     return <div className="conversationHolder" >

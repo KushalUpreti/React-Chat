@@ -43,7 +43,7 @@ app.use((err, req, res, next) => {
 })
 
 io.on("connection", (socket) => {
-    const id = socket.handshake.query.id
+    const id = socket.handshake.query.id;
     socket.join(id);
 
     userController.activeStatus(id, socket, 'active', true);
