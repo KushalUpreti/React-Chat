@@ -81,10 +81,18 @@ function MessageHeader(props) {
             <div className="menuContainer" onClick={menuHandler}>
                 <div className="menu" ></div>
             </div>
-            {menu ? <SearchContainer searches={[]} style={{ right: "30px", top: "25px", height: "170px" }}>
-                <Actions action="Delete all messages" class="fas fa-trash-alt" style={style} click={deleteMessage} />
-                <Actions action="Unfriend user" class="fas fa-user-slash" style={style} click={unfriendUser} />
-                <Actions action="Block user" class="fas fa-shield-alt" style={style} />
+            {menu ? <SearchContainer searches={[]} style={{ right: "30px", top: "25px", height: props.isGroup ? "130px" : "170px" }}>
+                {!props.isGroup ?
+                    <>
+                        <Actions action="Delete all messages" class="fas fa-trash-alt" style={style} click={deleteMessage} />
+                        <Actions action="Unfriend user" class="fas fa-user-slash" style={style} click={unfriendUser} />
+                        <Actions action="Block user" class="fas fa-shield-alt" style={style} />
+                    </> : <>
+                        {auth.userId === props.admin ?
+                            <Actions action="Delete Group" class="fas fa-trash-alt" style={style} click={deleteMessage} /> : null}
+                        <Actions action="Leave Group" class="fas fa-rocket" style={style} click={deleteMessage} />
+                    </>
+                }
                 <p style={{ color: "red", fontSize: "13px", padding: "0 5px" }}>Warning! No confirmation option will appear</p>
             </SearchContainer> : null}
         </div>

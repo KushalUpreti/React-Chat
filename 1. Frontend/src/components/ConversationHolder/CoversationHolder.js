@@ -4,6 +4,7 @@ import AuthContext from '../../contexts/auth-context';
 import { getMessageDate } from '../../sharedFunctions/sharedFunctions';
 import Avatar from '../Avatar/Avatar';
 import { useContext } from 'react';
+import Spinner from '../UI/Spinner/Spinner';
 
 function MessageContainer(props) {
     return <div className="messageContainer" style={props.justify}>
@@ -17,12 +18,11 @@ function MessageContainer(props) {
 function ConversationHolder(props) {
     const auth = useContext(AuthContext);
 
-    return <div className="conversationHolder" >
-        <div className="fix"></div>
-        {props.messages.length > 0 ? props.messages.map((item) => {
+    let content = <p style={{ margin: "auto", padding: "20px 0" }}>Say Hi to your new friend..</p>;
+    if (props.messages.length > 0) {
+        content = props.messages.map((item) => {
             let style = {
                 justifyContent: 'flex-start',
-                // alignItems: 'center'
             }
             let messageStyle = {
                 backgroundColor: 'rgb(255 0 40)'
@@ -50,7 +50,14 @@ function ConversationHolder(props) {
                     displayName={item.sent_by !== auth.userId}
                 />
             </MessageContainer>
-        }) : null}
+        })
+    } if (props.loading) {
+        content = <Spinner outerStyle={{ top: "45%", left: "48%" }} style={{ width: "70px", height: "70px" }} />
+    }
+
+    return <div className="conversationHolder" >
+        {props.loading ? null : <div className="fix"></div>}
+        {content}
         <div className="dummy"></div>
     </div>
 }

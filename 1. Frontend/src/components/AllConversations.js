@@ -77,8 +77,17 @@ function AllConvesations(props) {
     if (!isLoading && conversationRedux.length > 0) {
         content = conversationRedux.map((item) => {
             const { conversationName, initials, time, path, recipient, conversationId, values, latest_message } = prepareData(item)
-            return <ConversationCard key={item.date_created + " " + ++counter} initials={initials} recipient={conversationName}
-                time={time} username={recipient} recipientId={path} convId={conversationId} recipients={values} latest_message={latest_message} />
+            return <ConversationCard
+                key={item.date_created + " " + ++counter}
+                initials={initials}
+                recipient={conversationName}
+                time={time}
+                username={recipient}
+                recipientId={path}
+                convId={conversationId}
+                recipients={values}
+                admin={item.admin}
+                latest_message={latest_message} />
         });
     }
     else if (!isLoading && conversationRedux.length === 0) {

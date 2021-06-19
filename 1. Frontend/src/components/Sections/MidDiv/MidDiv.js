@@ -1,5 +1,5 @@
 import './MidDiv.css';
-import { useEffect, useState, useContext, useCallback, useRef } from 'react';
+import { useEffect, useContext, useCallback, useRef, useState } from 'react';
 import { updateConversation } from '../../../Store/Reducers/conversationSlice';
 import { useLocation, useHistory } from 'react-router-dom';
 import { useHttpClient } from '../../../hooks/http-hook';
@@ -10,8 +10,11 @@ import AuthContext from '../../../contexts/auth-context';
 import MessageHeader from '../../MessageHeader/MessageHeader';
 import ConversationHolder from '../../ConversationHolder/CoversationHolder';
 import SendMessage from '../../SendMessage/SendMessage';
+import axios from 'axios';
 
 function MidDiv() {
+    const [loading, setLoading] = useState(false);
+
     const messageRedux = useSelector(selectMessage);
     const location = useLocation();
     const ref = useRef();
@@ -22,7 +25,7 @@ function MidDiv() {
 
     const { sendRequest } = useHttpClient();
 
-    const { recipients, conversationId, id, initials } = location.userData;
+    const { recipients, conversationId, id, initials, admin } = location.userData;
     const recipient = location.userData.name;
 
     useEffect(() => {
@@ -50,9 +53,12 @@ function MidDiv() {
                 "Content-Type": "application/json",
             }
         }
-        const ans = await sendRequest(`http://localhost:8080/user/allMessages/${conversationId}`, "GET", config, null);
-        // console.log(ans.data[0].username);
-        dispatch(addAllMessages(ans.data));
+        setLoading(true);
+        axios.get(`http://localhost:8080/user/allMessages/${conversationId}`, config).then(res => {
+            dispatch(addAllMessages(res.data));
+        }).finally(() => {
+            setLoading(false);
+        });
     }
 
     const sendMessage = useCallback((e, message) => {
@@ -84,9 +90,6 @@ function MidDiv() {
 
         sendRequest("http://localhost:8080/user/addMessage", "POST", payload, config);
 
-        const elem = document.querySelector('.dummy');
-        elem.scrollIntoView({ behavior: 'smooth' });
-
     }, [socket]);
 
 
@@ -94,11 +97,14 @@ function MidDiv() {
         <MessageHeader
             username={recipient}
             initials={initials}
-            convId={conversationId}
+            convId={ref.current}
             user_id={auth.userId}
-            friendId={id} />
+            friendId={id}
+            admin={admin}
+            isGroup={recipients.length > 2}
+        />
         <div className="conversation">
-            <ConversationHolder messages={messageRedux} />
+            <ConversationHolder messages={messageRedux} loading={loading} />
             <SendMessage send={sendMessage} />
         </div>
 

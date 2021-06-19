@@ -60,7 +60,7 @@ function Signup() {
                             <input type="text" placeholder="Name" value={state.username} onChange={(event) => {
                                 setState({ ...state, username: event.target.value });
                             }} /><br></br>
-                            <input type="text" placeholder="Email" value={state.email} onChange={(event) => {
+                            <input type="email" placeholder="Email" value={state.email} onChange={(event) => {
                                 setState({ ...state, email: event.target.value });
                             }} /><br></br>
                             <input type="password" placeholder="Password" value={state.password} onChange={(event) => {
@@ -74,7 +74,7 @@ function Signup() {
                     </div>
                 </div>
 
-            </div> : <Spinner boxStyle={{ marginTop: "40vh", width: "100px", height: "100px" }} borderStyle={{ width: "50px", height: "50px" }} />
+            </div> : <Spinner outerStyle={{ top: "40%", left: "48%" }} style={{ width: "70px", height: "70px" }} />
         }
     </>
 }

@@ -8,7 +8,14 @@ function ConversationCard(props) {
         <NavLink style={{ textDecoration: 'none', color: "black" }} to={{
             pathname: path,
             search: `?conversation=${props.convId}`,
-            userData: { name: props.username, initials: props.initials, id: props.recipientId, conversationId: props.convId, recipients: props.recipients }
+            userData: {
+                name: props.username,
+                initials: props.initials,
+                id: props.recipientId,
+                conversationId: props.convId,
+                recipients: props.recipients,
+                admin: props.admin
+            }
         }} >
             <div className="conversationCard">
                 <Avatar initials={props.initials} />
