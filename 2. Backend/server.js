@@ -3,6 +3,7 @@ const app = express();
 const http = require('http').Server(app);
 const mongoose = require('mongoose');
 const userController = require('./controllers/user_controller');
+const socketController = require('./controllers/socket_controller');
 const io = require('socket.io')(http, {
     cors: {
         origin: "*",
@@ -48,22 +49,14 @@ io.on("connection", (socket) => {
     userController.activeStatus(id, socket, 'active', true);
 
     socket.on('send-message', ({ recipients, messageObject }) => {
-        const newRecipients = recipients.filter(r => r !== id);
-        newRecipients.forEach(recipient => {
-            socket.broadcast.to(recipient).emit('receive-message', {
-                sender: id, message: messageObject
-            })
-        })
-    })
+        socketController.sendMessage({ recipients, messageObject }, id, socket)
+    });
 
     socket.on('add-conversation', ({ recipients, conversationObj }) => {
-        const newRecipients = recipients.filter(r => r !== id);
-        newRecipients.forEach(recipient => {
-            socket.broadcast.to(recipient).emit('recieve-conversation', conversationObj);
-        })
-    })
+        socketController.add_conversation({ recipients, conversationObj }, id, socket);
+    });
 
-    socket.on('disconnect', function () {
+    socket.on('disconnect', function disconnect() {
         userController.activeStatus(socket.handshake.query.id, socket, 'offline', false);
     });
 });
@@ -77,3 +70,5 @@ mongoose.connect(`mongodb+srv://IcyHotShoto:${process.env.MONGO_DB_DATABASE_PASS
     }).catch((err) => {
         console.log(err);
     })
+
+module.exports = io;

@@ -18,27 +18,6 @@ function Signup() {
     const auth = useContext(AuthContext);
     const history = useHistory();
 
-    // const checkPasswordMatch = () => {
-    //     if (state.password.length > 0 && state.rePassword.length > 0) {
-    //         if (state.password === state.rePassword) {
-    //             setState({
-    //                 ...state,
-    //                 matched: true
-    //             })
-    //         } else {
-    //             setState({
-    //                 ...state,
-    //                 matched: false
-    //             })
-    //         }
-    //     } else {
-    //         setState({
-    //             ...state,
-    //             matched: false
-    //         })
-    //     }
-    // }
-
     const signup = async (e) => {
         e.preventDefault();
         const password = state.password;

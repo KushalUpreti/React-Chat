@@ -25,8 +25,6 @@ function MidDiv() {
     const { recipients, conversationId, id, initials } = location.userData;
     const recipient = location.userData.name;
 
-
-
     useEffect(() => {
         socket.on('receive-message', (incoming) => {
             if (incoming.message.conversation_id !== ref.current) {
@@ -59,10 +57,9 @@ function MidDiv() {
 
     const sendMessage = useCallback((e, message) => {
         e.preventDefault();
-
         if (message.trim().length === 0) { return; }
         let messageObject = {
-            conversation_id: conversationId,
+            conversation_id: ref.current,
             message,
             username: auth.username,
             sent_by: auth.userId,
