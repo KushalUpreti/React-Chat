@@ -5,6 +5,7 @@ import { getMessageDate } from '../../sharedFunctions/sharedFunctions';
 import Avatar from '../Avatar/Avatar';
 import { useContext } from 'react';
 import Spinner from '../UI/Spinner/Spinner';
+import Typing from '../UI/Typing/Typing';
 
 function MessageContainer(props) {
     return <div className="messageContainer" style={props.justify}>
@@ -58,6 +59,7 @@ function ConversationHolder(props) {
     return <div className="conversationHolder" >
         {props.loading ? null : <div className="fix"></div>}
         {content}
+        {props.typing ? <Typing /> : null}
         <div className="dummy"></div>
     </div>
 }

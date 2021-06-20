@@ -14,6 +14,9 @@ import axios from 'axios';
 
 function MidDiv() {
     const [loading, setLoading] = useState(false);
+    const [typing, setTyping] = useState(false);
+
+    const [message, setMessage] = useState("");
 
     const messageRedux = useSelector(selectMessage);
     const location = useLocation();
@@ -34,7 +37,26 @@ function MidDiv() {
                 return;
             }
             dispatch(addMessageToConversation(incoming.message));
+            setTyping(false);
         });
+
+        socket.on('recieve-typing', (incoming) => {
+            if (incoming !== ref.current) {
+                return;
+            }
+            if (!typing) {
+                setTyping(true);
+            }
+
+        });
+
+        socket.on('recieve-not-typing', (incoming) => {
+            if (incoming !== ref.current) {
+                return;
+            }
+            setTyping(false);
+        });
+
     }, [socket])
 
 
@@ -54,11 +76,23 @@ function MidDiv() {
             }
         }
         setLoading(true);
-        axios.get(`https://reactchat01.herokuapp.com/user/allMessages/${conversationId}`, config).then(res => {
+        axios.get(`http://localhost:8080/user/allMessages/${conversationId}`, config).then(res => {
             dispatch(addAllMessages(res.data));
         }).finally(() => {
             setLoading(false);
         });
+    }
+
+    function inputHandler(e) {
+        setMessage(e.target.value);
+        if (e.target.value.length > 0) {
+            socket.emit('typing', { recipients, conversationId: ref.current });
+        } else {
+            socket.emit('not-typing', { recipients, conversationId: ref.current });
+        }
+    }
+    function blur() {
+        socket.emit('not-typing', { recipients, conversationId: ref.current });
     }
 
     const sendMessage = useCallback((e, message) => {
@@ -88,8 +122,9 @@ function MidDiv() {
             }
         }
 
-        sendRequest("https://reactchat01.herokuapp.com/user/addMessage", "POST", payload, config);
-
+        sendRequest("http://localhost:8080/user/addMessage", "POST", payload, config);
+        let container = document.querySelector(".conversationHolder");
+        container.scrollTop = container.scrollHeight;
     }, [socket]);
 
 
@@ -104,8 +139,8 @@ function MidDiv() {
             isGroup={recipients.length > 2}
         />
         <div className="conversation">
-            <ConversationHolder messages={messageRedux} loading={loading} />
-            <SendMessage send={sendMessage} />
+            <ConversationHolder messages={messageRedux} loading={loading} typing={typing} />
+            <SendMessage send={sendMessage} inputHandler={inputHandler} message={message} setMessage={setMessage} blur={blur} />
         </div>
 
     </div>

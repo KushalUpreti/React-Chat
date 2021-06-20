@@ -1,5 +1,6 @@
+
 import './Group.css';
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import SearchBar from '../../components/SearchBar/SearchBar';
 import Button from '../../components/UI/Button/Button';
 import AuthContext from '../../contexts/auth-context';
@@ -7,6 +8,7 @@ import { useHttpClient } from '../../hooks/http-hook';
 import { useDispatch } from 'react-redux';
 import { addNewConversation } from '../../Store/Reducers/conversationSlice';
 import { useSocketObject } from '../../contexts/socket-context';
+import Spinner from '../../components/UI/Spinner/Spinner';
 
 function FriendItem(props) {
     return <div class="friendItem">
@@ -17,13 +19,12 @@ function FriendItem(props) {
 
 export default function Group(props) {
     const [groupName, setGroupName] = useState("");
-    const [search, setSearch] = useState("");
     const [searchResult, setSearchResult] = useState([]);
     const [checkedFriends, setCheckedFriends] = useState([]);
 
     const auth = useContext(AuthContext);
     const dispatch = useDispatch();
-    const { sendRequest } = useHttpClient();
+    const { sendRequest, isLoading } = useHttpClient();
     const socket = useSocketObject();
 
     useEffect(() => {
@@ -32,10 +33,6 @@ export default function Group(props) {
 
     const groupNameHandler = (e) => {
         setGroupName(e.target.value);
-    }
-
-    const searchHandler = (e) => {
-        setSearch(e.target.value);
     }
 
     const checkedHandler = (e, user) => {
@@ -52,21 +49,6 @@ export default function Group(props) {
         }
     }
 
-    const downloadSearchData = useCallback(async (text) => {
-        let config = {
-            headers: {
-                Authorization: 'Bearer ' + auth.token,
-                "Content-Type": "application/json",
-            }
-        }
-        // const result = await sendRequest(`https://reactchat01.herokuapp.com/user/searchUsers/${text}`, "GET", config, null);
-        // const newArray = result.data.filter((item) => {
-        //     return item._id !== auth.userId;
-        // })
-        // setSearchResult(newArray);
-
-    }, [sendRequest])
-
     const getAllFriends = async () => {
         let config = {
             headers: {
@@ -74,22 +56,9 @@ export default function Group(props) {
                 "Content-Type": "application/json",
             }
         }
-        const result = await sendRequest(`https://reactchat01.herokuapp.com/user/getAllFriends`, "GET", config, config);
+        const result = await sendRequest(`http://localhost:8080/user/getAllFriends`, "GET", config, config);
         if (!result) { return; }
         setSearchResult(result.data);
-    }
-
-    const removeCommonElement = (data) => {
-        let newArray = [...data];
-
-        newArray.forEach((element, index) => {
-            checkedFriends.forEach(checked => {
-                if (element.id === checked.id) {
-                    newArray.splice(index, 1);
-                }
-            });
-        });
-        return newArray;
     }
 
     const createGroup = async () => {
@@ -106,7 +75,7 @@ export default function Group(props) {
                 "Content-Type": "application/json"
             }
         }
-        const result = await sendRequest(`https://reactchat01.herokuapp.com/user/createGroup`, "POST", payload, config);
+        const result = await sendRequest(`http://localhost:8080/user/createGroup`, "POST", payload, config);
         if (!result) { return }
         dispatch(addNewConversation(result.data));
         socket.emit('add-conversation', {
@@ -115,15 +84,6 @@ export default function Group(props) {
         });
         props.hide();
     }
-
-    useEffect(() => {
-        if (search.length === 0) {
-            getAllFriends();
-            return;
-        }
-        downloadSearchData(search);
-    }, [search, downloadSearchData])
-
 
     return <div class="createGroup">
 
@@ -143,8 +103,6 @@ export default function Group(props) {
             formStyle={{ margin: "0", padding: "5px 0" }}
             style={{ width: "100%" }}
             placeholder="Search Friends. Coming soon."
-            text={search}
-            handler={searchHandler}
             disabled
         />
 
@@ -153,7 +111,7 @@ export default function Group(props) {
         </div>
 
         <section class="friendList">
-            {search.length === 0 ? checkedFriends.map((item) => {
+            {checkedFriends.map((item) => {
                 return <FriendItem
                     username={item.username}
                     key={item._id}
@@ -161,25 +119,19 @@ export default function Group(props) {
                     }
                     checked
                 />
-            }) : null}
-
-            {searchResult.map((item) => {
-                let valid = true;
-                checkedFriends.forEach(checked => {
-                    if (item.id === checked.id || item._id === checked.id) {
-                        valid = false;
-                    }
-                });
-                if (valid) {
-                    return <FriendItem
-                        username={item.username}
-                        key={item._id}
-                        checkHandler={(e) => { checkedHandler(e, item) }
-
-                        }
-                    />
-                } else { return null; }
             })}
+
+            {!isLoading ? searchResult.map((item) => {
+                if (checkedFriends.includes(item)) {
+                    return null;
+                }
+                return <FriendItem
+                    username={item.username}
+                    key={item.username}
+                    checkHandler={(e) => { checkedHandler(e, item) }
+                    }
+                />
+            }) : <Spinner outerStyle={{ top: "25%", left: "0%" }} style={{ width: "60px", height: "60px" }} />}
         </section>
         <div className="buttonContainer">
             <Button type="submit" text="Create" clickHandler={createGroup} />
