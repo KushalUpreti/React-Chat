@@ -1,7 +1,7 @@
 import { useContext, useState, useEffect, useCallback } from 'react';
 import { useHttpClient } from '../../hooks/http-hook';
 import { useDispatch } from 'react-redux';
-import { addNewConversation } from '../../Store/Reducers/conversationSlice';
+import { addNewConversation, removeConversation } from '../../Store/Reducers/conversationSlice';
 import EdgeContainer from '../EdgeContainer/EdgeContainer';
 import UserInfo from '../UserInfo/UserInfo';
 import SearchBar from '../SearchBar/SearchBar';
@@ -9,14 +9,10 @@ import SearchContainer from '../SearchContainer/SearchContainer';
 import AllConversations from '../AllConversations';
 import AuthContext from '../../contexts/auth-context';
 import { useSocketObject } from '../../contexts/socket-context';
+import { useHistory } from 'react-router';
 
 
 function LeftDiv() {
-    const auth = useContext(AuthContext);
-    const { sendRequest } = useHttpClient();
-    const dispatch = useDispatch();
-    const socket = useSocketObject();
-
     const [query, setQuery] = useState({
         text: "",
         searching: false
@@ -24,6 +20,11 @@ function LeftDiv() {
 
     const [searchResult, setSearchResult] = useState([]);
 
+    const auth = useContext(AuthContext);
+    const { sendRequest } = useHttpClient();
+    const dispatch = useDispatch();
+    const socket = useSocketObject();
+    const history = useHistory();
     const username = auth.username;
     const userId = auth.userId;
 
@@ -31,6 +32,11 @@ function LeftDiv() {
         if (socket !== undefined) {
             socket.on('recieve-conversation', (incoming) => {
                 dispatch(addNewConversation(incoming));
+            });
+
+            socket.on('remove-conversation', (incoming) => {
+                dispatch(removeConversation(incoming));
+                history.push('/');
             });
         }
     }, [socket])

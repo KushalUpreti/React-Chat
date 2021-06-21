@@ -286,7 +286,7 @@ async function getMessages(req, res, next) {
     let messages;
     try {
         messages = await Messaage.find({ conversation_id })
-            .sort({ sent_date: 1 })
+            .sort({ sent_date: -1 })
             .limit(30);
     } catch (error) {
         return next(new HttpError("Error while saving message. Try again", 500));
@@ -295,18 +295,8 @@ async function getMessages(req, res, next) {
         res.status(200).json({});
         return;
     }
-    let newMessages = [];
-    for (let i = 0; i < messages.length; i++) {
-        user = await extractUserName(messages[i].sent_by);
-        newMessages[i] = { ...messages[i] }._doc;
-        newMessages[i].username = user.username;
-    }
-
-    newMessages = newMessages.map((item) => {
-        item.message = cryptoEncrypt.decrypt(item.message);
-        return item;
-    });
-    res.status(200).json(newMessages);
+    let newMessages = await decryptMessage(messages);
+    res.status(200).json(newMessages.reverse());
 }
 
 async function extractUserName(userId) {
@@ -566,6 +556,59 @@ const leaveGroup = async (req, res, next) => {
     res.status(200).json({ message: "Group left." });
 }
 
+const loadMoreMessages = async (req, res, next) => {
+    const conversation_id = req.query.conversation_id;
+    const oldest_date = req.query.oldest_date;
+    const userId = req.userData.userId;
+
+    if (!validationResult(req).isEmpty()) {
+        return next(
+            new HttpError("Invalid inputs passed, please check your data.", 422)
+        );
+    }
+
+    let conv;
+    try {
+        conv = await Conversation.find({
+            users: { $elemMatch: { user_id: userId } },
+            _id: conversation_id,
+        });
+    } catch (error) {
+        console.log(error);
+        return next(new HttpError("Error finding the group. Try again", 500));
+    }
+    if (conv.length === 0) {
+        return next(new HttpError("You are not part of this group.", 403));
+    }
+    let oldMessages = [];
+    try {
+        oldMessages = await Messaage.find({ conversation_id, sent_date: { $lt: new Date(oldest_date) } })
+            .sort({ sent_date: -1 })
+            .limit(30);
+    } catch (error) {
+        console.log(error);
+        return next(new HttpError("Error fetching old messages. Try again", 500));
+    }
+    const messages = await decryptMessage(oldMessages);
+    console.log(messages);
+    res.json(messages.reverse());
+}
+
+async function decryptMessage(encryptedMessages) {
+    let newMessages = [];
+    for (let i = 0; i < encryptedMessages.length; i++) {
+        user = await extractUserName(encryptedMessages[i].sent_by);
+        newMessages[i] = { ...encryptedMessages[i] }._doc;
+        newMessages[i].username = user.username;
+    }
+
+    newMessages = newMessages.map((item) => {
+        item.message = cryptoEncrypt.decrypt(item.message);
+        return item;
+    });
+    return newMessages;
+}
+
 exports.signup = signup;
 exports.login = login;
 exports.addFriend = addFriend;
@@ -581,4 +624,5 @@ exports.unfriendUser = unfriendUser;
 exports.getAllFriends = getAllFriends;
 exports.deleteGroup = deleteGroup;
 exports.leaveGroup = leaveGroup;
+exports.loadMoreMessages = loadMoreMessages;
 

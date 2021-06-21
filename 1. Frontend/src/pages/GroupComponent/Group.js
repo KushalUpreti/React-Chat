@@ -11,7 +11,7 @@ import { useSocketObject } from '../../contexts/socket-context';
 import Spinner from '../../components/UI/Spinner/Spinner';
 
 function FriendItem(props) {
-    return <div class="friendItem">
+    return <div className="friendItem">
         <p>{props.username}</p>
         <input type="checkbox" onChange={props.checkHandler} checked={props.checked || false} />
     </div>
@@ -85,9 +85,9 @@ export default function Group(props) {
         props.hide();
     }
 
-    return <div class="createGroup">
+    return <div className="createGroup">
 
-        <div class="title">
+        <div className="title">
             <h2>Create Group</h2>
             <hr />
         </div>
@@ -110,7 +110,7 @@ export default function Group(props) {
             <p>Friends</p>
         </div>
 
-        <section class="friendList">
+        <section className="friendList">
             {checkedFriends.map((item) => {
                 return <FriendItem
                     username={item.username}

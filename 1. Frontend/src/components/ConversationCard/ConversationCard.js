@@ -12,7 +12,7 @@ function ConversationCard(props) {
                 name: props.username,
                 initials: props.initials,
                 id: props.recipientId,
-                conversationId: props.convId,
+                conversation_id: props.convId,
                 recipients: props.recipients,
                 admin: props.admin
             }

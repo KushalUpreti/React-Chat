@@ -7,7 +7,7 @@ function UserInfo(props) {
     return <div className="userInfo">
         <Avatar initials={initials} />
         <div className="userTextInfo">
-            <h4>{props.username}</h4> 
+            <h4>{props.username}</h4>
             <h5>Id: {props.userId}</h5>
         </div>
     </div>

@@ -1,5 +1,5 @@
 const express = require('express');
-const { check } = require('express-validator');
+const { check, query } = require('express-validator');
 const userController = require('../controllers/user_controller');
 const router = express.Router();
 const dotenv = require('dotenv');
@@ -52,5 +52,11 @@ router.get("/getAllFriends", userController.getAllFriends);
 router.post("/deleteGroup", [check('conversation_id').not().isEmpty()], userController.deleteGroup);
 
 router.post("/leaveGroup", [check('conversation_id').not().isEmpty()], userController.leaveGroup);
+
+router.get("/loadMoreMessages", [
+    query('conversation_id').not().isEmpty(),
+    query('oldest_date').not().isEmpty()],
+    userController.loadMoreMessages);
+
 
 module.exports = router;

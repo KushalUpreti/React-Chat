@@ -9,6 +9,7 @@ import SearchContainer from '../SearchContainer/SearchContainer';
 import Actions from '../Actions/Actions';
 import AuthContext from '../../contexts/auth-context';
 import { useHistory } from 'react-router';
+import { useSocketObject } from '../../contexts/socket-context';
 
 function MessageHeader(props) {
     const [menu, setMenu] = useState(false);
@@ -16,6 +17,7 @@ function MessageHeader(props) {
     const dispatch = useDispatch();
     const auth = useContext(AuthContext);
     const history = useHistory();
+    const socket = useSocketObject();
 
     const menuHandler = () => {
         setMenu(prevState => {
@@ -25,8 +27,7 @@ function MessageHeader(props) {
 
     const deleteMessage = async () => {
         const payload = {
-            conversation_id: props.convId,
-            friendId: props.friendId
+            conversation_id: props.convId
         }
         let config = {
             headers: {
@@ -41,9 +42,8 @@ function MessageHeader(props) {
     const unfriendUser = async () => {
         const payload = {
             conversation_id: props.convId,
-            friendId: props.friendId
+            friendId: props.recipients.filter(item => item !== auth.userId)[0]
         }
-
         let config = {
             headers: {
                 Authorization: 'Bearer ' + auth.token,
@@ -57,6 +57,7 @@ function MessageHeader(props) {
             console.log(error);
         }
         if (!result) return
+        socket.emit('remove-conversation', { recipients: props.recipients, conversation_id: props.convId })
         dispatch(removeConversation(props.convId));
         history.push('/');
     }

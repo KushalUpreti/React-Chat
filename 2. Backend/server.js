@@ -56,13 +56,17 @@ io.on("connection", (socket) => {
         socketController.add_conversation({ recipients, conversationObj }, id, socket);
     });
 
-    socket.on('typing', ({ recipients, conversationId }) => {
-        socketController.typing({ recipients, conversationId }, id, socket);
+    socket.on('typing', ({ recipients, conversation_id }) => {
+        socketController.typing({ recipients, conversation_id }, id, socket);
     })
 
-    socket.on('not-typing', ({ recipients, conversationId }) => {
-        socketController.not_typing({ recipients, conversationId }, id, socket);
+    socket.on('not-typing', ({ recipients, conversation_id }) => {
+        socketController.not_typing({ recipients, conversation_id }, id, socket);
     })
+
+    socket.on('remove-conversation', ({ recipients, conversation_id }) => {
+        socketController.remove_conversation({ recipients, conversation_id }, id, socket);
+    });
 
     socket.on('disconnect', function disconnect() {
         userController.activeStatus(socket.handshake.query.id, socket, 'offline', false);

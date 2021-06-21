@@ -4,8 +4,8 @@ import { updateConversation } from '../../../Store/Reducers/conversationSlice';
 import { useLocation, useHistory } from 'react-router-dom';
 import { useHttpClient } from '../../../hooks/http-hook';
 import { useSocketObject } from '../../../contexts/socket-context';
-import { useDispatch, useSelector } from 'react-redux';
-import { addMessageToConversation, selectMessage, addAllMessages } from '../../../Store/Reducers/messageSlice';
+import { useDispatch, useSelector, useStore } from 'react-redux';
+import { addMessageToConversation, selectMessage, addAllMessages, addMoreMessages } from '../../../Store/Reducers/messageSlice';
 import AuthContext from '../../../contexts/auth-context';
 import MessageHeader from '../../MessageHeader/MessageHeader';
 import ConversationHolder from '../../ConversationHolder/CoversationHolder';
@@ -19,6 +19,7 @@ function MidDiv() {
     const [message, setMessage] = useState("");
 
     const messageRedux = useSelector(selectMessage);
+    const messageList = useStore().getState().message.messages;
     const location = useLocation();
     const ref = useRef();
     const history = useHistory();
@@ -28,7 +29,7 @@ function MidDiv() {
 
     const { sendRequest } = useHttpClient();
 
-    const { recipients, conversationId, id, initials, admin } = location.userData;
+    const { recipients, conversation_id, id, initials, admin } = location.userData;
     const recipient = location.userData.name;
 
     useEffect(() => {
@@ -59,16 +60,30 @@ function MidDiv() {
 
     }, [socket])
 
+    useEffect(() => {
+        function listener(event) {
+            var element = event.target;
+            if (element.scrollTop === 0) {
+                // loadMoreMessage();
+            }
+        }
+        let container = document.querySelector(".conversationHolder");
+        container.addEventListener('scroll', listener);
+        return () => {
+            container.removeEventListener('scroll', listener);
+        }
+    }, [])
+
 
     useEffect(() => {
         if (!recipient) {
             history.push("/");
         }
-        ref.current = conversationId;
-        getMessages(conversationId);
+        ref.current = conversation_id;
+        getMessages(conversation_id);
     }, [location.userData])
 
-    async function getMessages(conversationId) {
+    async function getMessages(conversation_id) {
         let config = {
             headers: {
                 Authorization: 'Bearer ' + auth.token,
@@ -76,26 +91,43 @@ function MidDiv() {
             }
         }
         setLoading(true);
-        axios.get(`http://localhost:8080/user/allMessages/${conversationId}`, config).then(res => {
+        axios.get(`http://localhost:8080/user/allMessages/${conversation_id}`, config).then(res => {
             dispatch(addAllMessages(res.data));
         }).finally(() => {
             setLoading(false);
+            let container = document.querySelector(".conversationHolder");
+            container.scrollTop = container.scrollHeight;
         });
+    }
+
+    async function loadMoreMessage() {
+        console.log(messageList);
+        if (!messageList[0]) { return; }
+        let config = {
+            headers: {
+                Authorization: 'Bearer ' + auth.token,
+                "Content-Type": "application/json",
+            }
+        }
+        let res = await sendRequest(
+            `http://localhost:8080/user/loadMoreMessages?conversation_id=${ref.current}&oldest_date=${messageList[0].sent_date}`,
+            "GET", config);
+        dispatch(addMoreMessages(res.data));
     }
 
     function inputHandler(e) {
         setMessage(e.target.value);
         if (e.target.value.length > 0) {
-            socket.emit('typing', { recipients, conversationId: ref.current });
+            socket.emit('typing', { recipients, conversation_id: ref.current });
         } else {
-            socket.emit('not-typing', { recipients, conversationId: ref.current });
+            socket.emit('not-typing', { recipients, conversation_id: ref.current });
         }
     }
     function blur() {
-        socket.emit('not-typing', { recipients, conversationId: ref.current });
+        socket.emit('not-typing', { recipients, conversation_id: ref.current });
     }
 
-    const sendMessage = useCallback((e, message) => {
+    const sendMessage = useCallback(async (e, message) => {
         e.preventDefault();
         if (message.trim().length === 0) { return; }
         let messageObject = {
@@ -122,7 +154,7 @@ function MidDiv() {
             }
         }
 
-        sendRequest("http://localhost:8080/user/addMessage", "POST", payload, config);
+        await sendRequest("http://localhost:8080/user/addMessage", "POST", payload, config);
         let container = document.querySelector(".conversationHolder");
         container.scrollTop = container.scrollHeight;
     }, [socket]);
@@ -133,8 +165,7 @@ function MidDiv() {
             username={recipient}
             initials={initials}
             convId={ref.current}
-            user_id={auth.userId}
-            friendId={id}
+            recipients={recipients}
             admin={admin}
             isGroup={recipients.length > 2}
         />
