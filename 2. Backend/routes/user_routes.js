@@ -58,5 +58,6 @@ router.get("/loadMoreMessages", [
     query('oldest_date').not().isEmpty()],
     userController.loadMoreMessages);
 
+router.post("/deleteOneMessage", [check('message_id').not().isEmpty()], userController.deleteOneMessage);
 
 module.exports = router;

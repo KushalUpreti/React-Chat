@@ -14,7 +14,8 @@ function ConversationCard(props) {
                 id: props.recipientId,
                 conversation_id: props.convId,
                 recipients: props.recipients,
-                admin: props.admin
+                admin: props.admin,
+                type: props.type
             }
         }} >
             <div className="conversationCard">

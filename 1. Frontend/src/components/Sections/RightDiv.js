@@ -13,7 +13,7 @@ import Suggested from '../Suggested/Suggested';
 import AddFriendForm from '../AddFriendForm/AddFriendForm';
 import Group from '../../pages/GroupComponent/Group';
 
-function RightDiv(props) {
+function RightDiv() {
     const { sendRequest } = useHttpClient();
     const socket = useSocketObject();
     const auth = useContext(AuthContext);

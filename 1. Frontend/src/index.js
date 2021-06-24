@@ -16,7 +16,7 @@ ReactDOM.render(
   document.getElementById('root')
 );
 // http://localhost:8080/
-//http://localhost:8080/
+//https://reactchat01.herokuapp.com/
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

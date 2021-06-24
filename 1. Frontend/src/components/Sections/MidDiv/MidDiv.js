@@ -5,7 +5,7 @@ import { useLocation, useHistory } from 'react-router-dom';
 import { useHttpClient } from '../../../hooks/http-hook';
 import { useSocketObject } from '../../../contexts/socket-context';
 import { useDispatch, useSelector, useStore } from 'react-redux';
-import { addMessageToConversation, selectMessage, addAllMessages, addMoreMessages } from '../../../Store/Reducers/messageSlice';
+import { addMessageToConversation, selectMessage, addAllMessages, addMoreMessages, removeSingleMessge } from '../../../Store/Reducers/messageSlice';
 import AuthContext from '../../../contexts/auth-context';
 import MessageHeader from '../../MessageHeader/MessageHeader';
 import ConversationHolder from '../../ConversationHolder/CoversationHolder';
@@ -29,7 +29,7 @@ function MidDiv() {
 
     const { sendRequest } = useHttpClient();
 
-    const { recipients, conversation_id, id, initials, admin } = location.userData;
+    const { recipients, conversation_id, initials, admin, type } = location.userData;
     const recipient = location.userData.name;
 
     useEffect(() => {
@@ -57,6 +57,11 @@ function MidDiv() {
             }
             setTyping(false);
         });
+
+        socket.on('remove-message', (incoming) => {
+            if (incoming.conversation_id !== ref.current) { return; }
+            dispatch(removeSingleMessge(incoming.message_position));
+        }, [])
 
     }, [socket])
 
@@ -135,7 +140,7 @@ function MidDiv() {
             message,
             username: auth.username,
             sent_by: auth.userId,
-            sent_date: new Date()
+            sent_date: new Date(),
         }
         socket.emit('send-message', { recipients, messageObject });
 
@@ -167,10 +172,15 @@ function MidDiv() {
             convId={ref.current}
             recipients={recipients}
             admin={admin}
-            isGroup={recipients.length > 2}
+            type={type}
         />
         <div className="conversation">
-            <ConversationHolder messages={messageRedux} loading={loading} typing={typing} />
+            <ConversationHolder
+                messages={messageRedux}
+                loading={loading}
+                typing={typing}
+                conversation_id={ref.current}
+                recipients={recipients} />
             <SendMessage send={sendMessage} inputHandler={inputHandler} message={message} setMessage={setMessage} blur={blur} />
         </div>
 

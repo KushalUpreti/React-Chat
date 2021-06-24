@@ -81,6 +81,7 @@ function MessageHeader(props) {
         }
         if (!result) return
         dispatch(removeConversation(props.convId));
+        socket.emit('remove-conversation', { recipients: props.recipients, conversation_id: props.convId });
         history.push('/');
     }
 
@@ -124,12 +125,11 @@ function MessageHeader(props) {
             <div className="menuContainer" onClick={menuHandler}>
                 <div className="menu" ></div>
             </div>
-            {menu ? <SearchContainer searches={[]} style={{ right: "30px", top: "25px", height: props.isGroup ? "130px" : "170px" }}>
-                {!props.isGroup ?
+            {menu ? <SearchContainer searches={[]} style={{ right: "30px", top: "25px", height: "130px" }}>
+                {props.type !== "Group" ?
                     <>
                         <Actions action="Delete all messages" class="fas fa-trash-alt" style={style} click={deleteMessage} />
                         <Actions action="Unfriend user" class="fas fa-user-slash" style={style} click={unfriendUser} />
-                        <Actions action="Block user" class="fas fa-shield-alt" style={style} />
                     </> : <>
                         {auth.userId === props.admin ?
                             <Actions action="Delete Group" class="fas fa-trash-alt" style={style} click={deleteGroup} /> : null}

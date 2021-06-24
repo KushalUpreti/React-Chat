@@ -173,7 +173,8 @@ async function addFriend(req, res, next) {
         conversation_name,
         users,
         admin,
-        next
+        next,
+        "One"
     );
     res.status(200).json(newConversation);
 }
@@ -184,7 +185,7 @@ async function createGroup(req, res, next) {
     const users = req.body.users; //id of all users in the conversation.
     users.push(admin_id);
 
-    const returnedVal = createConvo(conversation_name, users, admin_id, next);
+    const returnedVal = createConvo(conversation_name, users, admin_id, next, "Group");
     returnedVal.then(item => {
         if (item !== undefined) {
             res.json(item);
@@ -192,7 +193,7 @@ async function createGroup(req, res, next) {
     });
 }
 
-async function createConvo(conversation_name, users, admin, next) {
+async function createConvo(conversation_name, users, admin, next, type) {
     const newUsers = users.map((item) => {
         return { user_id: item };
     });
@@ -208,6 +209,7 @@ async function createConvo(conversation_name, users, admin, next) {
         users: newUsers,
         latest_message_date: new Date(),
         latest_message: "Say Hi..",
+        type,
         admin: admin,
     });
     try {
@@ -609,6 +611,35 @@ async function decryptMessage(encryptedMessages) {
     return newMessages;
 }
 
+const deleteOneMessage = async (req, res, next) => {
+    if (!validationResult(req).isEmpty()) {
+        return next(
+            new HttpError("Invalid inputs passed, please check your data.", 422)
+        );
+    }
+
+    const message_id = req.body.message_id;
+    const userId = req.userData.userId;
+
+    let message;
+    try {
+        message = await Messaage.find({ _id: mongoose.Types.ObjectId(message_id) });
+    } catch (error) {
+        return next(new HttpError("Error deleting message. Try again", 500));
+    }
+
+    if (String(message[0].sent_by) !== userId) {
+        return next(new HttpError("Not authorized to delete message", 403));
+    }
+
+    try {
+        await Messaage.deleteOne({ _id: mongoose.Types.ObjectId(message_id) });
+    } catch (error) {
+        return next(new HttpError("Error deleting message. Try again", 500));
+    }
+    res.json({ message: "Message deleted" });
+}
+
 exports.signup = signup;
 exports.login = login;
 exports.addFriend = addFriend;
@@ -625,4 +656,5 @@ exports.getAllFriends = getAllFriends;
 exports.deleteGroup = deleteGroup;
 exports.leaveGroup = leaveGroup;
 exports.loadMoreMessages = loadMoreMessages;
+exports.deleteOneMessage = deleteOneMessage;
 

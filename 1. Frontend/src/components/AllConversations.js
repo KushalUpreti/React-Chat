@@ -87,6 +87,7 @@ function AllConvesations(props) {
                 convId={conversation_id}
                 recipients={values}
                 admin={item.admin}
+                type={item.type}
                 latest_message={latest_message} />
         });
     }

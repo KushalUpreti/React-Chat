@@ -8,7 +8,6 @@ import { useHttpClient } from '../../hooks/http-hook';
 import { useDispatch } from 'react-redux';
 import { addNewConversation } from '../../Store/Reducers/conversationSlice';
 import { useSocketObject } from '../../contexts/socket-context';
-import Spinner from '../../components/UI/Spinner/Spinner';
 
 function FriendItem(props) {
     return <div className="friendItem">
@@ -24,7 +23,7 @@ export default function Group(props) {
 
     const auth = useContext(AuthContext);
     const dispatch = useDispatch();
-    const { sendRequest, isLoading } = useHttpClient();
+    const { sendRequest } = useHttpClient();
     const socket = useSocketObject();
 
     useEffect(() => {
@@ -121,7 +120,7 @@ export default function Group(props) {
                 />
             })}
 
-            {!isLoading ? searchResult.map((item) => {
+            {searchResult.map((item) => {
                 if (checkedFriends.includes(item)) {
                     return null;
                 }
@@ -131,7 +130,7 @@ export default function Group(props) {
                     checkHandler={(e) => { checkedHandler(e, item) }
                     }
                 />
-            }) : <Spinner outerStyle={{ top: "25%", left: "0%" }} style={{ width: "60px", height: "60px" }} />}
+            })}
         </section>
         <div className="buttonContainer">
             <Button type="submit" text="Create" clickHandler={createGroup} />

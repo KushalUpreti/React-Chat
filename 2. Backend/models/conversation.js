@@ -7,6 +7,7 @@ const conversation = new Schema({
     users: [],
     latest_message_date: { type: Date },
     latest_message: { type: String },
+    type: { type: String },
     admin: { type: mongoose.Types.ObjectId, required: true, ref: 'User' },
 })
 

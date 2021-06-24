@@ -68,6 +68,10 @@ io.on("connection", (socket) => {
         socketController.remove_conversation({ recipients, conversation_id }, id, socket);
     });
 
+    socket.on('delete-message', ({ recipients, conversation_id, message_position }) => {
+        socketController.remove_message({ recipients, conversation_id, message_position }, id, socket);
+    })
+
     socket.on('disconnect', function disconnect() {
         userController.activeStatus(socket.handshake.query.id, socket, 'offline', false);
     });
