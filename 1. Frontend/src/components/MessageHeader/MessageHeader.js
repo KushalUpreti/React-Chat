@@ -35,7 +35,7 @@ function MessageHeader(props) {
                 "Content-Type": "application/json",
             }
         }
-        await sendRequest("http://localhost:8080/user/deleteAllMessages", "POST", payload, config);
+        await sendRequest("https://reactchat01.herokuapp.com/user/deleteAllMessages", "POST", payload, config);
         dispatch(removeAllMessages(null));
     }
 
@@ -52,7 +52,7 @@ function MessageHeader(props) {
         }
         let result;
         try {
-            result = await sendRequest("http://localhost:8080/user/unfriendUser", "POST", payload, config);
+            result = await sendRequest("https://reactchat01.herokuapp.com/user/unfriendUser", "POST", payload, config);
         } catch (error) {
             console.log(error);
         }
@@ -75,7 +75,7 @@ function MessageHeader(props) {
         }
         let result;
         try {
-            result = await sendRequest("http://localhost:8080/user/deleteGroup", "POST", payload, config);
+            result = await sendRequest("https://reactchat01.herokuapp.com/user/deleteGroup", "POST", payload, config);
         } catch (error) {
             console.log(error);
         }
@@ -98,7 +98,7 @@ function MessageHeader(props) {
         }
         let result;
         try {
-            result = await sendRequest("http://localhost:8080/user/leaveGroup", "POST", payload, config);
+            result = await sendRequest("https://reactchat01.herokuapp.com/user/leaveGroup", "POST", payload, config);
         } catch (error) {
             console.log(error);
         }

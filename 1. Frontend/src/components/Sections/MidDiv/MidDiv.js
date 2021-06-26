@@ -96,7 +96,7 @@ function MidDiv() {
             }
         }
         setLoading(true);
-        axios.get(`http://localhost:8080/user/allMessages/${conversation_id}`, config).then(res => {
+        axios.get(`https://reactchat01.herokuapp.com/user/allMessages/${conversation_id}`, config).then(res => {
             dispatch(addAllMessages(res.data));
         }).finally(() => {
             setLoading(false);
@@ -115,7 +115,7 @@ function MidDiv() {
             }
         }
         let res = await sendRequest(
-            `http://localhost:8080/user/loadMoreMessages?conversation_id=${ref.current}&oldest_date=${messageList[0].sent_date}`,
+            `https://reactchat01.herokuapp.com/user/loadMoreMessages?conversation_id=${ref.current}&oldest_date=${messageList[0].sent_date}`,
             "GET", config);
         dispatch(addMoreMessages(res.data));
     }
@@ -159,7 +159,7 @@ function MidDiv() {
             }
         }
 
-        await sendRequest("http://localhost:8080/user/addMessage", "POST", payload, config);
+        await sendRequest("https://reactchat01.herokuapp.com/user/addMessage", "POST", payload, config);
         let container = document.querySelector(".conversationHolder");
         container.scrollTop = container.scrollHeight;
     }, [socket]);

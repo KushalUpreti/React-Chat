@@ -30,7 +30,7 @@ function ConversationHolder(props) {
                 "Content-Type": "application/json",
             }
         }
-        let result = await sendRequest("http://localhost:8080/user/deleteOneMessage", "POST", payload, config);
+        let result = await sendRequest("https://reactchat01.herokuapp.com/user/deleteOneMessage", "POST", payload, config);
         if (!result) {
             alert("Error deleting message");
         };
