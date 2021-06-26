@@ -4,8 +4,8 @@ A chat application powered by React, NodeJS, ExpressJS, MongoDB and Socket.IO
 Project live at: https://kushalupreti.github.io/ReactChat
 
 <p>Features so far:</p>
-<p>Create account/Login</p>
-<p>Search Users</p>
+Create account/Login
+Search Users
 <p>Add friend</p>
 <p>See all online friends</p>
 <p>Send Message/Delete Message</p>
