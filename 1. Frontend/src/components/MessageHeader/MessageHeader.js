@@ -3,6 +3,7 @@ import { useHttpClient } from '../../hooks/http-hook';
 import { useDispatch } from 'react-redux';
 import { removeAllMessages } from '../../Store/Reducers/messageSlice';
 import { removeConversation } from '../../Store/Reducers/conversationSlice';
+import { removeOfflineUser } from '../../Store/Reducers/activeUsersSlice';
 import './MessageHeader.css';
 import Avatar from '../Avatar/Avatar';
 import SearchContainer from '../SearchContainer/SearchContainer';
@@ -57,8 +58,11 @@ function MessageHeader(props) {
             console.log(error);
         }
         if (!result) return
+
+        socket.emit('offline-user', { recipients: props.recipients });
         socket.emit('remove-conversation', { recipients: props.recipients, conversation_id: props.convId })
         dispatch(removeConversation(props.convId));
+        dispatch(removeOfflineUser({ id: props.recipients.filter(r => r !== auth.userId)[0] }));
         history.push('/');
     }
 

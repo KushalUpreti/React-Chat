@@ -72,6 +72,10 @@ io.on("connection", (socket) => {
         socketController.remove_message({ recipients, conversation_id, message_position }, id, socket);
     })
 
+    socket.on('offline-user', ({ recipients }) => {
+        socketController.offline_user({ recipients }, id, socket);
+    })
+
     socket.on('disconnect', function disconnect() {
         userController.activeStatus(socket.handshake.query.id, socket, 'offline', false);
     });

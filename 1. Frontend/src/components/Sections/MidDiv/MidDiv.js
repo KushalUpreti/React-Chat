@@ -48,7 +48,6 @@ function MidDiv() {
             if (!typing) {
                 setTyping(true);
             }
-
         });
 
         socket.on('recieve-not-typing', (incoming) => {

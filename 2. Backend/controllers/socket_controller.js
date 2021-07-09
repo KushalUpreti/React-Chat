@@ -43,6 +43,14 @@ const not_typing = ({ recipients, conversation_id }, id, socket) => {
     })
 }
 
+const offline_user = ({ recipients }, id, socket) => {
+    const newRecipients = recipients.filter(r => r !== id);
+
+    newRecipients.forEach((recipient) => {
+        socket.broadcast.to(recipient).emit('offline', { id });
+    });
+}
+
 
 exports.sendMessage = sendMessage;
 exports.add_conversation = add_conversation;
@@ -50,3 +58,4 @@ exports.remove_conversation = remove_conversation;
 exports.remove_message = remove_message;
 exports.typing = typing;
 exports.not_typing = not_typing;
+exports.offline_user = offline_user;
