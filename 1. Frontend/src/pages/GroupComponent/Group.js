@@ -55,7 +55,7 @@ export default function Group(props) {
                 "Content-Type": "application/json",
             }
         }
-        const result = await sendRequest(`https://reactchat01.herokuapp.com/user/getAllFriends`, "GET", config, config);
+        const result = await sendRequest(`http://localhost:8080/user/getAllFriends`, "GET", config, config);
         if (!result) { return; }
         setSearchResult(result.data);
     }
@@ -74,7 +74,7 @@ export default function Group(props) {
                 "Content-Type": "application/json"
             }
         }
-        const result = await sendRequest(`https://reactchat01.herokuapp.com/user/createGroup`, "POST", payload, config);
+        const result = await sendRequest(`http://localhost:8080/user/createGroup`, "POST", payload, config);
         if (!result) { return }
         dispatch(addNewConversation(result.data));
         socket.emit('add-conversation', {

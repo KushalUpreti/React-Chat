@@ -28,7 +28,7 @@ function Login() {
             }
         }
 
-        const result = await sendRequest("https://reactchat01.herokuapp.com/user/login", "POST", payload, config);
+        const result = await sendRequest("http://localhost:8080/user/login", "POST", payload, config);
         if (!result) { return }
         auth.login(result.data);
     }

@@ -30,7 +30,7 @@ function ConversationHolder(props) {
                 "Content-Type": "application/json",
             }
         }
-        let result = await sendRequest("https://reactchat01.herokuapp.com/user/deleteOneMessage", "POST", payload, config);
+        let result = await sendRequest("http://localhost:8080/user/deleteOneMessage", "POST", payload, config);
         if (!result) {
             alert("Error deleting message");
         };
@@ -39,42 +39,47 @@ function ConversationHolder(props) {
 
     let content = <p style={{ margin: "auto", padding: "20px 0" }}>Say Hi to your new friend..</p>;
     if (props.messages.length > 0) {
-        content = props.messages.map((item, index) => {
-            let style = {
-                justifyContent: 'flex-start',
-            }
-            let messageStyle = {
-                backgroundColor: !item.deleted ? 'rgb(255 0 40)' : 'rgb(88, 88, 88)'
-            }
-            if (item.sent_by === auth.userId) {
-                style = {
-                    justifyContent: 'flex-end',
+        content = <>
+            {props.oldLoading ? <Spinner outerStyle={{ top: "5%", left: "48%" }} style={{ width: "60px", height: "60px" }} /> : null}
+            {props.messages.map((item, index) => {
+                let style = {
+                    justifyContent: 'flex-start',
                 }
-                messageStyle = {
-                    backgroundColor: !item.deleted ? 'rgb(0, 132, 255)' : 'rgb(88, 88, 88)'
+                let messageStyle = {
+                    backgroundColor: !item.deleted ? 'rgb(255 0 40)' : 'rgb(88, 88, 88)'
                 }
-            }
-            const date = "Sent time: " + getMessageDate(item.sent_date);
-            return <MessageContainer
-                key={item.sent_date + " " + item.message}
-                justify={style}
-                displayAvatar={item.sent_by !== auth.userId}
-                avatarInitials={item.username[0]}
-                position={index}
-                delete={deleteMessageHandler}
-                deleted={item.deleted}
-                conversation_id={props.conversation_id}
-                _id={item._id}
-            >
+                if (item.sent_by === auth.userId) {
+                    style = {
+                        justifyContent: 'flex-end',
+                    }
+                    messageStyle = {
+                        backgroundColor: !item.deleted ? 'rgb(0, 132, 255)' : 'rgb(88, 88, 88)'
+                    }
+                }
+                const date = "Sent time: " + getMessageDate(item.sent_date);
+                return <MessageContainer
+                    key={item.sent_date + " " + item.message}
+                    justify={style}
+                    displayAvatar={item.sent_by !== auth.userId}
+                    avatarInitials={item.username[0]}
+                    position={index}
+                    delete={deleteMessageHandler}
+                    deleted={item.deleted}
+                    conversation_id={props.conversation_id}
+                    _id={item._id}
+                >
 
-                <Message
-                    username={item.username.slice(0, item.username.indexOf(" "))}
-                    message={item.message}
-                    color={messageStyle} date={date}
-                    displayName={item.sent_by !== auth.userId}
-                />
-            </MessageContainer>
-        })
+                    <Message
+                        username={item.username.slice(0, item.username.indexOf(" "))}
+                        message={item.message}
+                        color={messageStyle} date={date}
+                        displayName={item.sent_by !== auth.userId}
+                    />
+                </MessageContainer>
+            })}
+        </>
+
+
     } if (props.loading) {
         content = <Spinner outerStyle={{ top: "45%", left: "48%" }} style={{ width: "60px", height: "60px" }} />
     }

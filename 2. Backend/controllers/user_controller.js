@@ -592,7 +592,6 @@ const loadMoreMessages = async (req, res, next) => {
         return next(new HttpError("Error fetching old messages. Try again", 500));
     }
     const messages = await decryptMessage(oldMessages);
-    console.log(messages);
     res.json(messages.reverse());
 }
 

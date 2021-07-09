@@ -44,7 +44,7 @@ function RightDiv() {
                     "Content-Type": "application/json",
                 }
             }
-            const activeFriends = await sendRequest(`https://reactchat01.herokuapp.com/user/getAllActiveUsers/${auth.userId}`, "GET", config, null);
+            const activeFriends = await sendRequest(`http://localhost:8080/user/getAllActiveUsers/${auth.userId}`, "GET", config, null);
             dispatch(addAllActiveUsers(activeFriends.data));
         }
         fetchActiveFriends();
@@ -76,7 +76,7 @@ function RightDiv() {
             }
         }
 
-        const newConversation = await sendRequest("https://reactchat01.herokuapp.com/user/addOrRemoveFriend", "POST", payload, config);
+        const newConversation = await sendRequest("http://localhost:8080/user/addOrRemoveFriend", "POST", payload, config);
         if (!newConversation.data) {
             return;
         }

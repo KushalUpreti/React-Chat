@@ -4,7 +4,7 @@ import { updateConversation } from '../../../Store/Reducers/conversationSlice';
 import { useLocation, useHistory } from 'react-router-dom';
 import { useHttpClient } from '../../../hooks/http-hook';
 import { useSocketObject } from '../../../contexts/socket-context';
-import { useDispatch, useSelector, useStore } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addMessageToConversation, selectMessage, addAllMessages, addMoreMessages, removeSingleMessge } from '../../../Store/Reducers/messageSlice';
 import AuthContext from '../../../contexts/auth-context';
 import MessageHeader from '../../MessageHeader/MessageHeader';
@@ -14,14 +14,14 @@ import axios from 'axios';
 
 function MidDiv() {
     const [loading, setLoading] = useState(false);
+    const [oldLoading, setOldLoading] = useState(false);
     const [typing, setTyping] = useState(false);
-
     const [message, setMessage] = useState("");
 
     const messageRedux = useSelector(selectMessage);
-    const messageList = useStore().getState().message.messages;
     const location = useLocation();
     const ref = useRef();
+    const oldestDate = useRef();
     const history = useHistory();
     const socket = useSocketObject();
     const auth = useContext(AuthContext);
@@ -69,7 +69,7 @@ function MidDiv() {
         function listener(event) {
             var element = event.target;
             if (element.scrollTop === 0) {
-                // loadMoreMessage();
+                loadMoreMessage();
             }
         }
         let container = document.querySelector(".conversationHolder");
@@ -96,8 +96,12 @@ function MidDiv() {
             }
         }
         setLoading(true);
-        axios.get(`https://reactchat01.herokuapp.com/user/allMessages/${conversation_id}`, config).then(res => {
+        axios.get(`http://localhost:8080/user/allMessages/${conversation_id}`, config).then(res => {
             dispatch(addAllMessages(res.data));
+            if (res.data.length > 0) {
+                oldestDate.current = res.data[0].sent_date;
+            }
+
         }).finally(() => {
             setLoading(false);
             let container = document.querySelector(".conversationHolder");
@@ -106,8 +110,7 @@ function MidDiv() {
     }
 
     async function loadMoreMessage() {
-        console.log(messageList);
-        if (!messageList[0]) { return; }
+        setOldLoading(true);
         let config = {
             headers: {
                 Authorization: 'Bearer ' + auth.token,
@@ -115,9 +118,13 @@ function MidDiv() {
             }
         }
         let res = await sendRequest(
-            `https://reactchat01.herokuapp.com/user/loadMoreMessages?conversation_id=${ref.current}&oldest_date=${messageList[0].sent_date}`,
+            `http://localhost:8080/user/loadMoreMessages?conversation_id=${ref.current}&oldest_date=${oldestDate.current}`,
             "GET", config);
+        setOldLoading(false);
+        if (!res.data.length) { return }
+        oldestDate.current = res.data[0].sent_date;
         dispatch(addMoreMessages(res.data));
+
     }
 
     function inputHandler(e) {
@@ -159,7 +166,7 @@ function MidDiv() {
             }
         }
 
-        await sendRequest("https://reactchat01.herokuapp.com/user/addMessage", "POST", payload, config);
+        await sendRequest("http://localhost:8080/user/addMessage", "POST", payload, config);
         let container = document.querySelector(".conversationHolder");
         container.scrollTop = container.scrollHeight;
     }, [socket]);
@@ -176,6 +183,7 @@ function MidDiv() {
         />
         <div className="conversation">
             <ConversationHolder
+                oldLoading={oldLoading}
                 messages={messageRedux}
                 loading={loading}
                 typing={typing}
